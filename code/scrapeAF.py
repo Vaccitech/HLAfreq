@@ -12,6 +12,10 @@ import requests
 import pandas as pd
 import logging
 
+def makeURL(country):
+    url = "http://www.allelefrequencies.net/hla6006a.asp?hla_locus_type=Classical&hla_country=%s&hla_level=2&" %(country)
+    return url
+
 def parseAF(bs):
     """Generate a dataframe from a given url
 
@@ -25,7 +29,7 @@ def parseAF(bs):
     tab = bs.find('div', {'id': 'divGenDetail'}).find('table', {'class': 'tblNormal'})
     # Get the column headers from the first row of the table
     columns = [
-        'line', 'allele', 'flag', 'population', '%individuals',
+        'line', 'allele', 'flag', 'population', 'carriers%',
         'allele_freq', 'AF_graphic', 'sample_size', 'database',
         'distribution','haplotype_association', 'notes'
         ]
@@ -37,9 +41,14 @@ def parseAF(bs):
     # Make dataframe of table rows
     # skip the first row as it's `th` headers
     df = pd.DataFrame(rows[1:], columns = columns)
+
+    # Get HLA loci
+    df['loci'] = df.allele.apply(lambda x: x.split("*")[0])
+
     # Drop unwanted columns
-    df = df[['allele', 'population', 'allele_freq', 'sample_size']]
+    df = df[['allele', 'loci', 'population', 'allele_freq', 'carriers%', 'sample_size']]
     return df
+   
 
 def Npages(bs):
     """How many pages of results are there?
@@ -86,11 +95,28 @@ def getAFdata(base_url):
         tab = parseAF(bs)
         tabs.append(tab)
     tabs = pd.concat(tabs)
+    tabs = formatAF(tabs)
+    validateAF(tabs)
     return tabs
+
+def formatAF(df):
+    # Force convert columns to numeric
+    df.allele_freq = pd.to_numeric(df.allele_freq)
+    df.sample_size = pd.to_numeric(df.sample_size)
+    return df
+
+def validateAF(df):
+    if not all(df.allele_freq <= 1):
+        print("Allele frequency greater 1 reported")
 
 
 url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"
-base_url = "http://www.allelefrequencies.net/hla6006a.asp?hla_locus_type=Classical&hla_country=Thailand&hla_level=2&"
+base_url = makeURL("Philippines")
 
-aftab = getAFdata(base_url)
+# aftab = getAFdata(base_url)
 aftab
+
+import numpy as np
+
+aftab.groupby('allele').apply(lambda x: np.average(x.allele_freq, weights=x.sample_size))
+aftab.groupby('allele').size()

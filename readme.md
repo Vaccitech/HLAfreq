@@ -8,3 +8,9 @@ This gives frequencies by population, which can be averaged
 across studies, weighted by sample size. Frequencies can then
 be averaged across populations if a relative weighting can
 found, i.e. population size.
+
+```
+import sys
+sys.path.append("/home/dwells/work/tools/scrapeAF/code")
+import scrapeAF
+```
