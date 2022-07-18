@@ -95,28 +95,16 @@ def getAFdata(base_url):
         tab = parseAF(bs)
         tabs.append(tab)
     tabs = pd.concat(tabs)
-    tabs = formatAF(tabs)
-    validateAF(tabs)
     return tabs
 
-def formatAF(df):
-    # Force convert columns to numeric
-    df.allele_freq = pd.to_numeric(df.allele_freq)
-    df.sample_size = pd.to_numeric(df.sample_size)
-    return df
 
-def validateAF(df):
-    if not all(df.allele_freq <= 1):
-        print("Allele frequency greater 1 reported")
-
-
-url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"
-base_url = makeURL("Philippines")
+# url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"
+# base_url = makeURL("Philippines")
 
 # aftab = getAFdata(base_url)
-aftab
+# aftab
 
-import numpy as np
+# import numpy as np
 
-aftab.groupby('allele').apply(lambda x: np.average(x.allele_freq, weights=x.sample_size))
-aftab.groupby('allele').size()
+# aftab.groupby('allele').apply(lambda x: np.average(x.allele_freq, weights=x.sample_size))
+# aftab.groupby('allele').size()
