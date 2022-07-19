@@ -10,6 +10,7 @@ The database can be searched based on url as described in
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+import numpy as np
 import logging
 
 def makeURL(country):
@@ -17,7 +18,7 @@ def makeURL(country):
     return url
 
 def parseAF(bs):
-    """Generate a dataframe from a given url
+    """Generate a dataframe from a given html page
 
     Args:
         bs (bs4.BeautifulSoup): BeautifulSoup object from allelefrequencies.net page
@@ -96,6 +97,38 @@ def getAFdata(base_url):
         tabs.append(tab)
     tabs = pd.concat(tabs)
     return tabs
+
+def formatAF(df):
+    if df.sample_size.dtype == "O":
+        df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
+    return df
+
+def combineAF(df):
+    """Combine allele frequencies at multiple levels
+
+    Args:
+        df (pd.DataFrame): Table of Allele frequency data
+
+    Returns:
+        pd.DataFrame: Table of allele frequency data with alleles
+        grouped to make a weighted average based on sample size.
+    """
+    grouped = df.groupby('allele')
+    combined = grouped.apply(
+        lambda row: [
+        row.name,
+        row.loci.unique()[0],
+        np.average(row.allele_freq, weights=row.sample_size),
+        row.sample_size.sum()
+        ]
+    )
+    combined = pd.DataFrame(
+        combined.tolist(),
+        columns = ['allele', 'loci', 'allele_freq', 'sample_size']
+    )
+    combined = combined.reset_index(drop=True)
+    return combined
+
 
 
 # url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"

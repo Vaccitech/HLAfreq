@@ -24,15 +24,8 @@ for country in countries:
 wavs = []
 for country in countries:
     df = pd.read_csv("data/example/%s_raw.csv" %country)
-    # Handle commmas in sample size
-    if df.sample_size.dtype == 'O':
-        df.sample_size = pd.to_numeric(df.sample_size.str.replace(",",""))
-    # Weighted AVerage
-    wav = df.groupby('allele').apply(lambda x: np.average(x.allele_freq, weights=x.sample_size))
-    wav.name = "allele_freq"
-    wav = pd.DataFrame(wav)
-    wav['country'] = country
-    wavs.append(wav)
+    df = scrapeAF.formatAF(df)
+    wav = scrapeAF.combineAF(df)
 
 wavs = pd.concat(wavs, axis=0).reset_index()
 

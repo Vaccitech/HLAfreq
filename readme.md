@@ -14,3 +14,15 @@ import sys
 sys.path.append("/home/dwells/work/tools/scrapeAF/code")
 import scrapeAF
 ```
+
+When selecting alleles to represent a population, all supertypes
+should be represented.
+
+When combining extimates of allele frequency larger samples should
+weigh more heavily. However, when combining estiamtes that disagree
+the uncertainty on the estimate should be larger than when combining
+equivalent samples that agree.
+
+When combining studies we must weight averages by sample size but
+when combining countries are we not better to weight by national population?
+Should sample size also have an effect?
