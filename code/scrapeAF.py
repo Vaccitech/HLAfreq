@@ -13,8 +13,13 @@ import pandas as pd
 import numpy as np
 import logging
 
-def makeURL(country):
-    url = "http://www.allelefrequencies.net/hla6006a.asp?hla_locus_type=Classical&hla_country=%s&hla_level=2&" %(country)
+def makeURL(country, standard='s'):
+    base = "http://www.allelefrequencies.net/hla6006a.asp?"
+    locus_type = "hla_locus_type=Classical&"
+    country = "hla_country=%s&" %(country)
+    resolution = "hla_level=2&"
+    standard = "standard=%s&" %standard
+    url = base + locus_type + country + resolution + standard
     return url
 
 def parseAF(bs):
