@@ -129,7 +129,20 @@ def combineAF(df):
     combined = combined.reset_index(drop=True)
     return combined
 
+def population_coverage(p):
+    """Calculate the proportion of people with at least 1 copy of this allele
+        assuming HWE.
 
+    Args:
+        p (float): Allele frequency
+
+    Returns:
+        float: Sum of homozygotes and heterozygotes for this allele
+    """
+    q = 1-p
+    homo = p**2
+    hetero = 2*p*q
+    return homo + hetero
 
 # url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"
 # base_url = makeURL("Philippines")
