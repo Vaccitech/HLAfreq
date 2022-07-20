@@ -108,6 +108,39 @@ def formatAF(df):
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
     return df
 
+def unmeasured_alleles(AFtab):
+    """When combining AF estimates, unreported alleles can inflate frequencies
+        so AF sums to >1. Therefore we add unreported alleles with frequency zero.
+
+    Args:
+        AFtab (pd.DataFrame): Formatted allele frequency data
+
+    Returns:
+        pd.DataFrame: Allele frequency data with all locus alleles reported 
+            for each population
+    """
+    loci = AFtab.loci.unique()
+    # Iterate over loci separately
+    for locus in loci:
+        # Iterate over each population reporting that locus
+        populations = AFtab[AFtab.loci == locus].population.unique()
+        for population in populations:
+            # Single locus, single population data
+            popAF = AFtab[(AFtab.population == population) & (AFtab.loci == locus)]
+            # What was the sample size for this data?
+            pop_sample_size = popAF.sample_size.unique()
+            assert len(pop_sample_size) == 1, "pop_sample_size must be 1, not %s" %len(pop_sample_size)
+            pop_sample_size = pop_sample_size[0]
+            # Get all alleles for this locus (across populations)
+            ualleles = AFtab[AFtab.loci == locus].allele.unique()
+            # Which of these alleles are not in this population?
+            missing_alleles = [allele for allele in ualleles if not allele in popAF.allele.values]
+            missing_rows = [(al, locus, population, 0, 0, pop_sample_size) for al in missing_alleles]
+            missing_rows = pd.DataFrame(missing_rows, columns=['allele','loci','population','allele_freq','carriers%','sample_size'])
+            # Add them in with zero frequency
+            AFtab = pd.concat([AFtab, missing_rows], ignore_index=True)
+    return AFtab
+
 def combineAF(df):
     """Combine allele frequencies at multiple levels
 
