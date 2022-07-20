@@ -1,0 +1,4 @@
+data/
+docs/
+*__pycache__/
+*.code-workspace
