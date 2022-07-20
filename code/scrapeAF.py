@@ -108,7 +108,7 @@ def formatAF(df):
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
     return df
 
-def unmeasured_alleles(AFtab):
+def unmeasured_alleles(AFtab, datasetID='population'):
     """When combining AF estimates, unreported alleles can inflate frequencies
         so AF sums to >1. Therefore we add unreported alleles with frequency zero.
 
@@ -117,31 +117,31 @@ def unmeasured_alleles(AFtab):
 
     Returns:
         pd.DataFrame: Allele frequency data with all locus alleles reported 
-            for each population
+            for each dataset
     """
     loci = AFtab.loci.unique()
     # Iterate over loci separately
     for locus in loci:
-        # Iterate over each population reporting that locus
-        populations = AFtab[AFtab.loci == locus].population.unique()
-        for population in populations:
-            # Single locus, single population data
-            popAF = AFtab[(AFtab.population == population) & (AFtab.loci == locus)]
+        # Iterate over each dataset reporting that locus
+        datasets = AFtab[AFtab.loci == locus][datasetID].unique()
+        for dataset in datasets:
+            # Single locus, single dataset
+            datasetAF = AFtab[(AFtab[datasetID] == dataset) & (AFtab.loci == locus)]
             # What was the sample size for this data?
-            pop_sample_size = popAF.sample_size.unique()
-            assert len(pop_sample_size) == 1, "pop_sample_size must be 1, not %s" %len(pop_sample_size)
-            pop_sample_size = pop_sample_size[0]
-            # Get all alleles for this locus (across populations)
+            dataset_sample_size = datasetAF.sample_size.unique()
+            assert len(dataset_sample_size) == 1, "dataset_sample_size must be 1, not %s" %len(dataset_sample_size)
+            dataset_sample_size = dataset_sample_size[0]
+            # Get all alleles for this locus (across datasets)
             ualleles = AFtab[AFtab.loci == locus].allele.unique()
-            # Which of these alleles are not in this population?
-            missing_alleles = [allele for allele in ualleles if not allele in popAF.allele.values]
-            missing_rows = [(al, locus, population, 0, 0, pop_sample_size) for al in missing_alleles]
-            missing_rows = pd.DataFrame(missing_rows, columns=['allele','loci','population','allele_freq','carriers%','sample_size'])
+            # Which of these alleles are not in this dataset?
+            missing_alleles = [allele for allele in ualleles if not allele in datasetAF.allele.values]
+            missing_rows = [(al, locus, dataset, 0, 0, dataset_sample_size) for al in missing_alleles]
+            missing_rows = pd.DataFrame(missing_rows, columns=['allele','loci',datasetID,'allele_freq','carriers%','sample_size'])
             # Add them in with zero frequency
             AFtab = pd.concat([AFtab, missing_rows], ignore_index=True)
     return AFtab
 
-def combineAF(df):
+def combineAF(df, weights='sample_size'):
     """Combine allele frequencies at multiple levels
 
     Args:
@@ -156,7 +156,7 @@ def combineAF(df):
         lambda row: [
         row.name,
         row.loci.unique()[0],
-        np.average(row.allele_freq, weights=row.sample_size),
+        np.average(row.allele_freq, weights=row[weights]),
         row.sample_size.sum()
         ]
     )
@@ -165,7 +165,23 @@ def combineAF(df):
         columns = ['allele', 'loci', 'allele_freq', 'sample_size']
     )
     combined = combined.reset_index(drop=True)
+    # Check that all alleles in a locus have the same sample size
+    # after merging
+    if duplicated_sample_size(combined):
+        id_duplicated_allele(grouped)
+
     return combined
+
+def duplicated_sample_size(df):
+    """Returns True if any loci has more than 1 unique sample size"""
+    locus_sample_sizes = df.groupby('loci').sample_size.apply(lambda x: len(x.unique()))
+    return any(locus_sample_sizes != 1)
+
+def id_duplicated_allele(grouped):
+    """ Reports the allele that has mupltiple sample sizes """
+    duplicated_population = grouped.population.apply(lambda x: any(x.duplicated()))
+    assert all(~duplicated_population), "duplicated population within allele %s" %duplicated_population[duplicated_population]
+
 
 def population_coverage(p):
     """Calculate the proportion of people with at least 1 copy of this allele
