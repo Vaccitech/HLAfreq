@@ -24,7 +24,6 @@ for country in countries:
 wavs = []
 for country in countries:
     df = pd.read_csv("data/example/%s_raw.csv" %country)
-    df = scrapeAF.formatAF(df)
     wav = scrapeAF.combineAF(df)
     wav['country'] = country
     wavs.append(wav)

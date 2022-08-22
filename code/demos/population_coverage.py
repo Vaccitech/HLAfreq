@@ -13,11 +13,6 @@ super1 = pd.read_csv("data/HLA1supertypes_Sidney2008.csv")
 super1.allele = super1.allele.apply(lambda x: x[:4]+':'+x[4:])
 
 AFtab = pd.read_csv("data/example/Uganda_raw.csv")
-AFtab = scrapeAF.formatAF(AFtab)
-
-# Add unreported alleles so AF sums to 1
-AFtab = scrapeAF.unmeasured_alleles(AFtab)
-
 # Weighted average alleles
 wav = scrapeAF.combineAF(AFtab)
 # Add HLA1 supertypes

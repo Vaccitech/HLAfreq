@@ -114,6 +114,7 @@ def unmeasured_alleles(AFtab, datasetID='population'):
 
     Args:
         AFtab (pd.DataFrame): Formatted allele frequency data
+        datasetID (str): Unique identifier column for study
 
     Returns:
         pd.DataFrame: Allele frequency data with all locus alleles reported 
@@ -141,16 +142,24 @@ def unmeasured_alleles(AFtab, datasetID='population'):
             AFtab = pd.concat([AFtab, missing_rows], ignore_index=True)
     return AFtab
 
-def combineAF(df, weights='sample_size'):
+def combineAF(df, weights='sample_size', format=True, add_unmeasured=True, datasetID='population'):
     """Combine allele frequencies at multiple levels
 
     Args:
         df (pd.DataFrame): Table of Allele frequency data
+        weights (str): Column to weight averages by. Default 'sample_size'
+        format (boolean): run formatAF(), Default = True
+        add_unmeasured (boolean): run unmeasured_alleles(), Default = True
+        datasetID (str): Unique identifier column for study used by unmeasured_alleles()
 
     Returns:
         pd.DataFrame: Table of allele frequency data with alleles
-        grouped to make a weighted average based on sample size.
+        grouped to make a weighted average based on weights.
     """
+    if format:
+        df = formatAF(df)
+    if add_unmeasured:
+        df = unmeasured_alleles(df, datasetID)
     grouped = df.groupby('allele')
     combined = grouped.apply(
         lambda row: [

@@ -24,10 +24,6 @@ wavs = []
 for country in countries:
     # Load raw county data
     AFtab = pd.read_csv("data/example/%s_raw.csv" %country)
-    # format data
-    AFtab = scrapeAF.formatAF(AFtab)
-    # Add unreported alleles so AF sums to 1
-    AFtab = scrapeAF.unmeasured_alleles(AFtab)
     # Weighted average alleles
     wav = scrapeAF.combineAF(AFtab)
     # Add country to dataset
