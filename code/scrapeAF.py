@@ -13,13 +13,14 @@ import pandas as pd
 import numpy as np
 import logging
 
-def makeURL(country, standard='s'):
+def makeURL(country, standard='s', locus=""):
     base = "http://www.allelefrequencies.net/hla6006a.asp?"
     locus_type = "hla_locus_type=Classical&"
+    hla_locus = "hla_locus=%s&" %(locus)
     country = "hla_country=%s&" %(country)
     resolution = "hla_level=2&"
     standard = "standard=%s&" %standard
-    url = base + locus_type + country + resolution + standard
+    url = base + locus_type + hla_locus + country + resolution + standard
     return url
 
 def parseAF(bs):
@@ -67,6 +68,7 @@ def Npages(bs):
     """
     # Get the table with number of pages
     navtab = bs.find('div', {'id': 'divGenNavig'}).find('table', {'class': 'table10'})
+    assert navtab, f"navtab does not evaluate to True. Check URL returns results in web browser."
     # Get cell with ' of ' in 
     pagesOfN = [td.get_text(strip=True) for td in navtab.find_all('td') if " of " in td.text]
     # Check single cell returned
