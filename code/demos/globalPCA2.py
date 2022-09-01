@@ -32,7 +32,7 @@ AFeatures['umap1'] = umap_embedding[:,1]
 # Add region to countries
 AFeatures = pd.merge(AFeatures, regions, how="left", left_on="country", right_on="Country")
 
-# plt.style.use('ggplot')
+# plt.style.use('fivethirtyeight')
 
 for region in AFeatures.largeRegion.unique():
     mask = AFeatures.largeRegion == region
