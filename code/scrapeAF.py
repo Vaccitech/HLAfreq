@@ -111,6 +111,24 @@ def formatAF(df):
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
     return df
 
+def study_completeness(df, llimit=0.95, ulimit=1.1):
+    """Report any studies with allele freqs that don't sum to 1
+
+    Args:
+        df (pd.DataFrame): Dataframe containing multiple studies
+        llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
+        ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+    """
+    poplocs = df.groupby(['population', 'loci']).allele_freq.sum()
+    lmask = poplocs < llimit
+    if sum(lmask>0):
+        print(poplocs[lmask])
+        print(f"{sum(lmask)} studies have total allele frequency < {llimit}")
+    umask = poplocs > ulimit
+    if sum(umask>0):
+        print(poplocs[umask])
+        print(f"{sum(umask)} studies have total allele frequency > {ulimit}")
+
 def unmeasured_alleles(AFtab, datasetID='population'):
     """When combining AF estimates, unreported alleles can inflate frequencies
         so AF sums to >1. Therefore we add unreported alleles with frequency zero.
@@ -160,6 +178,7 @@ def combineAF(df, weights='2n', alpha = [], format=True, add_unmeasured=True, da
         grouped to make a weighted average based on weights.
     """
     single_loci(df)
+    study_completeness(df)
     if format:
         df = formatAF(df)
     if add_unmeasured:
