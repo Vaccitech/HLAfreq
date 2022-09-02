@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import numpy as np
+from scipy.stats import dirichlet
 import logging
 
 def makeURL(country, standard='s', locus=""):
@@ -144,7 +145,7 @@ def unmeasured_alleles(AFtab, datasetID='population'):
             AFtab = pd.concat([AFtab, missing_rows], ignore_index=True)
     return AFtab
 
-def combineAF(df, weights='sample_size', format=True, add_unmeasured=True, datasetID='population'):
+def combineAF(df, weights='2n', alpha = [], format=True, add_unmeasured=True, datasetID='population'):
     """Combine allele frequencies at multiple levels
 
     Args:
@@ -158,30 +159,50 @@ def combineAF(df, weights='sample_size', format=True, add_unmeasured=True, datas
         pd.DataFrame: Table of allele frequency data with alleles
         grouped to make a weighted average based on weights.
     """
+    single_loci(df)
     if format:
         df = formatAF(df)
     if add_unmeasured:
         df = unmeasured_alleles(df, datasetID)
+    try:
+        df['2n'] = df.sample_size * 2
+    except:
+        print("column '2n' could not be created")
+    df['c'] =  df.allele_freq * df[weights]
     grouped = df.groupby('allele')
     combined = grouped.apply(
         lambda row: [
         row.name,
         row.loci.unique()[0],
         np.average(row.allele_freq, weights=row[weights]),
+        row.c.sum(),
         row.sample_size.sum()
         ]
     )
     combined = pd.DataFrame(
         combined.tolist(),
-        columns = ['allele', 'loci', 'allele_freq', 'sample_size']
+        columns = ['allele', 'loci',
+            'wav',
+            'c', 'sample_size']
     )
     combined = combined.reset_index(drop=True)
     # Check that all alleles in a locus have the same sample size
     # after merging
     if duplicated_sample_size(combined):
         id_duplicated_allele(grouped)
+    if not alpha:
+        alpha = default_prior(len(combined.allele))
+    # Calculate Dirichlet mean for each allele
+    combined['allele_freq'] = dirichlet(alpha + combined.c).mean()
 
     return combined
+
+def default_prior(k):
+    alpha = [1] * k
+    return alpha
+
+def single_loci(df):
+    assert len(df.loci.unique()) == 1, f"'df' must conatain only 1 loci"
 
 def duplicated_sample_size(df):
     """Returns True if any loci has more than 1 unique sample size"""

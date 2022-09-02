@@ -24,6 +24,7 @@ wavs = []
 for country in countries:
     # Load raw county data
     AFtab = pd.read_csv("data/example/%s_raw.csv" %country)
+    AFtab = AFtab[AFtab.loci == "A"]
     # Weighted average alleles
     wav = scrapeAF.combineAF(AFtab)
     # Add country to dataset
@@ -31,25 +32,21 @@ for country in countries:
     wavs.append(wav)
 
 international = pd.concat(wavs, ignore_index=True)
-international = scrapeAF.unmeasured_alleles(international, 'country')
 # Add population size to weight averages
 international['population_size'] = international.country.apply(lambda x: population_sizes[x])
 
 #International Weighted Average
-iwav = scrapeAF.combineAF(international, 'population_size')
-
-intA = international[international.loci == 'A']
-iwava = iwav[iwav.loci == 'A']
+iwav = scrapeAF.combineAF(international, weights='population_size', datasetID='country')
 
 plt.scatter(
-    intA.allele,
-    intA.allele_freq,
-    c=[intA.country.unique().tolist().index(x) for x in intA.country],
-    s=intA.population_size/10000000
+    international.allele,
+    international.allele_freq,
+    c=[international.country.unique().tolist().index(x) for x in international.country],
+    s=international.population_size/10000000
     )
 plt.scatter(
-    iwava.allele,
-    iwava.allele_freq,
+    iwav.allele,
+    iwav.allele_freq,
     c='black',
     marker='x'
 )

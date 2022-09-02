@@ -6,24 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import numpy as np
 from scipy.stats import dirichlet
-
-def get_logpdf(x, y, z, alpha=[1,1,1]):
-    c = (x,y,z)
-    dd = dirichlet(alpha)
-    if all(a >= 0 and a<=1 for a in c):
-        logpdf = dd.logpdf(c)
-    else:
-        logpdf = np.nan
-    return logpdf
-
-def get_pdf(x, y, z, alpha=[1,1,1]):
-    c = (x,y,z)
-    dd = dirichlet(alpha)
-    if all(a >= 0 and a<=1 for a in c):
-        pdf = dd.pdf(c)
-    else:
-        pdf = np.nan
-    return pdf
+import pandas as pd
+import code.scrapeAF as scrapeAF
 
 # define a Dirichlet Distributions with parameters alpha
 alpha = np.array([0.4, 5, 15])  # specify concentration parameters
@@ -136,3 +120,26 @@ ax[1].plot_surface(k1, k2, pdf2, cmap=cm.plasma,
 ax[1].set_title(f'PDF disagree')
 plt.show()
 
+#############################
+#                           #
+#   Dirichlet allele freq   #
+#                           #
+#############################
+
+country = "Thailand"
+df = pd.read_csv("data/example/%s_raw.csv" %country)
+loci = "DPB1"
+dfa = df[df.loci == loci]
+caf = scrapeAF.combineAF(dfa)
+
+plt.scatter(
+    caf.wav,
+    caf.allele_freq
+)
+plt.show()
+
+plt.scatter(
+    caf.wav,
+    caf.wav-caf.allele_freq
+)
+plt.show()

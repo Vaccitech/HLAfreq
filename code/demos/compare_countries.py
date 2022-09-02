@@ -24,6 +24,7 @@ for country in countries:
 wavs = []
 for country in countries:
     df = pd.read_csv("data/example/%s_raw.csv" %country)
+    df = df[df.loci=="A"]
     wav = scrapeAF.combineAF(df)
     wav['country'] = country
     wavs.append(wav)
@@ -35,23 +36,20 @@ threshold = 0.02
 common_alleles = wavs[wavs.allele_freq > threshold].allele.unique()
 wavs = wavs[wavs.allele.isin(common_alleles)]
 
-# Focus on locus A and locus B
-wavsa = wavs[wavs.allele.str.contains("^A\*")]
-wavsb = wavs[wavs.allele.str.contains("^B\*")]
-
 fig, ax = plt.subplots(2)
 
 sns.barplot(
-    data = wavsa,
+    data = wavs,
     x = 'allele',
     y = 'allele_freq',
     hue = 'country',
     ax=ax[0]
 )
+
 sns.barplot(
-    data = wavsb,
+    data = wavs,
     x = 'allele',
-    y = 'allele_freq',
+    y = 'wav',
     hue = 'country',
     ax=ax[1]
 )
