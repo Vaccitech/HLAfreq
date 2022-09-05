@@ -14,14 +14,15 @@ import numpy as np
 from scipy.stats import dirichlet
 import logging
 
-def makeURL(country, standard='s', locus=""):
+def makeURL(country, standard='s', locus="", resolution_pattern="bigger_equal_than", resolution=2):
     base = "http://www.allelefrequencies.net/hla6006a.asp?"
     locus_type = "hla_locus_type=Classical&"
     hla_locus = "hla_locus=%s&" %(locus)
     country = "hla_country=%s&" %(country)
-    resolution = "hla_level=2&"
+    hla_level_pattern = "hla_level_pattern=%s&" %(resolution_pattern)
+    hla_level = "hla_level=%s&" %(resolution)
     standard = "standard=%s&" %standard
-    url = base + locus_type + hla_locus + country + resolution + standard
+    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard
     return url
 
 def parseAF(bs):
@@ -106,12 +107,13 @@ def getAFdata(base_url):
     tabs = pd.concat(tabs)
     return tabs
 
-def formatAF(df):
+def formatAF(AFtab):
+    df = AFtab.copy()
     if df.sample_size.dtype == "O":
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
     return df
 
-def study_completeness(df, llimit=0.95, ulimit=1.1):
+def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
     """Report any studies with allele freqs that don't sum to 1
 
     Args:
@@ -119,7 +121,7 @@ def study_completeness(df, llimit=0.95, ulimit=1.1):
         llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
         ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
     """
-    poplocs = df.groupby(['population', 'loci']).allele_freq.sum()
+    poplocs = AFtab.groupby([datasetID, 'loci']).allele_freq.sum()
     lmask = poplocs < llimit
     if sum(lmask>0):
         print(poplocs[lmask])
@@ -128,6 +130,25 @@ def study_completeness(df, llimit=0.95, ulimit=1.1):
     if sum(umask>0):
         print(poplocs[umask])
         print(f"{sum(umask)} studies have total allele frequency > {ulimit}")
+    incomplete = pd.concat([poplocs[lmask], poplocs[umask]])
+    return incomplete
+
+def check_resolution(AFtab):
+    resolution = 1 + AFtab.allele.str.count(":")
+    resVC = resolution.value_counts()
+    pass_check = len(resVC) == 1
+    if not pass_check:
+        print(resVC)
+        print(f"Multiple resolutions in AFtab. Fix with decrease_resolution()")
+    return pass_check
+
+def decrease_resolution(AFtab, newres):
+    df = AFtab.copy()
+    resolution = 1 + df.allele.str.count(":")
+    assert all(resolution >= newres), f"Some alleles have resolution below {newres}"
+    new_allele = df.allele.str.split(":").apply(lambda x: ":".join(x[:newres]))
+    df.allele = new_allele
+    return df
 
 def unmeasured_alleles(AFtab, datasetID='population'):
     """When combining AF estimates, unreported alleles can inflate frequencies
@@ -160,10 +181,10 @@ def unmeasured_alleles(AFtab, datasetID='population'):
             missing_rows = [(al, locus, dataset, 0, 0, dataset_sample_size) for al in missing_alleles]
             missing_rows = pd.DataFrame(missing_rows, columns=['allele','loci',datasetID,'allele_freq','carriers%','sample_size'])
             # Add them in with zero frequency
-            AFtab = pd.concat([AFtab, missing_rows], ignore_index=True)
-    return AFtab
+            df = pd.concat([AFtab, missing_rows], ignore_index=True)
+    return df
 
-def combineAF(df, weights='2n', alpha = [], format=True, add_unmeasured=True, datasetID='population'):
+def combineAF(AFtab, weights='2n', alpha = [], format=True, add_unmeasured=True, complete=True, resolution=True, datasetID='population'):
     """Combine allele frequencies at multiple levels
 
     Args:
@@ -177,8 +198,12 @@ def combineAF(df, weights='2n', alpha = [], format=True, add_unmeasured=True, da
         pd.DataFrame: Table of allele frequency data with alleles
         grouped to make a weighted average based on weights.
     """
+    df = AFtab.copy()
     single_loci(df)
-    study_completeness(df)
+    if complete:
+        assert incomplete_studies(df).empty, "ATfab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+    if resolution:
+        assert check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
     if format:
         df = formatAF(df)
     if add_unmeasured:
@@ -220,12 +245,12 @@ def default_prior(k):
     alpha = [1] * k
     return alpha
 
-def single_loci(df):
-    assert len(df.loci.unique()) == 1, f"'df' must conatain only 1 loci"
+def single_loci(AFtab):
+    assert len(AFtab.loci.unique()) == 1, f"'AFtab' must conatain only 1 loci"
 
-def duplicated_sample_size(df):
+def duplicated_sample_size(AFtab):
     """Returns True if any loci has more than 1 unique sample size"""
-    locus_sample_sizes = df.groupby('loci').sample_size.apply(lambda x: len(x.unique()))
+    locus_sample_sizes = AFtab.groupby('loci').sample_size.apply(lambda x: len(x.unique()))
     return any(locus_sample_sizes != 1)
 
 def id_duplicated_allele(grouped):
