@@ -17,7 +17,7 @@ from sklearn.decomposition import PCA
 import umap
 
 AFeatures = pd.read_csv("data/example/globalPCA/AF_features.csv")
-regions = pd.read_csv("data/example/globalPCA/countries.csv")
+regions = pd.read_csv("data/example/countries.csv")
 
 pca = PCA(n_components=2)
 pca_embedding = pca.fit_transform(AFeatures.loc[:,'A*01:01':].values)

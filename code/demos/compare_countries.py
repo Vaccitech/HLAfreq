@@ -10,7 +10,6 @@ import seaborn as sns
 
 countries = [
     'United+Kingdom',
-    'Thailand',
     'Uganda'
 ]
 
@@ -55,4 +54,13 @@ sns.barplot(
 )
 
 plt.xticks(rotation=90)
+plt.show()
+
+# Similarity of weighted allele freq and Diriclet mean
+x = max(max(wavs.allele_freq),max(wavs.wav))
+plt.plot((0,x), (0,x), 'k--')
+plt.scatter(
+    wavs.allele_freq,
+    wavs.wav
+)
 plt.show()

@@ -16,27 +16,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-regions = pd.read_csv("data/example/globalPCA/countries.csv")
-
-# countries = [
-#     'United+Kingdom',
-#     'Thailand',
-#     'Uganda',
-#     'Greece',
-#     'Japan',
-#     'Germany',
-#     'Brazil',
-#     'Iraq',
-#     'Iran',
-#     'Israel',
-#     'Chile',
-#     'Kenya',
-#     'Spain',
-# ]
+# Countries in regions as defined on 
+# http://www.allelefrequencies.net/datasets.asp#tag_4
+regions = pd.read_csv("data/example/countries.csv")
 
 countries = regions.Country.tolist()
 
 # Download HLA allele frequencies
+# Not all countries have data
+# those without will print "Failed to get data for..."
 for country in countries:
     print()
     print(country)
@@ -52,6 +40,7 @@ wavs = []
 for country in countries:
     try:
         df = pd.read_csv("data/example/globalPCA/%s_raw.csv" %country)
+        df = scrapeAF.decrease_resolution(df, 2)
         wav = scrapeAF.combineAF(df)
         wav['country'] = country
         wavs.append(wav)

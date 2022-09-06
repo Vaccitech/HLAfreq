@@ -31,6 +31,10 @@ for country in countries:
     wav['country'] = country
     wavs.append(wav)
 
+AFtab[AFtab.allele=="A*66:02"]
+AFtab[AFtab.allele=="A*66:03"]
+
+
 international = pd.concat(wavs, ignore_index=True)
 # Add population size to weight averages
 international['population_size'] = international.country.apply(lambda x: population_sizes[x])

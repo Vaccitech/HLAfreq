@@ -68,17 +68,22 @@ aftab.to_csv("data/example/multiresolution_raw.csv", index=False)
 df = pd.read_csv("data/example/multiresolution_raw.csv")
 scrapeAF.check_resolution(df)
 
-# How many fields are reported for each allele?
-1 + df.allele.str.count(":")
-# How many alleles report to exactly n fields?
-(1 + df.allele.str.count(":")).value_counts()
-
 # You cant increase resolution 
 scrapeAF.decrease_resolution(df, 2)
 
 # But you can decrease
 df = scrapeAF.decrease_resolution(df, 1)
 scrapeAF.check_resolution(df)
+
+# Alleles that were distinct at a higher resolution but
+# are indistinguishable at this new lower resolution,
+# have been collapsed into one allele with the same
+# sample size but the sum of constituent allele frequencies
+
+# You can check that each allele is still unique but this is
+# done automatically when reducing resolution or combining
+# allele frequencies.
+scrapeAF.alleles_unique_in_study(df)
 
 # In principal you could use 2 digit resolution
 # to estimate 4 digit resolution. E.g if A*01 has
