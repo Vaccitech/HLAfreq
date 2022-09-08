@@ -36,3 +36,7 @@ determinent when selecting a pannel of alleles. The pannel must
 also contain representatives of commonly shared binding specificities
 (i.e., supertypes).
 
+# Dependencies
+scrapeAF
+umap
+maps
