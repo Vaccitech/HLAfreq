@@ -243,7 +243,7 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
     except:
         print("column '2n' could not be created")
     df['c'] =  df.allele_freq * df[weights]
-    grouped = df.groupby('allele')
+    grouped = df.groupby('allele', sort=True)
     combined = grouped.apply(
         lambda row: [
         row.name,
