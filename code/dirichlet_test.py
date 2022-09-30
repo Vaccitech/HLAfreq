@@ -5,7 +5,7 @@ Tests with the dirichlet distribution
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import numpy as np
-from scipy.stats import dirichlet
+from scipy.stats import dirichlet, beta
 import pandas as pd
 import code.scrapeAF as scrapeAF
 
@@ -142,4 +142,21 @@ plt.scatter(
     caf.wav,
     caf.wav-caf.allele_freq
 )
+plt.show()
+
+########################
+#                      #
+#   Central credible   #
+#   region from beta   #
+#                      #
+########################
+
+pline = np.linspace(0, 1, 1000)
+a,b = 2,5
+bd = beta(a,b)
+pdf = bd.pdf(pline)
+cl,cu = scrapeAF.betaCI(a,b)
+
+plt.plot(pline, pdf)
+plt.fill_between([cl,cu], [bd.pdf(cl), bd.pdf(cu)], alpha=0.5)
 plt.show()

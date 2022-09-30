@@ -11,7 +11,9 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import numpy as np
-from scipy.stats import dirichlet
+import matplotlib.pyplot as plt
+import math
+from scipy.stats import dirichlet, beta
 import logging
 
 def makeURL(country, standard='s', locus="", resolution_pattern="bigger_equal_than", resolution=2):
@@ -231,7 +233,7 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
     if unique:
         assert alleles_unique_in_study(df, datasetID=datasetID), "The same allele appears multiple times in a dataset"
     if complete:
-        assert incomplete_studies(df, datasetID=datasetID).empty, "ATfab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+        assert incomplete_studies(df, datasetID=datasetID).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
     if resolution:
         assert check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
     if format:
@@ -266,8 +268,9 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
         id_duplicated_allele(grouped)
     if not alpha:
         alpha = default_prior(len(combined.allele))
+    combined['alpha'] = alpha
     # Calculate Dirichlet mean for each allele
-    combined['allele_freq'] = dirichlet(alpha + combined.c).mean()
+    combined['allele_freq'] = dirichlet(combined.alpha + combined.c).mean()
 
     return combined
 
@@ -313,6 +316,92 @@ def population_coverage(p):
     homo = p**2
     hetero = 2*p*q
     return homo + hetero
+
+def betaAB(alpha):
+    """Given the alpha vector defining a Dirichlet distribution calculate the a b values for all composite beta distributions.
+
+    Args:
+        alpha (list): Values defining a Dirichlet distribution. This will be the prior (for a naive distribution) or the prior + caf.c for a posterior distribution.
+
+    Returns:
+        list: List of a b values defining beta values, i.e. for each allele it is the number of times it was and wasn't observed.
+    """
+    ab = [(a,sum(alpha)-a) for a in alpha]
+    return ab
+
+def plotAFprob(alpha, caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", log=False, psteps=1000, ncol=2, ci=0.95):
+    """Plot the (log) posterior density function of all frequencies
+        for all alleles based on supplied alpha for Dirichlet
+        distribution. Options for adding empirical values
+        and plotting the log pdf.
+
+    Args:
+        alpha (list): Dirichlet concentration parameters, can be prior + caf.c
+        caf (pd.DataFrame, optional): Combined allele frequence data produced by scrapeAF.combineAF(). Defaults to pd.DataFrame().
+        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by scrapeAF.combinedAF(). You must use the same dataframe as this function doesn't have the error checking that scrapeAF.combineAF() has. Defaults to pd.DataFrame().
+        datasetID (str, optional): The column used to define datasets. Defaults to "population".
+        log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
+        psteps (int, optional): Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
+        ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
+        ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
+    """
+    # Get beta parameters for each k in Dirichlet
+    ab = betaAB(alpha)
+    pline = np.linspace(0,1,psteps)
+    if not AFtab.empty:
+        # Format the population allele frequencies
+        df = AFtab.copy()
+        df = unmeasured_alleles(df, datasetID=datasetID)
+        df = df.sort_values('allele')
+        assert all(df.groupby('population').allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
+    fig, axs = plt.subplots(math.ceil(len(alpha)/ncol), ncol)
+    for i,x in enumerate(alpha):
+        subplotselector = i//ncol, i%ncol
+        a,b = ab[i]
+        bd = beta(a,b)
+        if log:
+            pdf = [bd.logpdf(p) for p in pline]
+        else:
+            pdf = [bd.pdf(p) for p in pline]
+        ax = axs[subplotselector]
+        if not AFtab.empty:
+            # Add the empirical allele frequency for each population
+            for af in df.groupby('population').allele_freq.apply(list).apply(lambda x: x[i]):
+                # x is the reported allele freq, y is it's pdf with scatter
+                if log:
+                    ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
+                else:
+                    ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
+        ax.plot(pline, pdf)
+        # Annotate with alpha
+        ax.text(0.5, max(pdf)/2, f"alpha {round(alpha[i])}")
+        if not caf.empty:
+            # Plot the combined average
+            ax.axvline(caf.allele_freq[i], color="black", ls="--")
+        if ci:
+            cl,cu = betaCI(a,b, ci)
+            ax.axvline(cl, color="black", linestyle="dotted")
+            ax.axvline(cu, color="black", linestyle="dotted")
+        # fig.tight_layout()
+    plt.show()
+
+def betaCI(a,b,credible_interval=0.95):
+    """Calculat the central credible interval of a beta distribution
+
+    Args:
+        a (float): Beta shape parameter `a`, i.e. the number of times the allele was observed.
+        b (float): Beta shape parameter `b`, i.e. the number of times the allele was not observed.
+        credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
+
+    Returns:
+        _type_: _description_
+    """
+    bd = beta(a,b)
+    lower_quantile = (1-credible_interval)/2
+    upper_quantile = 1-lower_quantile
+    lower_interval = bd.ppf(lower_quantile)
+    upper_interval = bd.ppf(upper_quantile)
+    return lower_interval, upper_interval
 
 # url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"
 # base_url = makeURL("Philippines")
