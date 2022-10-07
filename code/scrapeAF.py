@@ -329,62 +329,6 @@ def betaAB(alpha):
     ab = [(a,sum(alpha)-a) for a in alpha]
     return ab
 
-def plotAFprob(alpha, caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", log=False, psteps=1000, ncol=2, ci=0.95):
-    """Plot the (log) posterior density function of all frequencies
-        for all alleles based on supplied alpha for Dirichlet
-        distribution. Options for adding empirical values
-        and plotting the log pdf.
-
-    Args:
-        alpha (list): Dirichlet concentration parameters, can be prior + caf.c
-        caf (pd.DataFrame, optional): Combined allele frequence data produced by scrapeAF.combineAF(). Defaults to pd.DataFrame().
-        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by scrapeAF.combinedAF(). You must use the same dataframe as this function doesn't have the error checking that scrapeAF.combineAF() has. Defaults to pd.DataFrame().
-        datasetID (str, optional): The column used to define datasets. Defaults to "population".
-        log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
-        psteps (int, optional): Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
-        ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
-        ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
-    """
-    # Get beta parameters for each k in Dirichlet
-    ab = betaAB(alpha)
-    pline = np.linspace(0,1,psteps)
-    if not AFtab.empty:
-        # Format the population allele frequencies
-        df = AFtab.copy()
-        df = unmeasured_alleles(df, datasetID=datasetID)
-        df = df.sort_values('allele')
-        assert all(df.groupby('population').allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
-    fig, axs = plt.subplots(math.ceil(len(alpha)/ncol), ncol)
-    for i,x in enumerate(alpha):
-        subplotselector = i//ncol, i%ncol
-        a,b = ab[i]
-        bd = beta(a,b)
-        if log:
-            pdf = [bd.logpdf(p) for p in pline]
-        else:
-            pdf = [bd.pdf(p) for p in pline]
-        ax = axs[subplotselector]
-        if not AFtab.empty:
-            # Add the empirical allele frequency for each population
-            for af in df.groupby('population').allele_freq.apply(list).apply(lambda x: x[i]):
-                # x is the reported allele freq, y is it's pdf with scatter
-                if log:
-                    ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
-                else:
-                    ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
-        ax.plot(pline, pdf)
-        # Annotate with alpha
-        ax.text(0.5, max(pdf)/2, f"alpha {round(alpha[i])}")
-        if not caf.empty:
-            # Plot the combined average
-            ax.axvline(caf.allele_freq[i], color="black", ls="--")
-        if ci:
-            cl,cu = betaCI(a,b, ci)
-            ax.axvline(cl, color="black", linestyle="dotted")
-            ax.axvline(cu, color="black", linestyle="dotted")
-        # fig.tight_layout()
-    plt.show()
-
 def betaCI(a,b,credible_interval=0.95):
     """Calculat the central credible interval of a beta distribution
 
@@ -402,6 +346,80 @@ def betaCI(a,b,credible_interval=0.95):
     lower_interval = bd.ppf(lower_quantile)
     upper_interval = bd.ppf(upper_quantile)
     return lower_interval, upper_interval
+
+def AFci(caf, credible_interval=0.95):
+    """Calculate credible interval for combined allele frequency table
+
+    Args:
+        caf (pd.DataFrame): Table produced by scrapeAF.combineAF()
+        credible_interval (float, optional): The desired confidence interval. Defaults to 0.95.
+
+    Returns:
+        list: Lower and upper credible intervals as a list of tuples
+    """
+    ab = betaAB(
+        caf.alpha + caf.c,
+    )
+    ci = [betaCI(a, b, credible_interval) for a,b in ab]
+    return ci
+
+def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=pd.Series(), log=False, psteps=1000, ncol=2, ci=0.95):
+    """Plot the (log) posterior density function of all frequencies
+        for all alleles based on concentration for Dirichlet
+        distribution. Options for adding empirical values
+        and plotting the log pdf.
+
+    Args:
+        caf (pd.DataFrame, optional): Combined allele frequence data produced by scrapeAF.combineAF(). Defaults to pd.DataFrame().
+        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by scrapeAF.combinedAF(). You must use the same dataframe as this function doesn't have the error checking that scrapeAF.combineAF() has. Defaults to pd.DataFrame().
+        datasetID (str, optional): The column used to define datasets. Defaults to "population".
+        concentration (pd.Series, optional): Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False
+        log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
+        psteps (int, optional): Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
+        ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
+        ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
+    """
+    if concentration.empty:
+        concentration = caf.alpha + caf.c
+    # Get beta parameters for each k in Dirichlet
+    ab = betaAB(concentration)
+    pline = np.linspace(0,1,psteps)
+    if not AFtab.empty:
+        # Format the population allele frequencies
+        df = AFtab.copy()
+        df = unmeasured_alleles(df, datasetID=datasetID)
+        df = df.sort_values('allele')
+        assert all(df.groupby('population').allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
+    fig, axs = plt.subplots(math.ceil(len(concentration)/ncol), ncol)
+    for i,x in enumerate(concentration):
+        subplotselector = i//ncol, i%ncol
+        a,b = ab[i]
+        bd = beta(a,b)
+        if log:
+            pdf = [bd.logpdf(p) for p in pline]
+        else:
+            pdf = [bd.pdf(p) for p in pline]
+        ax = axs[subplotselector]
+        if not AFtab.empty:
+            # Add the empirical allele frequency for each population
+            for af in df.groupby('population').allele_freq.apply(list).apply(lambda x: x[i]):
+                # x is the reported allele freq, y is it's pdf with scatter
+                if log:
+                    ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
+                else:
+                    ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
+        ax.plot(pline, pdf)
+        # Annotate with concentration
+        ax.text(0.5, max(pdf)/2, f"Concentration {round(concentration[i])}")
+        if not caf.empty:
+            # Plot the combined average
+            ax.axvline(caf.allele_freq[i], color="black", ls="--")
+        if ci:
+            cl,cu = betaCI(a,b, ci)
+            ax.axvline(cl, color="black", linestyle="dotted")
+            ax.axvline(cu, color="black", linestyle="dotted")
+        # fig.tight_layout()
+    plt.show()
 
 # url = "http://www.allelefrequencies.net/hla6006a.asp?hla_selection=A*01%3A01&hla_region=South+Asia"
 # base_url = makeURL("Philippines")

@@ -65,7 +65,9 @@ else:
 #                    #
 ######################
 
-# plotAFprob(alpha)
+scrapeAF.plotAFprob(concentration=alpha)
 # plotAFprob(alpha, caf)
-scrapeAF.plotAFprob(alpha, caf, AFtab)
-scrapeAF.plotAFprob(alpha, caf, AFtab, log=True)
+scrapeAF.plotAFprob(caf, AFtab)
+scrapeAF.plotAFprob(caf, AFtab, log=True)
+
+

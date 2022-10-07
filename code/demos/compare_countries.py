@@ -28,6 +28,8 @@ for country in countries:
     df = pd.read_csv("data/example/%s_raw.csv" %country)
     df = df[df.loci=="A"]
     wav = scrapeAF.combineAF(df)
+    # Add credible intervals
+    wav['cl','cu'] = scrapeAF.AFci(wav)
     wav['country'] = country
     wavs.append(wav)
 
