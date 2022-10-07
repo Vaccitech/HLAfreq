@@ -363,7 +363,7 @@ def AFci(caf, credible_interval=0.95):
     ci = [betaCI(a, b, credible_interval) for a,b in ab]
     return ci
 
-def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=pd.Series(), log=False, psteps=1000, ncol=2, ci=0.95):
+def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=pd.Series(), log=False, psteps=1000, ncol=2, ci=0.95, alleles=[]):
     """Plot the (log) posterior density function of all frequencies
         for all alleles based on concentration for Dirichlet
         distribution. Options for adding empirical values
@@ -379,6 +379,22 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
         ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
     """
+    def allele_mask(alleles, concentration):
+        """Create boolean mask either to keep only supplied `alleles`. If empty keep all.
+
+        Args:
+            alleles (list): list of alleles
+            concentration (list): Dirichlet concentration
+
+        Returns:
+            list: List of booleans to use as mask
+        """
+        if not alleles:
+            mask = [True] * len(concentration)
+        else:
+            mask = caf.allele.isin(alleles)
+        return mask
+
     if concentration.empty:
         concentration = caf.alpha + caf.c
     # Get beta parameters for each k in Dirichlet
@@ -390,9 +406,12 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         df = unmeasured_alleles(df, datasetID=datasetID)
         df = df.sort_values('allele')
         assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
-    fig, axs = plt.subplots(math.ceil(len(concentration)/ncol), ncol)
-    for i,x in enumerate(concentration):
-        subplotselector = i//ncol, i%ncol
+    mask = allele_mask(alleles, concentration)
+    fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol)
+    # Only indexes that pass the mask
+    masked_indexes = [i for i,x in enumerate(mask) if x]
+    for subploti,i in enumerate(masked_indexes):
+        subplotselector = subploti//ncol, subploti%ncol
         a,b = ab[i]
         bd = beta(a,b)
         if log:
@@ -409,8 +428,11 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
                 else:
                     ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
         ax.plot(pline, pdf)
+        # Annotate with allele
+        if not caf.empty:
+            ax.text(0.5, max(pdf)/2, f"{caf.allele.iloc[i]}")
         # Annotate with concentration
-        ax.text(0.5, max(pdf)/2, f"Concentration {round(concentration[i])}")
+        # ax.text(0.5, max(pdf)/3, f"Concentration {round(concentration.iloc[i])}")
         if not caf.empty:
             # Plot the combined average
             ax.axvline(caf.allele_freq[i], color="black", ls="--")

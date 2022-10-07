@@ -65,9 +65,11 @@ else:
 #                    #
 ######################
 
-scrapeAF.plotAFprob(concentration=alpha)
-# plotAFprob(alpha, caf)
+# View pdf only
+scrapeAF.plotAFprob(concentration=alpha, ci=0)
+# View estimated AF
+scrapeAF.plotAFprob(caf)
+# View estimated AF with individual studies
 scrapeAF.plotAFprob(caf, AFtab)
-scrapeAF.plotAFprob(caf, AFtab, log=True)
-
-
+# View subset of alleles
+scrapeAF.plotAFprob(caf, AFtab, alleles=["DQB1*03:01","DQB1*05:01","DQB1*05:02"])
