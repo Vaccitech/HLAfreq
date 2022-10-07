@@ -389,7 +389,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         df = AFtab.copy()
         df = unmeasured_alleles(df, datasetID=datasetID)
         df = df.sort_values('allele')
-        assert all(df.groupby('population').allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
+        assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
     fig, axs = plt.subplots(math.ceil(len(concentration)/ncol), ncol)
     for i,x in enumerate(concentration):
         subplotselector = i//ncol, i%ncol
@@ -402,7 +402,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         ax = axs[subplotselector]
         if not AFtab.empty:
             # Add the empirical allele frequency for each population
-            for af in df.groupby('population').allele_freq.apply(list).apply(lambda x: x[i]):
+            for af in df.groupby(datasetID).allele_freq.apply(list).apply(lambda x: x[i]):
                 # x is the reported allele freq, y is it's pdf with scatter
                 if log:
                     ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
