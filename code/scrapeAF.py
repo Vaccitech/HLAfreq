@@ -395,7 +395,7 @@ def AFci(caf, credible_interval=0.95):
     ci = [betaCI(a, b, credible_interval) for a,b in ab]
     return ci
 
-def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=pd.Series(), log=False, psteps=1000, ncol=2, ci=0.95, alleles=[]):
+def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=pd.Series(), log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[]):
     """Plot the (log) posterior density function of all frequencies
         for all alleles based on concentration for Dirichlet
         distribution. Options for adding empirical values
@@ -439,7 +439,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         df = df.sort_values('allele')
         assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
     mask = allele_mask(alleles, concentration)
-    fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol)
+    fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol, sharex=True)
     # Only indexes that pass the mask
     masked_indexes = [i for i,x in enumerate(mask) if x]
     for subploti,i in enumerate(masked_indexes):
@@ -453,6 +453,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
                 warnings.simplefilter("ignore")
                 pdf = [bd.pdf(p) for p in pline]
         ax = axs[subplotselector]
+        ax.set_xlim(xmin,xmax)
         if not AFtab.empty:
             # Add the empirical allele frequency for each population
             for af in df.groupby(datasetID).allele_freq.apply(list).apply(lambda x: x[i]):
@@ -464,7 +465,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         ax.plot(pline, pdf)
         # Annotate with allele
         if not caf.empty:
-            ax.text(0.5, max(pdf)/2, f"{caf.allele.iloc[i]}")
+            ax.text((xmax-xmin)/2, max(pdf)/2, f"{caf.allele.iloc[i]}")
         # Annotate with concentration
         # ax.text(0.5, max(pdf)/3, f"Concentration {round(concentration.iloc[i])}")
         if not caf.empty:
