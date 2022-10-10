@@ -19,9 +19,6 @@ for country in countries:
     base_url = scrapeAF.makeURL(country)
     aftab = scrapeAF.getAFdata(base_url)
     aftab.to_csv("data/example/%s_raw.csv" %country, index=False)
-# If you use the data directly without saving and loading it
-# pandas treats the numeric columns as strings (allele_freq and sample size)
-# which throws errors later when doing maths
 
 wavs = []
 for country in countries:
@@ -29,7 +26,7 @@ for country in countries:
     df = df[df.loci=="A"]
     wav = scrapeAF.combineAF(df)
     # Add credible intervals
-    wav['cl','cu'] = scrapeAF.AFci(wav)
+    wav[['cl','cu']] = scrapeAF.AFci(wav)
     wav['country'] = country
     wavs.append(wav)
 

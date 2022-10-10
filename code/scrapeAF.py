@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import math
 from scipy.stats import dirichlet, beta
 import logging
+import warnings
 
 def makeURL(country, standard='s', locus="", resolution_pattern="bigger_equal_than", resolution=2):
     base = "http://www.allelefrequencies.net/hla6006a.asp?"
@@ -82,7 +83,15 @@ def Npages(bs):
     N = int(N)
     return N
 
-def getAFdata(base_url):
+def formatAF(AFtab):
+    df = AFtab.copy()
+    if df.sample_size.dtype == "O":
+        df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
+    if df.allele_freq.dtype == "O":
+        df.allele_freq = pd.to_numeric(df.allele_freq)
+    return df
+
+def getAFdata(base_url, format=True):
     """Get all allele frequency data from a search base url. Iterates over all
         pages regardless of which page is based.
 
@@ -106,22 +115,23 @@ def getAFdata(base_url):
         bs = BeautifulSoup(requests.get(url).text, 'html.parser')
         tab = parseAF(bs)
         tabs.append(tab)
+    print("Download complete")
     tabs = pd.concat(tabs)
+    if format:
+        try:
+            tabs = formatAF(tabs)
+        except:
+            print("Formatting failed, non-numeric datatypes may remain.")
     return tabs
-
-def formatAF(AFtab):
-    df = AFtab.copy()
-    if df.sample_size.dtype == "O":
-        df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
-    return df
 
 def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
     """Report any studies with allele freqs that don't sum to 1
 
     Args:
-        df (pd.DataFrame): Dataframe containing multiple studies
+        AFtab (pd.DataFrame): Dataframe containing multiple studies
         llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
         ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+        datasetID (str): Unique identifier column for study
     """
     poplocs = AFtab.groupby([datasetID, 'loci']).allele_freq.sum()
     lmask = poplocs < llimit
@@ -134,6 +144,28 @@ def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
         print(f"{sum(umask)} studies have total allele frequency > {ulimit}")
     incomplete = pd.concat([poplocs[lmask], poplocs[umask]])
     return incomplete
+
+def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
+    """Returns only complete studies. Studies are only dropped if their population and loci are in noncomplete together.
+    This prevents throwing away data if another loci in the population is incomplete
+
+    Args:
+        AFtab (pd.DataFrame): Dataframe containing multiple studies
+        llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
+        ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+        datasetID (str): Unique identifier column for study. Defaults to 'population'.
+
+    Returns:
+        pd.DataFrame: Allele frequency data of multiple studies, but only complete studies.
+    """
+    noncomplete = incomplete_studies(AFtab=AFtab, llimit=llimit, ulimit=ulimit, datasetID=datasetID)
+    # Returns False if population AND loci are in the noncomplete.index
+    # AS A PAIR
+    # This is important so that we don't throw away all data on a population
+    # just because one loci is incomplete.
+    complete_mask = AFtab.apply(lambda x: (x[datasetID], x.loci) not in noncomplete.index, axis=1)
+    df = AFtab[complete_mask]
+    return df
 
 def check_resolution(AFtab):
     resolution = 1 + AFtab.allele.str.count(":")
@@ -417,7 +449,9 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         if log:
             pdf = [bd.logpdf(p) for p in pline]
         else:
-            pdf = [bd.pdf(p) for p in pline]
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                pdf = [bd.pdf(p) for p in pline]
         ax = axs[subplotselector]
         if not AFtab.empty:
             # Add the empirical allele frequency for each population
