@@ -73,3 +73,25 @@ scrapeAF.plotAFprob(caf)
 scrapeAF.plotAFprob(caf, AFtab)
 # View subset of alleles
 scrapeAF.plotAFprob(caf, AFtab, alleles=["DQB1*03:01","DQB1*05:01","DQB1*05:02"])
+
+# CI may be misleading
+
+# Use cafs from multi_country.py
+x = cafs[cafs.allele == 'A*23:01']
+
+clist = 1 + x.allele_freq * x.sample_size
+long_c = []
+for c in clist:
+    long_c.append(c)
+    long_c.append(0)
+scrapeAF.plotAFprob(concentration=pd.Series(long_c), ncol=2)
+
+pline = np.linspace(0,1,500)
+fig, ax = plt.subplots()
+for a,b in zip(x.c, x.sample_size):
+    bd = beta(a,b)
+    pdf = [bd.pdf(p) for p in pline]
+    ax.plot(pline, pdf)
+    ax.set_xlim(0,0.4)
+plt.show()
+plt.subplots()
