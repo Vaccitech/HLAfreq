@@ -55,6 +55,7 @@ if len(alpha) == 3:
     ax.plot_surface(k1, k2, pdf, cmap=cm.plasma,
         linewidth=0, antialiased=False)
     ax.set_title('PDF')
+    plt.show()
 else:
     print( "Surface plot only works with k==3")
 

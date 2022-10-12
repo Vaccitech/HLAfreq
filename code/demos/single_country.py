@@ -96,7 +96,25 @@ caf = scrapeAF.combineAF(afloc)
 caf[['cl','cu']] = scrapeAF.AFci(caf)
 
 caf.plot.barh('allele', 'allele_freq')
+plt.tight_layout()
 plt.show()
 
 scrapeAF.plotAFprob(caf, afloc)
 scrapeAF.plotAFprob(caf, afloc, alleles=['DRB1*09:01', 'DRB1*15:02', 'DRB1*07:01', 'DRB1*12:02',])
+
+#############################
+#                           #
+#    Population coverage    #
+#                           #
+#############################
+
+# Sort by allele frequency
+caf = caf.sort_values('allele_freq', ascending=False, ignore_index=True)
+
+plt.scatter(caf.allele, caf.allele_freq.cumsum().apply(scrapeAF.population_coverage))
+plt.plot(caf.allele_freq.cumsum().apply(scrapeAF.population_coverage), label="Cumulative coverage")
+plt.grid(True)
+plt.xticks(rotation=90)
+plt.legend()
+plt.tight_layout()
+plt.show()

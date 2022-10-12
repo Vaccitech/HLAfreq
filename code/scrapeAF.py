@@ -395,7 +395,7 @@ def AFci(caf, credible_interval=0.95):
     ci = [betaCI(a, b, credible_interval) for a,b in ab]
     return ci
 
-def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=pd.Series(), log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[]):
+def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=[], log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[]):
     """Plot the (log) posterior density function of all frequencies
         for all alleles based on concentration for Dirichlet
         distribution. Options for adding empirical values
@@ -421,13 +421,14 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         Returns:
             list: List of booleans to use as mask
         """
+        assert isinstance(alleles, list), f"alleles must be a list, not {type(alleles)}"
         if not alleles:
             mask = [True] * len(concentration)
         else:
             mask = caf.allele.isin(alleles)
         return mask
 
-    if concentration.empty:
+    if not concentration:
         concentration = caf.alpha + caf.c
     # Get beta parameters for each k in Dirichlet
     ab = betaAB(concentration)
