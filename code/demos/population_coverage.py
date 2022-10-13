@@ -3,7 +3,7 @@ How much of the population is covered by the top n alleles?
 What is the population coverage of different supertypes?
 """
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -15,7 +15,7 @@ super1.allele = super1.allele.apply(lambda x: x[:4]+':'+x[4:])
 AFtab = pd.read_csv("data/example/Uganda_raw.csv")
 AFtab =  AFtab[AFtab.loci=="A"]
 # Weighted average alleles
-wav = scrapeAF.combineAF(AFtab)
+wav = HLAfreq.combineAF(AFtab)
 # Add HLA1 supertypes
 wav = pd.merge(wav, super1)
 wava = wav[wav.loci == "A"].sort_values('allele_freq', ascending=False, ignore_index = True)
@@ -30,7 +30,7 @@ sns.barplot(
 plt.show()
 
 plt.plot(wava.allele_freq.cumsum(), label="Cumulative AF")
-plt.plot(wava.allele_freq.cumsum().apply(scrapeAF.population_coverage), label="Cumulative coverage")
+plt.plot(wava.allele_freq.cumsum().apply(HLAfreq.population_coverage), label="Cumulative coverage")
 plt.axhline(y=1, color="black", linestyle="--")
 plt.legend()
 plt.show()
@@ -38,7 +38,7 @@ plt.show()
 for supertype in wava.supertype.unique():
     print(supertype)
     supertypedf = wava[wava.supertype == supertype].reset_index()
-    plt.plot(supertypedf.allele_freq.cumsum().apply(scrapeAF.population_coverage), label=supertype)
+    plt.plot(supertypedf.allele_freq.cumsum().apply(HLAfreq.population_coverage), label=supertype)
 plt.legend()
 plt.show()
 

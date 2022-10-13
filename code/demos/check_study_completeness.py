@@ -21,7 +21,7 @@ we can decrease the resolution of an allele but we cannot
 increase it.
 """
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,8 +30,8 @@ import seaborn as sns
 country = 'Thailand'
 
 # Because resolution equals 2, an incomplete dataset is returned
-base_url = scrapeAF.makeURL(country, resolution_pattern="equal", resolution=2, standard="s")
-aftab = scrapeAF.getAFdata(base_url)
+base_url = HLAfreq.makeURL(country, resolution_pattern="equal", resolution=2, standard="s")
+aftab = HLAfreq.getAFdata(base_url)
 aftab.to_csv("data/example/incomplete_raw.csv", index=False)
 
 df = pd.read_csv("data/example/incomplete_raw.csv")
@@ -39,7 +39,7 @@ df = pd.read_csv("data/example/incomplete_raw.csv")
 # How to filter incomplete studies
 
 # Identify incomplete studies
-noncomplete = scrapeAF.incomplete_studies(df)
+noncomplete = HLAfreq.incomplete_studies(df)
 
 # Returns False if population AND loci are in the noncomplete.index
 # AS A PAIR
@@ -50,7 +50,7 @@ complete_mask = df.apply(lambda x: (x.population, x.loci) not in noncomplete.ind
 df = df[complete_mask]
 
 # Check filtering success
-scrapeAF.incomplete_studies(df)
+HLAfreq.incomplete_studies(df)
 
 #################################
 #                               #
@@ -58,22 +58,22 @@ scrapeAF.incomplete_studies(df)
 #                               #
 #################################
 
-base_url = scrapeAF.makeURL(
+base_url = HLAfreq.makeURL(
     'Thailand', locus="A",
     resolution_pattern="bigger_equal_than", resolution=1
 )
-aftab = scrapeAF.getAFdata(base_url)
+aftab = HLAfreq.getAFdata(base_url)
 aftab.to_csv("data/example/multiresolution_raw.csv", index=False)
 
 df = pd.read_csv("data/example/multiresolution_raw.csv")
-scrapeAF.check_resolution(df)
+HLAfreq.check_resolution(df)
 
 # You cant increase resolution 
-scrapeAF.decrease_resolution(df, 2)
+HLAfreq.decrease_resolution(df, 2)
 
 # But you can decrease
-df = scrapeAF.decrease_resolution(df, 1)
-scrapeAF.check_resolution(df)
+df = HLAfreq.decrease_resolution(df, 1)
+HLAfreq.check_resolution(df)
 
 # Alleles that were distinct at a higher resolution but
 # are indistinguishable at this new lower resolution,
@@ -83,7 +83,7 @@ scrapeAF.check_resolution(df)
 # You can check that each allele is still unique but this is
 # done automatically when reducing resolution or combining
 # allele frequencies.
-scrapeAF.alleles_unique_in_study(df)
+HLAfreq.alleles_unique_in_study(df)
 
 # In principal you could use 2 digit resolution
 # to estimate 4 digit resolution. E.g if A*01 has

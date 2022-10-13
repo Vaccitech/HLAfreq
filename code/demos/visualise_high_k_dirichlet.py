@@ -7,7 +7,7 @@ from matplotlib import cm
 import numpy as np
 from scipy.stats import dirichlet, beta
 import pandas as pd
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 
 #####################
 #                   #
@@ -18,14 +18,14 @@ import code.scrapeAF as scrapeAF
 # Load allele frequency data
 AFtab = pd.read_csv(f"data/example/outlier_raw.csv")
 # Reduce resolution to 2 fields and collapse alleles
-AFtab = scrapeAF.decrease_resolution(AFtab, 2)
+AFtab = HLAfreq.decrease_resolution(AFtab, 2)
 # Combined allle frequency
-# noncomplete = scrapeAF.incomplete_studies(AFtab)
+# noncomplete = HLAfreq.incomplete_studies(AFtab)
 # complete_mask = AFtab.apply(lambda x: (x.population, x.loci) not in noncomplete.index, axis=1)
 # AFtab = AFtab[complete_mask]
-caf = scrapeAF.combineAF(AFtab)
+caf = HLAfreq.combineAF(AFtab)
 # Recreate the Dirichlet distribution
-naivealpha = scrapeAF.default_prior(len(caf.allele))
+naivealpha = HLAfreq.default_prior(len(caf.allele))
 
 # Dirichlet distribution concentration parameters 
 # based on allele frequency data
@@ -67,13 +67,13 @@ else:
 ######################
 
 # View pdf only
-scrapeAF.plotAFprob(concentration=alpha, ci=0)
+HLAfreq.plotAFprob(concentration=alpha, ci=0)
 # View estimated AF
-scrapeAF.plotAFprob(caf)
+HLAfreq.plotAFprob(caf)
 # View estimated AF with individual studies
-scrapeAF.plotAFprob(caf, AFtab)
+HLAfreq.plotAFprob(caf, AFtab)
 # View subset of alleles
-scrapeAF.plotAFprob(caf, AFtab, alleles=["DQB1*03:01","DQB1*05:01","DQB1*05:02"])
+HLAfreq.plotAFprob(caf, AFtab, alleles=["DQB1*03:01","DQB1*05:01","DQB1*05:02"])
 
 # CI may be misleading
 
@@ -85,7 +85,7 @@ long_c = []
 for c in clist:
     long_c.append(c)
     long_c.append(0)
-scrapeAF.plotAFprob(concentration=pd.Series(long_c), ncol=2)
+HLAfreq.plotAFprob(concentration=pd.Series(long_c), ncol=2)
 
 pline = np.linspace(0,1,500)
 fig, ax = plt.subplots()

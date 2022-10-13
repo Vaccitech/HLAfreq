@@ -7,7 +7,7 @@ from matplotlib import cm
 import numpy as np
 from scipy.stats import dirichlet, beta
 import pandas as pd
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 
 # define a Dirichlet Distributions with parameters alpha
 alpha = np.array([0.4, 5, 15])  # specify concentration parameters
@@ -130,7 +130,7 @@ country = "Thailand"
 df = pd.read_csv("data/example/%s_raw.csv" %country)
 loci = "DPB1"
 dfa = df[df.loci == loci]
-caf = scrapeAF.combineAF(dfa)
+caf = HLAfreq.combineAF(dfa)
 
 plt.scatter(
     caf.wav,
@@ -155,7 +155,7 @@ pline = np.linspace(0, 1, 1000)
 a,b = 2,5
 bd = beta(a,b)
 pdf = bd.pdf(pline)
-cl,cu = scrapeAF.betaCI(a,b)
+cl,cu = HLAfreq.betaCI(a,b)
 
 plt.plot(pline, pdf)
 plt.fill_between([cl,cu], [bd.pdf(cl), bd.pdf(cu)], alpha=0.5)

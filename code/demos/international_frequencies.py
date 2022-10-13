@@ -3,7 +3,7 @@ Calculate International average allele frequencies
 using population estimates.
 """
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -26,7 +26,7 @@ for country in countries:
     AFtab = pd.read_csv("data/example/%s_raw.csv" %country)
     AFtab = AFtab[AFtab.loci == "A"]
     # Weighted average alleles
-    wav = scrapeAF.combineAF(AFtab)
+    wav = HLAfreq.combineAF(AFtab)
     # Add country to dataset
     wav['country'] = country
     wavs.append(wav)
@@ -40,7 +40,7 @@ international = pd.concat(wavs, ignore_index=True)
 international['population_size'] = international.country.apply(lambda x: population_sizes[x])
 
 #International Weighted Average
-iwav = scrapeAF.combineAF(international, weights='population_size', datasetID='country')
+iwav = HLAfreq.combineAF(international, weights='population_size', datasetID='country')
 
 plt.scatter(
     international.allele,

@@ -4,7 +4,7 @@ We can select a panel of alleles to better represent these
 populations, being sure to select a range of supertypes.
 """
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,8 +26,8 @@ super1.allele = super1.allele.apply(lambda x: x[:4]+':'+x[4:])
 #     for country in countries:
 #         print(country)
 #         try:
-#             base_url = scrapeAF.makeURL(country, standard='s', locus=locus)
-#             aftab = scrapeAF.getAFdata(base_url)
+#             base_url = HLAfreq.makeURL(country, standard='s', locus=locus)
+#             aftab = HLAfreq.getAFdata(base_url)
 #             aftab.to_csv(f"data/example/population_coverage/{country}_{locus}_raw.csv", index=False)
 #         except:
 #             pass
@@ -41,16 +41,16 @@ iedb_country = []
 for country in countries:
     try:
         afa = pd.read_csv(f"data/example/population_coverage/{country}_A_raw.csv")
-        afa = scrapeAF.only_complete(afa)
-        afa = scrapeAF.decrease_resolution(afa, 2)
-        cafa = scrapeAF.combineAF(afa)
+        afa = HLAfreq.only_complete(afa)
+        afa = HLAfreq.decrease_resolution(afa, 2)
+        cafa = HLAfreq.combineAF(afa)
         maska = cafa.allele.isin(iedb_ref)
         p = cafa[maska].allele_freq.sum()
 
         afb = pd.read_csv(f"data/example/population_coverage/{country}_B_raw.csv")
-        afb = scrapeAF.only_complete(afb)
-        afb = scrapeAF.decrease_resolution(afb, 2)
-        cafb = scrapeAF.combineAF(afb)
+        afb = HLAfreq.only_complete(afb)
+        afb = HLAfreq.decrease_resolution(afb, 2)
+        cafb = HLAfreq.combineAF(afb)
         maskb = cafb.allele.isin(iedb_ref)
         m = cafb[maskb].allele_freq.sum()
         # Population proportion with no IEDB ref alleles
@@ -78,16 +78,16 @@ plt.show()
 country = "Indonesia"
 # country="Philippines"
 afa = pd.read_csv(f"data/example/population_coverage/{country}_A_raw.csv")
-afa = scrapeAF.only_complete(afa)
-afa = scrapeAF.decrease_resolution(afa, 2)
-cafa = scrapeAF.combineAF(afa)
+afa = HLAfreq.only_complete(afa)
+afa = HLAfreq.decrease_resolution(afa, 2)
+cafa = HLAfreq.combineAF(afa)
 maska = cafa.allele.isin(iedb_ref)
 p = cafa[maska].allele_freq.sum()
 
 afb = pd.read_csv(f"data/example/population_coverage/{country}_B_raw.csv")
-afb = scrapeAF.only_complete(afb)
-afb = scrapeAF.decrease_resolution(afb, 2)
-cafb = scrapeAF.combineAF(afb)
+afb = HLAfreq.only_complete(afb)
+afb = HLAfreq.decrease_resolution(afb, 2)
+cafb = HLAfreq.combineAF(afb)
 maskb = cafb.allele.isin(iedb_ref)
 m = cafb[maskb].allele_freq.sum()
 # Population proportion with no IEDB ref alleles
@@ -102,14 +102,14 @@ cafb = pd.merge(cafb, super1, how="left", on="allele")
 
 fig, ax = plt.subplots(1,2, gridspec_kw={'width_ratios': [1,2]})
 ax[0].plot(cafa.allele,
-    cafa.allele_freq.cumsum().apply(scrapeAF.population_coverage),
+    cafa.allele_freq.cumsum().apply(HLAfreq.population_coverage),
     c="black",
     zorder=0)
 for supertype in cafa.supertype.unique():
     mask = cafa.supertype == supertype
     ax[0].scatter(
         cafa[mask].allele,
-        cafa.allele_freq.cumsum().apply(scrapeAF.population_coverage)[mask],
+        cafa.allele_freq.cumsum().apply(HLAfreq.population_coverage)[mask],
         label=supertype,
         zorder=10)
 ax[0].set_title("HLA A")
@@ -119,14 +119,14 @@ ax[0].legend()
 ax[0].tick_params(labelrotation=90)
 
 ax[1].plot(cafb.allele,
-    cafb.allele_freq.cumsum().apply(scrapeAF.population_coverage),
+    cafb.allele_freq.cumsum().apply(HLAfreq.population_coverage),
     c="black",
     zorder=0)
 for supertype in cafb.supertype.unique():
     mask = cafb.supertype == supertype
     ax[1].scatter(
         cafb[mask].allele,
-        cafb.allele_freq.cumsum().apply(scrapeAF.population_coverage)[mask],
+        cafb.allele_freq.cumsum().apply(HLAfreq.population_coverage)[mask],
         label=supertype,
         zorder=10)
 ax[1].set_title("HLA B")

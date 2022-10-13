@@ -4,7 +4,7 @@ Entropy of country average allele frequencies
 
 # use maps conda env
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,11 +26,11 @@ for country in countries:
     print(country)
     try:
         df = pd.read_csv("data/example/globalPCA/%s_raw.csv" %country)
-        df = scrapeAF.only_complete(df)
-        df = scrapeAF.decrease_resolution(df, 2)
-        caf = scrapeAF.combineAF(df)
+        df = HLAfreq.only_complete(df)
+        df = HLAfreq.decrease_resolution(df, 2)
+        caf = HLAfreq.combineAF(df)
         # Recreate the Dirichlet distribution
-        alpha = scrapeAF.default_prior(len(caf.allele))
+        alpha = HLAfreq.default_prior(len(caf.allele))
         dd = dirichlet(alpha + caf.c)
         # Calculate entropy
         regions.loc[country, 'entropy'] = dd.entropy()

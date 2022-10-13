@@ -4,7 +4,7 @@ Single country
 Calculate average
 """
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,8 +23,8 @@ appropriate spelling.
 
 country = "Thailand"
 
-base_url = scrapeAF.makeURL(country)
-aftab = scrapeAF.getAFdata(base_url)
+base_url = HLAfreq.makeURL(country)
+aftab = HLAfreq.getAFdata(base_url)
 aftab.to_csv("data/example/%s_raw.csv" %country, index=False)
 #aftab = pd.read_csv("data/example/%s_raw.csv" %country)
 
@@ -45,7 +45,7 @@ that were incomplete. To view incomplete studies without dropping them use
 """
 
 # Drop any incomplete studies
-aftab = scrapeAF.only_complete(aftab)
+aftab = HLAfreq.only_complete(aftab)
 
 #########################
 #                       #
@@ -70,9 +70,9 @@ each resolution.
 specified level so they can be combined.
 """
 
-scrapeAF.check_resolution(aftab)
+HLAfreq.check_resolution(aftab)
 
-aftab = scrapeAF.decrease_resolution(aftab, 2)
+aftab = HLAfreq.decrease_resolution(aftab, 2)
 
 
 #########################
@@ -87,20 +87,20 @@ at a time. So we filter the data to a single loci and then combine
 allele frequency estimates using `combineAF()`
 """
 
-scrapeAF.combineAF(aftab)
+HLAfreq.combineAF(aftab)
 
 afloc = aftab[aftab.loci=="DRB1"]
-caf = scrapeAF.combineAF(afloc)
+caf = HLAfreq.combineAF(afloc)
 
 # Calculate credible interval
-caf[['cl','cu']] = scrapeAF.AFci(caf)
+caf[['cl','cu']] = HLAfreq.AFci(caf)
 
 caf.plot.barh('allele', 'allele_freq')
 plt.tight_layout()
 plt.show()
 
-scrapeAF.plotAFprob(caf, afloc)
-scrapeAF.plotAFprob(caf, afloc, alleles=['DRB1*09:01', 'DRB1*15:02', 'DRB1*07:01', 'DRB1*12:02',])
+HLAfreq.plotAFprob(caf, afloc)
+HLAfreq.plotAFprob(caf, afloc, alleles=['DRB1*09:01', 'DRB1*15:02', 'DRB1*07:01', 'DRB1*12:02',])
 
 #############################
 #                           #
@@ -111,8 +111,8 @@ scrapeAF.plotAFprob(caf, afloc, alleles=['DRB1*09:01', 'DRB1*15:02', 'DRB1*07:01
 # Sort by allele frequency
 caf = caf.sort_values('allele_freq', ascending=False, ignore_index=True)
 
-plt.scatter(caf.allele, caf.allele_freq.cumsum().apply(scrapeAF.population_coverage))
-plt.plot(caf.allele_freq.cumsum().apply(scrapeAF.population_coverage), label="Cumulative coverage")
+plt.scatter(caf.allele, caf.allele_freq.cumsum().apply(HLAfreq.population_coverage))
+plt.plot(caf.allele_freq.cumsum().apply(HLAfreq.population_coverage), label="Cumulative coverage")
 plt.grid(True)
 plt.xticks(rotation=90)
 plt.legend()

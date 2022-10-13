@@ -10,7 +10,7 @@ of alleles.
 """
 
 import os
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import numpy as np
 
@@ -27,9 +27,9 @@ for country in countries:
     print()
     print(country)
     if not os.path.exists("data/example/globalPCA/%s_raw.csv" %country):
-        base_url = scrapeAF.makeURL(country, standard="g", locus="A")
+        base_url = HLAfreq.makeURL(country, standard="g", locus="A")
         try:
-            aftab = scrapeAF.getAFdata(base_url)
+            aftab = HLAfreq.getAFdata(base_url)
             aftab.to_csv("data/example/globalPCA/%s_raw.csv" %country, index=False)
         except:
             print(f"Failed to get data for {country}: {base_url}")
@@ -38,9 +38,9 @@ cafs = []
 for country in countries:
     try:
         df = pd.read_csv("data/example/globalPCA/%s_raw.csv" %country)
-        df = scrapeAF.only_complete(df)
-        df = scrapeAF.decrease_resolution(df, 2)
-        caf = scrapeAF.combineAF(df)
+        df = HLAfreq.only_complete(df)
+        df = HLAfreq.decrease_resolution(df, 2)
+        caf = HLAfreq.combineAF(df)
         caf['country'] = country
         cafs.append(caf)
     except:
@@ -49,7 +49,7 @@ for country in countries:
 cafs = pd.concat(cafs, axis=0).reset_index(drop=True)
 
 # Give record for all alleles to all countries
-cafs = scrapeAF.unmeasured_alleles(cafs, 'country')
+cafs = HLAfreq.unmeasured_alleles(cafs, 'country')
 
 # Check all countries have the same number of alleles
 cafs.groupby('country').allele.unique().apply(len).unique()

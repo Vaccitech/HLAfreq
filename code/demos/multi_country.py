@@ -7,7 +7,7 @@ This second step is very similar except we set `datasetID` as the country
 rather than the population which is the default. 
 """
 
-import code.scrapeAF as scrapeAF
+import code.HLAfreq as HLAfreq
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,10 +19,10 @@ countries = ['Cameroon','Cape+Verde','Ghana','Guinea',
 # Download HLA allele frequencies
 for country in countries:
     print(country)
-    base_url = scrapeAF.makeURL(
+    base_url = HLAfreq.makeURL(
         country, standard='s', locus="A",
         resolution_pattern="bigger_equal_than", resolution=2)
-    aftab = scrapeAF.getAFdata(base_url)
+    aftab = HLAfreq.getAFdata(base_url)
     aftab.to_csv("data/example/multi_country/%s_raw.csv" %country, index=False)
 
 # Combine alleles frequencies within country
@@ -31,11 +31,11 @@ for country in countries:
     # Load raw county data
     aftab = pd.read_csv("data/example/multi_country/%s_raw.csv" %country)
     # Drop any incomplete studies
-    aftab = scrapeAF.only_complete(aftab)
+    aftab = HLAfreq.only_complete(aftab)
     # Ensure all alleles have the same resolution
-    aftab = scrapeAF.decrease_resolution(aftab, 2)
+    aftab = HLAfreq.decrease_resolution(aftab, 2)
     # Combine studies within country
-    caf = scrapeAF.combineAF(aftab)
+    caf = HLAfreq.combineAF(aftab)
     # Add country name to dataset, this is used as `datasetID` going forward
     caf['country'] = country
     cafs.append(caf)
@@ -44,7 +44,7 @@ for country in countries:
 # into a single dataframe
 cafs = pd.concat(cafs, ignore_index=True)
 # Combine allele frequency data of all countries
-international = scrapeAF.combineAF(cafs, datasetID='country')
+international = HLAfreq.combineAF(cafs, datasetID='country')
 
 # Plot international averages as bar plot
 international.plot.barh('allele', 'allele_freq')
@@ -55,7 +55,7 @@ cafs.pivot(index='allele', columns='country', values='allele_freq').plot.bar()
 plt.show()
 
 # Plot international allele frequencies estimates and individual countries
-scrapeAF.plotAFprob(international, cafs, datasetID='country', ncol=4)
+HLAfreq.plotAFprob(international, cafs, datasetID='country', ncol=4)
 
 # Plot specific alleles and zoom in on frequencies
 # Select alleles to plot
@@ -63,7 +63,7 @@ hifreq = international[international.allele_freq > 0.01].allele
 # Must be a list
 hifreq = hifreq.tolist()
 # Plot only selected alleles
-scrapeAF.plotAFprob(
+HLAfreq.plotAFprob(
     international,
     cafs,
     datasetID='country',
@@ -139,15 +139,15 @@ cafs['weighted_sample_size'] = cafs.sample_size * 2 * cafs.individual_weight
 # samples were observed with allele x. If unspecified this defaults
 # to double the sample size (to accound for diploid samples from each
 # individual)
-winternational = scrapeAF.combineAF(cafs, datasetID='country', weights='weighted_sample_size')
+winternational = HLAfreq.combineAF(cafs, datasetID='country', weights='weighted_sample_size')
 
-scrapeAF.plotAFprob(international, cafs, datasetID='country', ncol=4)
+HLAfreq.plotAFprob(international, cafs, datasetID='country', ncol=4)
 
 hifreq = winternational[winternational.allele_freq > 0.01].allele
 # Must be a list
 hifreq = hifreq.tolist()
 # Plot only selected alleles
-scrapeAF.plotAFprob(
+HLAfreq.plotAFprob(
     winternational,
     cafs,
     datasetID='country',

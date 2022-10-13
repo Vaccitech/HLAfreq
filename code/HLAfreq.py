@@ -482,7 +482,7 @@ def AFci(caf, credible_interval=0.95):
     """Calculate credible interval for combined allele frequency table
 
     Args:
-        caf (pd.DataFrame): Table produced by scrapeAF.combineAF()
+        caf (pd.DataFrame): Table produced by combineAF()
         credible_interval (float, optional): The desired confidence interval. Defaults to 0.95.
 
     Returns:
@@ -500,8 +500,8 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         distribution. Supply AFtab to add empirical values to plot.
 
     Args:
-        caf (pd.DataFrame, optional): Combined allele frequence data produced by scrapeAF.combineAF(). Defaults to pd.DataFrame().
-        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by scrapeAF.combinedAF(). You must use the same dataframe as this function doesn't have the error checking that scrapeAF.combineAF() has. Defaults to pd.DataFrame().
+        caf (pd.DataFrame, optional): Combined allele frequence data produced by combineAF(). Defaults to pd.DataFrame().
+        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by combinedAF(). You must use the same dataframe as this function doesn't have the error checking that combineAF() has. Defaults to pd.DataFrame().
         datasetID (str, optional): The column used to define datasets. Defaults to "population".
         concentration (pd.Series, optional): Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False
         log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
