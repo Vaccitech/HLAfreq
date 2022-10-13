@@ -26,6 +26,7 @@ for country in countries:
     print(country)
     try:
         df = pd.read_csv("data/example/globalPCA/%s_raw.csv" %country)
+        df = scrapeAF.only_complete(df)
         df = scrapeAF.decrease_resolution(df, 2)
         caf = scrapeAF.combineAF(df)
         # Recreate the Dirichlet distribution
@@ -40,6 +41,9 @@ for country in countries:
     except:
         pass
 
+# Drop regions without data
+regions = regions.dropna(subset=['entropy'])
+
 ######## World plot
 world = gpd.read_file(
     gpd.datasets.get_path('naturalearth_lowres')
@@ -48,8 +52,22 @@ world = gpd.read_file(
 # Not all countries are in both datasets,
 # Some of this is due to alternative naming
 # Will require manual editting.
+
+#regions not in world
 regions[~regions.country.isin(world.name)].country
+# world not in regions
 world.name[~world.name.isin(regions.country)]
+
+# Change world names to match region country
+# key becomes value
+renames={
+"United States of America":"United States",
+'Bosnia and Herz.': "Bosnia and Herzegovina",
+"Czechia": "Czech Republic",
+}
+
+for key,value in renames.items():
+    world.loc[world.name == key, 'name'] = value
 
 world_regions = pd.merge(world, regions, how="left", left_on="name", right_on="country")
 
@@ -61,6 +79,3 @@ ax[0,1].set_title('Populations')
 gplt.choropleth(world_regions, hue="total_sample_size", legend=True, ax=ax[1,0])
 ax[1,0].set_title('Total sample size')
 plt.show()
-
-world_regions[world_regions.name.str.contains('ahara')]
-world_regions.sort_values('entropy')
