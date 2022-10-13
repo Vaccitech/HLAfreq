@@ -38,7 +38,7 @@ for region in AFeatures.largeRegion.unique():
     mask = AFeatures.largeRegion == region
     plt.scatter(AFeatures.pca0[mask], AFeatures.pca1[mask], label=region)
     for i in AFeatures[mask].index:
-        plt.annotate(AFeatures.loc[i].country, AFeatures.loc[i][['pca0','pca1']])
+        plt.annotate(AFeatures.loc[i].country.replace("+", " "), AFeatures.loc[i][['pca0','pca1']])
 plt.legend()
 plt.show()
 
@@ -46,6 +46,6 @@ for region in AFeatures.largeRegion.unique():
     mask = AFeatures.largeRegion == region
     plt.scatter(AFeatures.umap0[mask], AFeatures.umap1[mask], label=region)
     for i in AFeatures[mask].index:
-        plt.annotate(AFeatures.loc[i].country, AFeatures.loc[i][['umap0','umap1']])
+        plt.annotate(AFeatures.loc[i].country.replace("+", " "), AFeatures.loc[i][['umap0','umap1']])
 plt.legend()
 plt.show()

@@ -13,8 +13,6 @@ import os
 import code.scrapeAF as scrapeAF
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Countries in regions as defined on 
 # http://www.allelefrequencies.net/datasets.asp#tag_4
@@ -36,40 +34,41 @@ for country in countries:
         except:
             print(f"Failed to get data for {country}: {base_url}")
 
-wavs = []
+cafs = []
 for country in countries:
     try:
         df = pd.read_csv("data/example/globalPCA/%s_raw.csv" %country)
+        df = scrapeAF.only_complete(df)
         df = scrapeAF.decrease_resolution(df, 2)
-        wav = scrapeAF.combineAF(df)
-        wav['country'] = country
-        wavs.append(wav)
+        caf = scrapeAF.combineAF(df)
+        caf['country'] = country
+        cafs.append(caf)
     except:
         pass
 
-wavs = pd.concat(wavs, axis=0).reset_index(drop=True)
+cafs = pd.concat(cafs, axis=0).reset_index(drop=True)
 
 # Give record for all alleles to all countries
-wavs = scrapeAF.unmeasured_alleles(wavs, 'country')
+cafs = scrapeAF.unmeasured_alleles(cafs, 'country')
 
 # Check all countries have the same number of alleles
-wavs.groupby('country').allele.unique().apply(len).unique()
+cafs.groupby('country').allele.unique().apply(len).unique()
 
 # Sort by allele then select a single country,
 # check that its alleles match a specified list
 # then use the frequencies as features
-wavs = wavs.sort_values('allele')
+cafs = cafs.sort_values('allele')
 
-sorted_alleles = sorted(list(wavs.allele.unique()))
+sorted_alleles = sorted(list(cafs.allele.unique()))
 
 AFeatures = []
 for country in countries:
-    mask = wavs['country'] == country
+    mask = cafs['country'] == country
     # Only generate features for countries with records
     # e.g. Thailand has no loci A records
     if any(mask):
-        assert all(wavs[mask].allele.unique() == sorted_alleles)
-        features = [country] + wavs[mask].allele_freq.tolist()
+        assert all(cafs[mask].allele.unique() == sorted_alleles)
+        features = [country] + cafs[mask].allele_freq.tolist()
         AFeatures.append(features)
 
 # Dataframe of allele frequencies read for dimension reduction
