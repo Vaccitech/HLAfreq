@@ -1,10 +1,11 @@
 """
-Scrape Allele [allelefrequencies.net](www.allelefrequencies.net)
-for HLA frequencies by population or larger region to calculate
-the regional HLA frequencies e.g. global.
+HLAfreq
 
-The database can be searched based on url as described in
-[automated access](http://www.allelefrequencies.net/extaccess.asp).
+Download allele frequency data from
+[allelefrequencies.net](www.allelefrequencies.net). Allele
+frequencies from different populations can be combined to
+estimate HLA frequencies countries or other regions such as
+global HLA frequencies.
 """
 
 from bs4 import BeautifulSoup
@@ -17,15 +18,45 @@ from scipy.stats import dirichlet, beta
 import logging
 import warnings
 
-def makeURL(country, standard='s', locus="", resolution_pattern="bigger_equal_than", resolution=2):
+def makeURL(
+        country="",
+        standard='s',
+        locus="",
+        resolution_pattern="bigger_equal_than",
+        resolution=2,
+        region="",
+        ethnic="",
+        study_type="",
+        dataset_source=""
+    ):
+    """Create URL for search of allele frequency net database. All arguments are documented [here](www.allelefrequencies.net/extaccess.asp)
+
+    Args:
+        country (str, optional): Country name to retrieve records from. Defaults to "".
+        standard (str, optional): Filter study quality standard to this or higher. {'g', 's', 'a'} Gold, silver, all. Defaults to 's'.
+        locus (str, optional): The locus to return allele data for. Defaults to "".
+        resolution_pattern (str, optional): Resolution comparitor {'equal', 'different', 'less_than', 'bigger_than', 'less_equal_than', 'bigger_equal_than'}. Filter created using `resolution` and `resolution_pattern`. Defaults to "bigger_equal_than".
+        resolution (int, optional): Number of fields of resolution of allele. Filter created using `resolution` and `resolution_pattern`. Defaults to 2.
+        region (str, optional): Filter to geographic region. {Asia, Australia, Eastern Europe, ...}. All regions listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to "".
+        ethnic (str, optional): Filter to ethnicity. {"Amerindian", "Black", "Caucasian", ...}. All ethnicities listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to "".
+        study_type (str, optional): Type of study. {"Anthropology", "Blood+Donor", "Bone+Marrow+Registry", "Controls+for+Disease+Study", "Disease+Study+Patients", "Other", "Solid+Organd+Unrelated+Donors", "Stem+cell+donors"}. Defaults to "".
+        dataset_source (str, optional): Source of data. {"Literature", "Proceedings+of+IHWs", "Unpublished"}. Defaults to "".
+
+    Returns:
+        str: URL to search allelefrequencies.net
+    """
     base = "http://www.allelefrequencies.net/hla6006a.asp?"
     locus_type = "hla_locus_type=Classical&"
     hla_locus = "hla_locus=%s&" %(locus)
     country = "hla_country=%s&" %(country)
+    region = "hla_region=%s&" %(region)
+    ethnic = "hla_ethnic=%s&" %(ethnic)
+    study_type = "hla_study=%s&" %(study_type)
+    dataset_source = "hla_dataset_source=%s&" %(dataset_source)
     hla_level_pattern = "hla_level_pattern=%s&" %(resolution_pattern)
     hla_level = "hla_level=%s&" %(resolution)
     standard = "standard=%s&" %standard
-    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard
+    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard + region + ethnic + study_type + dataset_source
     return url
 
 def parseAF(bs):
