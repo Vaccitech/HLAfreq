@@ -74,13 +74,6 @@ scrapeAF.plotAFprob(
     concentration = (2 * study_prior.sample_size * study_prior.allele_freq).tolist()
 )
 
-# (2 * study_prior.sample_size * study_prior.allele_freq)-(study_prior.c * 0.01)
-# plt.scatter(
-# (2 * study_prior.sample_size * study_prior.allele_freq).tolist(),
-# (study_prior.c * 0.01).tolist()
-# )
-# plt.show()
-
 # Combine Allele Frequency with Study Prior
 cafSP = scrapeAF.combineAF(
     pd.concat([venezuelaAF, study_prior], join="inner")
