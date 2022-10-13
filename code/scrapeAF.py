@@ -83,20 +83,23 @@ def Npages(bs):
     N = int(N)
     return N
 
-def formatAF(AFtab):
+def formatAF(AFtab, ignoreG=True):
     df = AFtab.copy()
     if df.sample_size.dtype == "O":
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
     if df.allele_freq.dtype == "O":
+        if ignoreG:
+            df.allele_freq = df.allele_freq.str.replace("(*)", "", regex=False)
         df.allele_freq = pd.to_numeric(df.allele_freq)
     return df
 
-def getAFdata(base_url, format=True):
+def getAFdata(base_url, format=True, ignoreG=True):
     """Get all allele frequency data from a search base url. Iterates over all
         pages regardless of which page is based.
 
     Args:
         base_url (str): URL for base search
+        ignoreG (boolean): treat allele G groups as normal. See http://hla.alleles.org/alleles/g_groups.html for details. Default = True
 
     Returns:
         pd.DataFrame: allele frequency data parsed into a pandas dataframe
@@ -119,7 +122,7 @@ def getAFdata(base_url, format=True):
     tabs = pd.concat(tabs)
     if format:
         try:
-            tabs = formatAF(tabs)
+            tabs = formatAF(tabs, ignoreG)
         except:
             print("Formatting failed, non-numeric datatypes may remain.")
     return tabs
@@ -246,13 +249,14 @@ def unmeasured_alleles(AFtab, datasetID='population'):
             df = pd.concat([df, missing_rows], ignore_index=True)
     return df
 
-def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
+def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
     """Combine allele frequencies at multiple levels
 
     Args:
         df (pd.DataFrame): Table of Allele frequency data
         weights (str): Column to weight averages by. Default 'sample_size'
         format (boolean): run formatAF(), Default = True
+        ignoreG (boolean): treat allele G groups as normal. See http://hla.alleles.org/alleles/g_groups.html for details. Default = True
         add_unmeasured (boolean): run unmeasured_alleles(), Default = True
         datasetID (str): Unique identifier column for study used by unmeasured_alleles()
 
@@ -269,7 +273,7 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
     if resolution:
         assert check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
     if format:
-        df = formatAF(df)
+        df = formatAF(df, ignoreG)
     if add_unmeasured:
         df = unmeasured_alleles(df, datasetID)
     try:
