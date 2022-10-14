@@ -1,0 +1,10 @@
+MANIFEST.in
+README.md
+setup.py
+HLAfreq.egg-info/PKG-INFO
+HLAfreq.egg-info/SOURCES.txt
+HLAfreq.egg-info/dependency_links.txt
+HLAfreq.egg-info/requires.txt
+HLAfreq.egg-info/top_level.txt
+src/data/HLA1supertypes_Sidney2008.csv
+src/data/countries.csv
