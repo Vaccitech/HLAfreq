@@ -1,0 +1,14 @@
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+src/HLAfreq/HLAfreq.py
+src/HLAfreq/HLAfreq_data.py
+src/HLAfreq/__init__.py
+src/HLAfreq.egg-info/PKG-INFO
+src/HLAfreq.egg-info/SOURCES.txt
+src/HLAfreq.egg-info/dependency_links.txt
+src/HLAfreq.egg-info/requires.txt
+src/HLAfreq.egg-info/top_level.txt
+src/HLAfreq/data/HLA1supertypes_Sidney2008.csv
+src/HLAfreq/data/countries.csv

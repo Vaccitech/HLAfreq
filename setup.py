@@ -1,6 +1,6 @@
-import setuptools
+from setuptools import setup, find_packages
 
-setuptools.setup(
+setup(
     name="HLAfreq",
     version="0.0.1dev0",
     url="https://github.com/Vaccitech/HLAfreq",
@@ -11,7 +11,7 @@ setuptools.setup(
     author_email="david.wells@vaccitech.co.uk",
     description="Download and combine HLA frequency data from multiple studies",
     long_description=open('README.md').read(),
-    packages=setuptools.find_packages(),
+    long_description_content_type="text/markdown",
     install_requires=[
         'bs4',
         'requests',
@@ -24,6 +24,9 @@ setuptools.setup(
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
     ],
+    package_dir={'':'src'},
+    packages=find_packages(
+        where='src'
+    ),
     include_package_data=True,
-    package_data={'': ['data/*.csv']}
 )
