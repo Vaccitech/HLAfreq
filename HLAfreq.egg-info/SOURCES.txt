@@ -1,3 +1,4 @@
+MANIFEST.in
 README.md
 setup.py
 HLAfreq/HLAfreq.py
@@ -10,3 +11,4 @@ HLAfreq.egg-info/requires.txt
 HLAfreq.egg-info/top_level.txt
 HLAfreq/data/HLA1supertypes_Sidney2008.csv
 HLAfreq/data/countries.csv
+data/HLA1supertypes_Sidney2008.csv
