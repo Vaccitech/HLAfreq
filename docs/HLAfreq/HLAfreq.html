@@ -1,0 +1,1771 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>HLAfreq.HLAfreq API documentation</title>
+<meta name="description" content="HLAfreq …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>HLAfreq.HLAfreq</code></h1>
+</header>
+<section id="section-intro">
+<p>HLAfreq</p>
+<p>Download allele frequency data from
+<a href="www.allelefrequencies.net">allelefrequencies.net</a>. Allele
+frequencies from different populations can be combined to
+estimate HLA frequencies of countries or other regions such as
+global HLA frequencies.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+HLAfreq
+
+Download allele frequency data from
+[allelefrequencies.net](www.allelefrequencies.net). Allele
+frequencies from different populations can be combined to
+estimate HLA frequencies of countries or other regions such as
+global HLA frequencies.
+&#34;&#34;&#34;
+
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+from scipy.stats import dirichlet, beta
+import logging
+import warnings
+
+def makeURL(
+        country=&#34;&#34;,
+        standard=&#39;s&#39;,
+        locus=&#34;&#34;,
+        resolution_pattern=&#34;bigger_equal_than&#34;,
+        resolution=2,
+        region=&#34;&#34;,
+        ethnic=&#34;&#34;,
+        study_type=&#34;&#34;,
+        dataset_source=&#34;&#34;,
+        sample_year=&#34;&#34;,
+        sample_year_pattern=&#34;&#34;,
+        sample_size=&#34;&#34;,
+        sample_size_pattern=&#34;&#34;
+    ):
+    &#34;&#34;&#34;Create URL for search of allele frequency net database. All arguments are documented [here](http://www.allelefrequencies.net/extaccess.asp)
+    Args:
+        country (str, optional): Country name to retrieve records from. Defaults to &#34;&#34;.
+        standard (str, optional): Filter study quality standard to this or higher. {&#39;g&#39;, &#39;s&#39;, &#39;a&#39;} Gold, silver, all. Defaults to &#39;s&#39;.
+        locus (str, optional): The locus to return allele data for. Defaults to &#34;&#34;.
+        resolution_pattern (str, optional): Resolution comparitor {&#39;equal&#39;, &#39;different&#39;, &#39;less_than&#39;, &#39;bigger_than&#39;, &#39;less_equal_than&#39;, &#39;bigger_equal_than&#39;}. Filter created using `resolution` and `resolution_pattern`. Defaults to &#34;bigger_equal_than&#34;.
+        resolution (int, optional): Number of fields of resolution of allele. Filter created using `resolution` and `resolution_pattern`. Defaults to 2.
+        region (str, optional): Filter to geographic region. {Asia, Australia, Eastern Europe, ...}. All regions listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to &#34;&#34;.
+        ethnic (str, optional): Filter to ethnicity. {&#34;Amerindian&#34;, &#34;Black&#34;, &#34;Caucasian&#34;, ...}. All ethnicities listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to &#34;&#34;.
+        study_type (str, optional): Type of study. {&#34;Anthropology&#34;, &#34;Blood+Donor&#34;, &#34;Bone+Marrow+Registry&#34;, &#34;Controls+for+Disease+Study&#34;, &#34;Disease+Study+Patients&#34;, &#34;Other&#34;, &#34;Solid+Organd+Unrelated+Donors&#34;, &#34;Stem+cell+donors&#34;}. Defaults to &#34;&#34;.
+        dataset_source (str, optional): Source of data. {&#34;Literature&#34;, &#34;Proceedings+of+IHWs&#34;, &#34;Unpublished&#34;}. Defaults to &#34;&#34;.
+        sample_year (int, optional): Sample year to compare to. Filter created using sample_year and sample_year_pattern. Defaults to &#34;&#34;.
+        sample_year_pattern (str, optional): Pattern to compare sample year to. Filter created using sample_year and sample_year_pattern. {&#39;equal&#39;, &#39;different&#39;, &#39;less_than&#39;, &#39;bigger_than&#39;, &#39;less_equal_than&#39;, &#39;bigger_equal_than&#39;}. Defaults to &#34;&#34;.
+        sample_size (int, optional): Sample size to compare to. Filter created using sample_size and sample_size_pattern. Defaults to &#34;&#34;.
+        sample_size_pattern (str, optional): Pattern to compare sample size to. Filter created using sample_size and sample_size_pattern. {&#39;equal&#39;, &#39;different&#39;, &#39;less_than&#39;, &#39;bigger_than&#39;, &#39;less_equal_than&#39;, &#39;bigger_equal_than&#39;}. Defaults to &#34;&#34;.
+
+    Returns:
+        str: URL to search allelefrequencies.net
+    &#34;&#34;&#34;
+    base = &#34;http://www.allelefrequencies.net/hla6006a.asp?&#34;
+    locus_type = &#34;hla_locus_type=Classical&amp;&#34;
+    hla_locus = &#34;hla_locus=%s&amp;&#34; %(locus)
+    country = &#34;hla_country=%s&amp;&#34; %(country)
+    region = &#34;hla_region=%s&amp;&#34; %(region)
+    ethnic = &#34;hla_ethnic=%s&amp;&#34; %(ethnic)
+    study_type = &#34;hla_study=%s&amp;&#34; %(study_type)
+    dataset_source = &#34;hla_dataset_source=%s&amp;&#34; %(dataset_source)
+    sample_year = &#34;hla_sample_year=%s&amp;&#34; %(sample_year)
+    sample_year_pattern = &#34;hla_sample_year_pattern=%s&amp;&#34; %(sample_year_pattern)
+    sample_size = &#34;hla_sample_size=%s&amp;&#34; %(sample_size)
+    sample_size_pattern = &#34;hla_sample_size_pattern=%s&amp;&#34; %(sample_size_pattern)
+    hla_level_pattern = &#34;hla_level_pattern=%s&amp;&#34; %(resolution_pattern)
+    hla_level = &#34;hla_level=%s&amp;&#34; %(resolution)
+    standard = &#34;standard=%s&amp;&#34; %standard
+    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard + region + ethnic + study_type + dataset_source + sample_year + sample_year_pattern + sample_size + sample_size_pattern
+    return url
+
+def parseAF(bs):
+    &#34;&#34;&#34;Generate a dataframe from a given html page
+
+    Args:
+        bs (bs4.BeautifulSoup): BeautifulSoup object from allelefrequencies.net page
+
+    Returns:
+        pd.DataFrame: Table of allele, allele frequency, samplesize, and population
+    &#34;&#34;&#34;
+    # Get the results table from the div `divGenDetail`
+    tab = bs.find(&#39;div&#39;, {&#39;id&#39;: &#39;divGenDetail&#39;}).find(&#39;table&#39;, {&#39;class&#39;: &#39;tblNormal&#39;})
+    # Get the column headers from the first row of the table
+    columns = [
+        &#39;line&#39;, &#39;allele&#39;, &#39;flag&#39;, &#39;population&#39;, &#39;carriers%&#39;,
+        &#39;allele_freq&#39;, &#39;AF_graphic&#39;, &#39;sample_size&#39;, &#39;database&#39;,
+        &#39;distribution&#39;,&#39;haplotype_association&#39;, &#39;notes&#39;
+        ]
+    rows =[]
+    for row in tab.find_all(&#39;tr&#39;):
+        rows.append(
+            [td.get_text(strip=True) for td in row.find_all(&#39;td&#39;)]
+            )
+    # Make dataframe of table rows
+    # skip the first row as it&#39;s `th` headers
+    df = pd.DataFrame(rows[1:], columns = columns)
+
+    # Get HLA loci
+    df[&#39;loci&#39;] = df.allele.apply(lambda x: x.split(&#34;*&#34;)[0])
+
+    # Drop unwanted columns
+    df = df[[&#39;allele&#39;, &#39;loci&#39;, &#39;population&#39;, &#39;allele_freq&#39;, &#39;carriers%&#39;, &#39;sample_size&#39;]]
+    return df
+   
+def Npages(bs):
+    &#34;&#34;&#34;How many pages of results are there?
+
+    Args:
+        bs (bs4.BeautifulSoup): BS object of allelefrequencies.net results page
+
+    Returns:
+        int: Total number of results pages
+    &#34;&#34;&#34;
+    # Get the table with number of pages
+    navtab = bs.find(&#39;div&#39;, {&#39;id&#39;: &#39;divGenNavig&#39;}).find(&#39;table&#39;, {&#39;class&#39;: &#39;table10&#39;})
+    assert navtab, f&#34;navtab does not evaluate to True. Check URL returns results in web browser.&#34;
+    # Get cell with &#39; of &#39; in 
+    pagesOfN = [td.get_text(strip=True) for td in navtab.find_all(&#39;td&#39;) if &#34; of &#34; in td.text]
+    # Check single cell returned
+    assert len(pagesOfN) == 1, &#34;divGenNavig should contain 1 of not %s&#34; %len(pagesOfN)
+    # Get total number of pages
+    N = pagesOfN[0].split(&#34;of &#34;)[1]
+    N = int(N)
+    return N
+
+def formatAF(AFtab, ignoreG=True):
+    &#34;&#34;&#34;Format allele frequency table.
+    Convert sample_size and allele_freq to numeric data type.
+    Removes commas from sample size. Removes &#34;(*)&#34; from allele frequency if 
+    `ignoreG` is `True`. `formatAF()` is used internally by combineAF and getAFdata by default.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data downloaded from allelefrequency.net using `getAFdata()`.
+        ignoreG (bool, optional): Treat G group alleles as normal. See http://hla.alleles.org/alleles/g_groups.html for details. Defaults to True.
+
+    Returns:
+        pd.DataFrame: The formatted allele frequency data.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    if df.sample_size.dtype == &#34;O&#34;:
+        df.sample_size = pd.to_numeric(df.sample_size.str.replace(&#34;,&#34;, &#34;&#34;))
+    if df.allele_freq.dtype == &#34;O&#34;:
+        if ignoreG:
+            df.allele_freq = df.allele_freq.str.replace(&#34;(*)&#34;, &#34;&#34;, regex=False)
+        df.allele_freq = pd.to_numeric(df.allele_freq)
+    return df
+
+def getAFdata(base_url, format=True, ignoreG=True):
+    &#34;&#34;&#34;Get all allele frequency data from a search base url. Iterates over all
+        pages regardless of which page is based.
+
+    Args:
+        base_url (str): URL for base search.
+        format (bool): Format the downloaded data using `formatAF()`.
+        ignoreG (bool): treat allele G groups as normal. See http://hla.alleles.org/alleles/g_groups.html for details. Default = True
+
+    Returns:
+        pd.DataFrame: allele frequency data parsed into a pandas dataframe
+    &#34;&#34;&#34;
+    # Get BS object from base search
+    bs = BeautifulSoup(requests.get(base_url).text, &#39;html.parser&#39;)
+    # How many pages of results
+    N = Npages(bs)
+    print(&#34;%s pages of results&#34; %N)
+    # iterate over pages, parse and combine data from each
+    tabs = []
+    for i in range(N):
+        # print (&#34; Parsing page %s&#34; %(i+1))
+        print (&#34; Parsing page %s&#34; %(i+1), end=&#34;\r&#34;)
+        url = base_url + &#34;page=&#34; + str(i+1)
+        bs = BeautifulSoup(requests.get(url).text, &#39;html.parser&#39;)
+        tab = parseAF(bs)
+        tabs.append(tab)
+    print(&#34;Download complete&#34;)
+    tabs = pd.concat(tabs)
+    if format:
+        try:
+            tabs = formatAF(tabs, ignoreG)
+        except:
+            print(&#34;Formatting failed, non-numeric datatypes may remain.&#34;)
+    return tabs
+
+def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Report any studies with allele freqs that don&#39;t sum to 1
+
+    Args:
+        AFtab (pd.DataFrame): Dataframe containing multiple studies
+        llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
+        ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+        datasetID (str): Unique identifier column for study
+    &#34;&#34;&#34;
+    poplocs = AFtab.groupby([datasetID, &#39;loci&#39;]).allele_freq.sum()
+    lmask = poplocs &lt; llimit
+    if sum(lmask&gt;0):
+        print(poplocs[lmask])
+        print(f&#34;{sum(lmask)} studies have total allele frequency &lt; {llimit}&#34;)
+    umask = poplocs &gt; ulimit
+    if sum(umask&gt;0):
+        print(poplocs[umask])
+        print(f&#34;{sum(umask)} studies have total allele frequency &gt; {ulimit}&#34;)
+    incomplete = pd.concat([poplocs[lmask], poplocs[umask]])
+    return incomplete
+
+def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Returns only complete studies. Studies are only dropped if their population and loci are in noncomplete together.
+    This prevents throwing away data if another loci in the population is incomplete
+
+    Args:
+        AFtab (pd.DataFrame): Dataframe containing multiple studies
+        llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
+        ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+        datasetID (str): Unique identifier column for study. Defaults to &#39;population&#39;.
+
+    Returns:
+        pd.DataFrame: Allele frequency data of multiple studies, but only complete studies.
+    &#34;&#34;&#34;
+    noncomplete = incomplete_studies(AFtab=AFtab, llimit=llimit, ulimit=ulimit, datasetID=datasetID)
+    # Returns False if population AND loci are in the noncomplete.index
+    # AS A PAIR
+    # This is important so that we don&#39;t throw away all data on a population
+    # just because one loci is incomplete.
+    complete_mask = AFtab.apply(lambda x: (x[datasetID], x.loci) not in noncomplete.index, axis=1)
+    df = AFtab[complete_mask]
+    return df
+
+def check_resolution(AFtab):
+    &#34;&#34;&#34;Check if all alleles in AFtab have the same resolution.
+    Will print the number of records with each resolution.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data
+
+    Returns:
+        bool: True only if all alleles have the same resolution, else False.
+    &#34;&#34;&#34;
+    resolution = 1 + AFtab.allele.str.count(&#34;:&#34;)
+    resVC = resolution.value_counts()
+    pass_check = len(resVC) == 1
+    if not pass_check:
+        print(resVC)
+        print(f&#34;Multiple resolutions in AFtab. Fix with decrease_resolution()&#34;)
+    return pass_check
+
+def decrease_resolution(AFtab, newres, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Decrease allele resolution to a specified value so all alleles have the same resolution.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data.
+        newres (int): The desired number of fields for resolution.
+        datasetID (str, optional): Column to use as stud identifier. Defaults to &#39;population&#39;.
+
+    Returns:
+        pd.DataFrame: Allele frequency data with all alleles of requested resolution.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    resolution = 1 + df.allele.str.count(&#34;:&#34;)
+    assert all(resolution &gt;= newres), f&#34;Some alleles have resolution below {newres} fields&#34;
+    new_allele = df.allele.str.split(&#34;:&#34;).apply(lambda x: &#34;:&#34;.join(x[:newres]))
+    df.allele = new_allele
+    collapsed = collapse_reduced_alleles(df, datasetID=datasetID)
+    return collapsed
+
+def collapse_reduced_alleles(AFtab, datasetID=&#39;population&#39;):
+    df = AFtab.copy()
+    # Group by alleles within datasets
+    grouped = df.groupby([datasetID,&#39;allele&#39;])
+    # Sum allele freq but keep other columns
+    collapsed = grouped.apply(
+        lambda row: [
+            sum(row.allele_freq),
+            row.sample_size.unique()[0],
+            row.loci.unique()[0],
+            len(row.loci.unique()),
+            len(row.sample_size.unique())
+        ]
+    )
+    collapsed = pd.DataFrame(
+        collapsed.tolist(),
+        index=collapsed.index,
+        columns = [&#39;allele_freq&#39;, &#39;sample_size&#39;, &#39;loci&#39;, &#39;#loci&#39;, &#39;#sample_sizes&#39;]
+    ).reset_index()
+    # Within a study each all identical alleles should have the same loci and sample size
+    assert all(collapsed[&#39;#loci&#39;] == 1), &#34;Multiple loci found for a single allele in a single population&#34;
+    assert all(collapsed[&#39;#sample_sizes&#39;] == 1), &#34;Multiple sample_sizes found for a single allele in a single population&#34;
+    collapsed = collapsed[[&#39;allele&#39;, &#39;loci&#39;,&#39;population&#39;,&#39;allele_freq&#39;,&#39;sample_size&#39;]]
+    alleles_unique_in_study(collapsed)
+    return collapsed
+
+def unmeasured_alleles(AFtab, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;When combining AF estimates, unreported alleles can inflate frequencies
+        so AF sums to &gt;1. Therefore we add unreported alleles with frequency zero.
+
+    Args:
+        AFtab (pd.DataFrame): Formatted allele frequency data
+        datasetID (str): Unique identifier column for study
+
+    Returns:
+        pd.DataFrame: Allele frequency data with all locus alleles reported 
+            for each dataset
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    loci = df.loci.unique()
+    # Iterate over loci separately
+    for locus in loci:
+        # Iterate over each dataset reporting that locus
+        datasets = df[df.loci == locus][datasetID].unique()
+        for dataset in datasets:
+            # Single locus, single dataset
+            datasetAF = df[(df[datasetID] == dataset) &amp; (df.loci == locus)]
+            # What was the sample size for this data?
+            dataset_sample_size = datasetAF.sample_size.unique()
+            assert len(dataset_sample_size) == 1, &#34;dataset_sample_size must be 1, not %s&#34; %len(dataset_sample_size)
+            dataset_sample_size = dataset_sample_size[0]
+            # Get all alleles for this locus (across datasets)
+            ualleles = df[df.loci == locus].allele.unique()
+            # Which of these alleles are not in this dataset?
+            missing_alleles = [allele for allele in ualleles if not allele in datasetAF.allele.values]
+            missing_rows = [(al, locus, dataset, 0, 0, dataset_sample_size) for al in missing_alleles]
+            missing_rows = pd.DataFrame(missing_rows, columns=[&#39;allele&#39;,&#39;loci&#39;,datasetID,&#39;allele_freq&#39;,&#39;carriers%&#39;,&#39;sample_size&#39;])
+            # Add them in with zero frequency
+            df = pd.concat([df, missing_rows], ignore_index=True)
+    return df
+
+def combineAF(AFtab, weights=&#39;2n&#39;, alpha = [], datasetID=&#39;population&#39;, format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
+    &#34;&#34;&#34;Combine allele frequencies from multiple studies. `datasetID` is the unique identifier for studies to combine.
+    Allele frequencies combined using a Dirichlet distribution where each study&#39;s contribution to the concentration parameter is $2 * sample_size * allele_frequency$.
+    Sample size is doubled to get `2n` due to diploidy. If an alternative `weights` is set it is not doubled.
+    The total concentration parameter of the Dirichlet distribution is the contributions from all studies plus the prior `alpha`.
+    If `alpha` is not set the prior defaults to 1 observation of each allele.
+
+    Args:
+        AFtab (pd.DataFrame): Table of Allele frequency data
+        weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to &#39;2n&#39;.
+        alpha (list, optional): Prior to use for Dirichlet distribution. Defaults to [].
+        datasetID (str, optional): Unique identifier column for study. Defaults to &#39;population&#39;.
+        format (bool, optional): Run `formatAF()`. Defaults to True.
+        ignoreG (bool, optional): Treat allele G groups as normal, see `formatAF()`. Defaults to True.
+        add_unmeasured (bool, optional): Add unmeasured alleles to each study. This is important to ensure combined allele frequencies sum to 1. See `add_unmeasured()`. Defaults to True.
+        complete (bool, optional): Check study completeness. Uses default values for `incomplete_studies()`. If you are happy with your study completeness can be switched off with False. Defaults to True.
+        resolution (bool, optional): Check that all alleles have the same resolution, see `check_resolution()`. Defaults to True.
+        unique (bool, optional): Check that each allele appears no more than once per study. See `alleles_unique_in_study()`. Defaults to True.
+
+    Returns:
+        pd.DataFrame: Allele frequencies after combining estimates from all studies.
+        *allele_freq* is the combined frequency estimate from the Dirichlet mean where the concentration is `alpha` + `c`.
+        *alpha* is the prior used for the Dirichlet distribution.
+        *c* is the observations used for the Dirichlet distribution.
+        *sample_size* is the total sample size of all combined studies.
+        *wav* is the weighted average.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    single_loci(df)
+    if unique:
+        assert alleles_unique_in_study(df, datasetID=datasetID), &#34;The same allele appears multiple times in a dataset&#34;
+    if complete:
+        assert incomplete_studies(df, datasetID=datasetID).empty, &#34;AFtab contains studies with AF that doesn&#39;t sum to 1. Check incomplete_studies(AFtab)&#34;
+    if resolution:
+        assert check_resolution(df), &#34;AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)&#34;
+    if format:
+        df = formatAF(df, ignoreG)
+    if add_unmeasured:
+        df = unmeasured_alleles(df, datasetID)
+    try:
+        df[&#39;2n&#39;] = df.sample_size * 2
+    except:
+        print(&#34;column &#39;2n&#39; could not be created&#34;)
+    df[&#39;c&#39;] =  df.allele_freq * df[weights]
+    grouped = df.groupby(&#39;allele&#39;, sort=True)
+    combined = grouped.apply(
+        lambda row: [
+        row.name,
+        row.loci.unique()[0],
+        np.average(row.allele_freq, weights=row[weights]),
+        row.c.sum(),
+        row.sample_size.sum()
+        ]
+    )
+    combined = pd.DataFrame(
+        combined.tolist(),
+        columns = [&#39;allele&#39;, &#39;loci&#39;,
+            &#39;wav&#39;,
+            &#39;c&#39;, &#39;sample_size&#39;]
+    )
+    combined = combined.reset_index(drop=True)
+    # Check that all alleles in a locus have the same sample size
+    # after merging
+    if duplicated_sample_size(combined):
+        id_duplicated_allele(grouped)
+    if not alpha:
+        alpha = default_prior(len(combined.allele))
+    combined[&#39;alpha&#39;] = alpha
+    # Calculate Dirichlet mean for each allele
+    combined[&#39;allele_freq&#39;] = dirichlet(combined.alpha + combined.c).mean()
+
+    return combined
+
+def default_prior(k):
+    &#34;&#34;&#34;Calculate a default prior, 1 observation of each class.
+
+    Args:
+        k (int): Number of classes in the Dirichlet distribution.
+
+    Returns:
+        list: List of k 1s to use as prior.
+    &#34;&#34;&#34;
+    alpha = [1] * k
+    return alpha
+
+def single_loci(AFtab):
+    &#34;&#34;&#34;Check that allele frequency data is only of one locus
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data
+    &#34;&#34;&#34;
+    assert len(AFtab.loci.unique()) == 1, f&#34;&#39;AFtab&#39; must conatain only 1 loci&#34;
+
+def alleles_unique_in_study(AFtab, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Are all alleles unique in each study? Checks that no alleles are reported more than once in a single study. Study is defined by `datasetID`.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data
+        datasetID (str, optional): Unique identifier column to define study. Defaults to &#39;population&#39;.
+
+    Returns:
+        bool: `True` on if no alleles occur more than once in any study, otherwise `False`.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    grouped = df.groupby([datasetID,&#39;allele&#39;])
+    # Are allele alleles unique? i.e. do any occur multiple times in grouping?
+    unique = grouped.size()[grouped.size()&gt;1].empty
+    if not unique:
+        print(f&#34;Non unique alleles in study, is datasetID correct? {datasetID}&#34;)
+        print(grouped.size()[grouped.size()&gt;1])
+    return unique
+
+def duplicated_sample_size(AFtab):
+    &#34;&#34;&#34;Returns True if any loci has more than 1 unique sample size&#34;&#34;&#34;
+    locus_sample_sizes = AFtab.groupby(&#39;loci&#39;).sample_size.apply(lambda x: len(x.unique()))
+    return any(locus_sample_sizes != 1)
+
+def id_duplicated_allele(grouped):
+    &#34;&#34;&#34; Reports the allele that has mupltiple sample sizes &#34;&#34;&#34;
+    duplicated_population = grouped.population.apply(lambda x: any(x.duplicated()))
+    assert all(~duplicated_population), &#34;duplicated population within allele %s&#34; %duplicated_population[duplicated_population].index.tolist()
+
+def population_coverage(p):
+    &#34;&#34;&#34;Calculate the proportion of people with at least 1 copy of this allele
+        assuming HWE.
+
+    Args:
+        p (float): Allele frequency
+
+    Returns:
+        float: Sum of homozygotes and heterozygotes for this allele
+    &#34;&#34;&#34;
+    q = 1-p
+    homo = p**2
+    hetero = 2*p*q
+    return homo + hetero
+
+def betaAB(alpha):
+    &#34;&#34;&#34;Given the alpha vector defining a Dirichlet distribution calculate the a b values for all composite beta distributions.
+
+    Args:
+        alpha (list): Values defining a Dirichlet distribution. This will be the prior (for a naive distribution) or the prior + caf.c for a posterior distribution.
+
+    Returns:
+        list: List of a b values defining beta values, i.e. for each allele it is the number of times it was and wasn&#39;t observed.
+    &#34;&#34;&#34;
+    ab = [(a,sum(alpha)-a) for a in alpha]
+    return ab
+
+def betaCI(a,b,credible_interval=0.95):
+    &#34;&#34;&#34;Calculat the central credible interval of a beta distribution
+
+    Args:
+        a (float): Beta shape parameter `a`, i.e. the number of times the allele was observed.
+        b (float): Beta shape parameter `b`, i.e. the number of times the allele was not observed.
+        credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
+
+    Returns:
+        tuple: Lower and upper credible interval of beta distribution.
+    &#34;&#34;&#34;
+    bd = beta(a,b)
+    lower_quantile = (1-credible_interval)/2
+    upper_quantile = 1-lower_quantile
+    lower_interval = bd.ppf(lower_quantile)
+    upper_interval = bd.ppf(upper_quantile)
+    return lower_interval, upper_interval
+
+def AFci(caf, credible_interval=0.95):
+    &#34;&#34;&#34;Calculate credible interval for combined allele frequency table
+
+    Args:
+        caf (pd.DataFrame): Table produced by combineAF()
+        credible_interval (float, optional): The desired confidence interval. Defaults to 0.95.
+
+    Returns:
+        list: Lower and upper credible intervals as a list of tuples
+    &#34;&#34;&#34;
+    ab = betaAB(
+        caf.alpha + caf.c,
+    )
+    ci = [betaCI(a, b, credible_interval) for a,b in ab]
+    return ci
+
+def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID=&#34;population&#34;, concentration=[], log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[]):
+    &#34;&#34;&#34;Plot the posterior density function of all frequencies
+        for all alleles based on concentration for Dirichlet
+        distribution. Supply AFtab to add empirical values to plot.
+
+    Args:
+        caf (pd.DataFrame, optional): Combined allele frequence data produced by combineAF(). Defaults to pd.DataFrame().
+        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by combinedAF(). You must use the same dataframe as this function doesn&#39;t have the error checking that combineAF() has. Defaults to pd.DataFrame().
+        datasetID (str, optional): The column used to define datasets. Defaults to &#34;population&#34;.
+        concentration (pd.Series, optional): Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False
+        log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
+        psteps (int, optional): Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
+        ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
+        xmin (float, optional): Set x axis min. Defaults to -0.05.
+        xmax (float, optional): Set x axis max. Defaults to 1.05.
+        ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
+        alleles (list, optional): List of alleles to plot. Plots all if none supplied. Defaults to [].
+    &#34;&#34;&#34;
+    def allele_mask(alleles, concentration):
+        &#34;&#34;&#34;Create boolean mask either to keep only supplied `alleles`. If empty keep all.
+
+        Args:
+            alleles (list): list of alleles
+            concentration (list): Dirichlet concentration
+
+        Returns:
+            list: List of booleans to use as mask
+        &#34;&#34;&#34;
+        assert isinstance(alleles, list), f&#34;alleles must be a list, not {type(alleles)}&#34;
+        if not alleles:
+            mask = [True] * len(concentration)
+        else:
+            mask = caf.allele.isin(alleles)
+        return mask
+
+    if not concentration:
+        concentration = caf.alpha + caf.c
+    # Get beta parameters for each k in Dirichlet
+    ab = betaAB(concentration)
+    pline = np.linspace(0,1,psteps)
+    if not AFtab.empty:
+        # Format the population allele frequencies
+        df = AFtab.copy()
+        df = unmeasured_alleles(df, datasetID=datasetID)
+        df = df.sort_values(&#39;allele&#39;)
+        assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), &#34;Alleles not matching between AFtab and caf&#34;
+    mask = allele_mask(alleles, concentration)
+    fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol, sharex=True)
+    # Only indexes that pass the mask
+    masked_indexes = [i for i,x in enumerate(mask) if x]
+    for subploti,i in enumerate(masked_indexes):
+        subplotselector = subploti//ncol, subploti%ncol
+        a,b = ab[i]
+        bd = beta(a,b)
+        if log:
+            pdf = [bd.logpdf(p) for p in pline]
+        else:
+            with warnings.catch_warnings():
+                warnings.simplefilter(&#34;ignore&#34;)
+                pdf = [bd.pdf(p) for p in pline]
+        ax = axs[subplotselector]
+        ax.set_xlim(xmin,xmax)
+        if not AFtab.empty:
+            # Add the empirical allele frequency for each population
+            for af in df.groupby(datasetID).allele_freq.apply(list).apply(lambda x: x[i]):
+                # x is the reported allele freq, y is it&#39;s pdf with scatter
+                if log:
+                    ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
+                else:
+                    ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
+        ax.plot(pline, pdf)
+        # Annotate with allele
+        if not caf.empty:
+            ax.text((xmax-xmin)/2, max(pdf)/2, f&#34;{caf.allele.iloc[i]}&#34;)
+        # Annotate with concentration
+        # ax.text(0.5, max(pdf)/3, f&#34;Concentration {round(concentration.iloc[i])}&#34;)
+        if not caf.empty:
+            # Plot the combined average
+            ax.axvline(caf.allele_freq[i], color=&#34;black&#34;, ls=&#34;--&#34;)
+        if ci:
+            cl,cu = betaCI(a,b, ci)
+            ax.axvline(cl, color=&#34;black&#34;, linestyle=&#34;dotted&#34;)
+            ax.axvline(cu, color=&#34;black&#34;, linestyle=&#34;dotted&#34;)
+        # fig.tight_layout()
+    plt.show()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="HLAfreq.HLAfreq.AFci"><code class="name flex">
+<span>def <span class="ident">AFci</span></span>(<span>caf, credible_interval=0.95)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate credible interval for combined allele frequency table</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>caf</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Table produced by combineAF()</dd>
+<dt><strong><code>credible_interval</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>The desired confidence interval. Defaults to 0.95.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Lower and upper credible intervals as a list of tuples</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def AFci(caf, credible_interval=0.95):
+    &#34;&#34;&#34;Calculate credible interval for combined allele frequency table
+
+    Args:
+        caf (pd.DataFrame): Table produced by combineAF()
+        credible_interval (float, optional): The desired confidence interval. Defaults to 0.95.
+
+    Returns:
+        list: Lower and upper credible intervals as a list of tuples
+    &#34;&#34;&#34;
+    ab = betaAB(
+        caf.alpha + caf.c,
+    )
+    ci = [betaCI(a, b, credible_interval) for a,b in ab]
+    return ci</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.Npages"><code class="name flex">
+<span>def <span class="ident">Npages</span></span>(<span>bs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>How many pages of results are there?</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bs</code></strong> :&ensp;<code>bs4.BeautifulSoup</code></dt>
+<dd>BS object of allelefrequencies.net results page</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Total number of results pages</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Npages(bs):
+    &#34;&#34;&#34;How many pages of results are there?
+
+    Args:
+        bs (bs4.BeautifulSoup): BS object of allelefrequencies.net results page
+
+    Returns:
+        int: Total number of results pages
+    &#34;&#34;&#34;
+    # Get the table with number of pages
+    navtab = bs.find(&#39;div&#39;, {&#39;id&#39;: &#39;divGenNavig&#39;}).find(&#39;table&#39;, {&#39;class&#39;: &#39;table10&#39;})
+    assert navtab, f&#34;navtab does not evaluate to True. Check URL returns results in web browser.&#34;
+    # Get cell with &#39; of &#39; in 
+    pagesOfN = [td.get_text(strip=True) for td in navtab.find_all(&#39;td&#39;) if &#34; of &#34; in td.text]
+    # Check single cell returned
+    assert len(pagesOfN) == 1, &#34;divGenNavig should contain 1 of not %s&#34; %len(pagesOfN)
+    # Get total number of pages
+    N = pagesOfN[0].split(&#34;of &#34;)[1]
+    N = int(N)
+    return N</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.alleles_unique_in_study"><code class="name flex">
+<span>def <span class="ident">alleles_unique_in_study</span></span>(<span>AFtab, datasetID='population')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Are all alleles unique in each study? Checks that no alleles are reported more than once in a single study. Study is defined by <code>datasetID</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Allele frequency data</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Unique identifier column to define study. Defaults to 'population'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> on if no alleles occur more than once in any study, otherwise <code>False</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def alleles_unique_in_study(AFtab, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Are all alleles unique in each study? Checks that no alleles are reported more than once in a single study. Study is defined by `datasetID`.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data
+        datasetID (str, optional): Unique identifier column to define study. Defaults to &#39;population&#39;.
+
+    Returns:
+        bool: `True` on if no alleles occur more than once in any study, otherwise `False`.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    grouped = df.groupby([datasetID,&#39;allele&#39;])
+    # Are allele alleles unique? i.e. do any occur multiple times in grouping?
+    unique = grouped.size()[grouped.size()&gt;1].empty
+    if not unique:
+        print(f&#34;Non unique alleles in study, is datasetID correct? {datasetID}&#34;)
+        print(grouped.size()[grouped.size()&gt;1])
+    return unique</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.betaAB"><code class="name flex">
+<span>def <span class="ident">betaAB</span></span>(<span>alpha)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Given the alpha vector defining a Dirichlet distribution calculate the a b values for all composite beta distributions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>list</code></dt>
+<dd>Values defining a Dirichlet distribution. This will be the prior (for a naive distribution) or the prior + caf.c for a posterior distribution.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of a b values defining beta values, i.e. for each allele it is the number of times it was and wasn't observed.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def betaAB(alpha):
+    &#34;&#34;&#34;Given the alpha vector defining a Dirichlet distribution calculate the a b values for all composite beta distributions.
+
+    Args:
+        alpha (list): Values defining a Dirichlet distribution. This will be the prior (for a naive distribution) or the prior + caf.c for a posterior distribution.
+
+    Returns:
+        list: List of a b values defining beta values, i.e. for each allele it is the number of times it was and wasn&#39;t observed.
+    &#34;&#34;&#34;
+    ab = [(a,sum(alpha)-a) for a in alpha]
+    return ab</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.betaCI"><code class="name flex">
+<span>def <span class="ident">betaCI</span></span>(<span>a, b, credible_interval=0.95)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculat the central credible interval of a beta distribution</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>a</code></strong> :&ensp;<code>float</code></dt>
+<dd>Beta shape parameter <code>a</code>, i.e. the number of times the allele was observed.</dd>
+<dt><strong><code>b</code></strong> :&ensp;<code>float</code></dt>
+<dd>Beta shape parameter <code>b</code>, i.e. the number of times the allele was not observed.</dd>
+<dt><strong><code>credible_interval</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>The size of the credible interval requested. Defaults to 0.95.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code></dt>
+<dd>Lower and upper credible interval of beta distribution.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def betaCI(a,b,credible_interval=0.95):
+    &#34;&#34;&#34;Calculat the central credible interval of a beta distribution
+
+    Args:
+        a (float): Beta shape parameter `a`, i.e. the number of times the allele was observed.
+        b (float): Beta shape parameter `b`, i.e. the number of times the allele was not observed.
+        credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
+
+    Returns:
+        tuple: Lower and upper credible interval of beta distribution.
+    &#34;&#34;&#34;
+    bd = beta(a,b)
+    lower_quantile = (1-credible_interval)/2
+    upper_quantile = 1-lower_quantile
+    lower_interval = bd.ppf(lower_quantile)
+    upper_interval = bd.ppf(upper_quantile)
+    return lower_interval, upper_interval</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.check_resolution"><code class="name flex">
+<span>def <span class="ident">check_resolution</span></span>(<span>AFtab)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if all alleles in AFtab have the same resolution.
+Will print the number of records with each resolution.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Allele frequency data</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True only if all alleles have the same resolution, else False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_resolution(AFtab):
+    &#34;&#34;&#34;Check if all alleles in AFtab have the same resolution.
+    Will print the number of records with each resolution.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data
+
+    Returns:
+        bool: True only if all alleles have the same resolution, else False.
+    &#34;&#34;&#34;
+    resolution = 1 + AFtab.allele.str.count(&#34;:&#34;)
+    resVC = resolution.value_counts()
+    pass_check = len(resVC) == 1
+    if not pass_check:
+        print(resVC)
+        print(f&#34;Multiple resolutions in AFtab. Fix with decrease_resolution()&#34;)
+    return pass_check</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.collapse_reduced_alleles"><code class="name flex">
+<span>def <span class="ident">collapse_reduced_alleles</span></span>(<span>AFtab, datasetID='population')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def collapse_reduced_alleles(AFtab, datasetID=&#39;population&#39;):
+    df = AFtab.copy()
+    # Group by alleles within datasets
+    grouped = df.groupby([datasetID,&#39;allele&#39;])
+    # Sum allele freq but keep other columns
+    collapsed = grouped.apply(
+        lambda row: [
+            sum(row.allele_freq),
+            row.sample_size.unique()[0],
+            row.loci.unique()[0],
+            len(row.loci.unique()),
+            len(row.sample_size.unique())
+        ]
+    )
+    collapsed = pd.DataFrame(
+        collapsed.tolist(),
+        index=collapsed.index,
+        columns = [&#39;allele_freq&#39;, &#39;sample_size&#39;, &#39;loci&#39;, &#39;#loci&#39;, &#39;#sample_sizes&#39;]
+    ).reset_index()
+    # Within a study each all identical alleles should have the same loci and sample size
+    assert all(collapsed[&#39;#loci&#39;] == 1), &#34;Multiple loci found for a single allele in a single population&#34;
+    assert all(collapsed[&#39;#sample_sizes&#39;] == 1), &#34;Multiple sample_sizes found for a single allele in a single population&#34;
+    collapsed = collapsed[[&#39;allele&#39;, &#39;loci&#39;,&#39;population&#39;,&#39;allele_freq&#39;,&#39;sample_size&#39;]]
+    alleles_unique_in_study(collapsed)
+    return collapsed</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.combineAF"><code class="name flex">
+<span>def <span class="ident">combineAF</span></span>(<span>AFtab, weights='2n', alpha=[], datasetID='population', format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Combine allele frequencies from multiple studies. <code>datasetID</code> is the unique identifier for studies to combine.
+Allele frequencies combined using a Dirichlet distribution where each study's contribution to the concentration parameter is $2 * sample_size * allele_frequency$.
+Sample size is doubled to get <code>2n</code> due to diploidy. If an alternative <code>weights</code> is set it is not doubled.
+The total concentration parameter of the Dirichlet distribution is the contributions from all studies plus the prior <code>alpha</code>.
+If <code>alpha</code> is not set the prior defaults to 1 observation of each allele.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Table of Allele frequency data</dd>
+<dt><strong><code>weights</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>Prior to use for Dirichlet distribution. Defaults to [].</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Unique identifier column for study. Defaults to 'population'.</dd>
+<dt><strong><code>format</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Run <code><a title="HLAfreq.HLAfreq.formatAF" href="#HLAfreq.HLAfreq.formatAF">formatAF()</a></code>. Defaults to True.</dd>
+<dt><strong><code>ignoreG</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Treat allele G groups as normal, see <code><a title="HLAfreq.HLAfreq.formatAF" href="#HLAfreq.HLAfreq.formatAF">formatAF()</a></code>. Defaults to True.</dd>
+<dt><strong><code>add_unmeasured</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Add unmeasured alleles to each study. This is important to ensure combined allele frequencies sum to 1. See <code>add_unmeasured()</code>. Defaults to True.</dd>
+<dt><strong><code>complete</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Check study completeness. Uses default values for <code><a title="HLAfreq.HLAfreq.incomplete_studies" href="#HLAfreq.HLAfreq.incomplete_studies">incomplete_studies()</a></code>. If you are happy with your study completeness can be switched off with False. Defaults to True.</dd>
+<dt><strong><code>resolution</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Check that all alleles have the same resolution, see <code><a title="HLAfreq.HLAfreq.check_resolution" href="#HLAfreq.HLAfreq.check_resolution">check_resolution()</a></code>. Defaults to True.</dd>
+<dt><strong><code>unique</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Check that each allele appears no more than once per study. See <code><a title="HLAfreq.HLAfreq.alleles_unique_in_study" href="#HLAfreq.HLAfreq.alleles_unique_in_study">alleles_unique_in_study()</a></code>. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>Allele frequencies after combining estimates from all studies.</dd>
+</dl>
+<p><em>allele_freq</em> is the combined frequency estimate from the Dirichlet mean where the concentration is <code>alpha</code> + <code>c</code>.
+<em>alpha</em> is the prior used for the Dirichlet distribution.
+<em>c</em> is the observations used for the Dirichlet distribution.
+<em>sample_size</em> is the total sample size of all combined studies.
+<em>wav</em> is the weighted average.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def combineAF(AFtab, weights=&#39;2n&#39;, alpha = [], datasetID=&#39;population&#39;, format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
+    &#34;&#34;&#34;Combine allele frequencies from multiple studies. `datasetID` is the unique identifier for studies to combine.
+    Allele frequencies combined using a Dirichlet distribution where each study&#39;s contribution to the concentration parameter is $2 * sample_size * allele_frequency$.
+    Sample size is doubled to get `2n` due to diploidy. If an alternative `weights` is set it is not doubled.
+    The total concentration parameter of the Dirichlet distribution is the contributions from all studies plus the prior `alpha`.
+    If `alpha` is not set the prior defaults to 1 observation of each allele.
+
+    Args:
+        AFtab (pd.DataFrame): Table of Allele frequency data
+        weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to &#39;2n&#39;.
+        alpha (list, optional): Prior to use for Dirichlet distribution. Defaults to [].
+        datasetID (str, optional): Unique identifier column for study. Defaults to &#39;population&#39;.
+        format (bool, optional): Run `formatAF()`. Defaults to True.
+        ignoreG (bool, optional): Treat allele G groups as normal, see `formatAF()`. Defaults to True.
+        add_unmeasured (bool, optional): Add unmeasured alleles to each study. This is important to ensure combined allele frequencies sum to 1. See `add_unmeasured()`. Defaults to True.
+        complete (bool, optional): Check study completeness. Uses default values for `incomplete_studies()`. If you are happy with your study completeness can be switched off with False. Defaults to True.
+        resolution (bool, optional): Check that all alleles have the same resolution, see `check_resolution()`. Defaults to True.
+        unique (bool, optional): Check that each allele appears no more than once per study. See `alleles_unique_in_study()`. Defaults to True.
+
+    Returns:
+        pd.DataFrame: Allele frequencies after combining estimates from all studies.
+        *allele_freq* is the combined frequency estimate from the Dirichlet mean where the concentration is `alpha` + `c`.
+        *alpha* is the prior used for the Dirichlet distribution.
+        *c* is the observations used for the Dirichlet distribution.
+        *sample_size* is the total sample size of all combined studies.
+        *wav* is the weighted average.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    single_loci(df)
+    if unique:
+        assert alleles_unique_in_study(df, datasetID=datasetID), &#34;The same allele appears multiple times in a dataset&#34;
+    if complete:
+        assert incomplete_studies(df, datasetID=datasetID).empty, &#34;AFtab contains studies with AF that doesn&#39;t sum to 1. Check incomplete_studies(AFtab)&#34;
+    if resolution:
+        assert check_resolution(df), &#34;AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)&#34;
+    if format:
+        df = formatAF(df, ignoreG)
+    if add_unmeasured:
+        df = unmeasured_alleles(df, datasetID)
+    try:
+        df[&#39;2n&#39;] = df.sample_size * 2
+    except:
+        print(&#34;column &#39;2n&#39; could not be created&#34;)
+    df[&#39;c&#39;] =  df.allele_freq * df[weights]
+    grouped = df.groupby(&#39;allele&#39;, sort=True)
+    combined = grouped.apply(
+        lambda row: [
+        row.name,
+        row.loci.unique()[0],
+        np.average(row.allele_freq, weights=row[weights]),
+        row.c.sum(),
+        row.sample_size.sum()
+        ]
+    )
+    combined = pd.DataFrame(
+        combined.tolist(),
+        columns = [&#39;allele&#39;, &#39;loci&#39;,
+            &#39;wav&#39;,
+            &#39;c&#39;, &#39;sample_size&#39;]
+    )
+    combined = combined.reset_index(drop=True)
+    # Check that all alleles in a locus have the same sample size
+    # after merging
+    if duplicated_sample_size(combined):
+        id_duplicated_allele(grouped)
+    if not alpha:
+        alpha = default_prior(len(combined.allele))
+    combined[&#39;alpha&#39;] = alpha
+    # Calculate Dirichlet mean for each allele
+    combined[&#39;allele_freq&#39;] = dirichlet(combined.alpha + combined.c).mean()
+
+    return combined</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.decrease_resolution"><code class="name flex">
+<span>def <span class="ident">decrease_resolution</span></span>(<span>AFtab, newres, datasetID='population')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Decrease allele resolution to a specified value so all alleles have the same resolution.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Allele frequency data.</dd>
+<dt><strong><code>newres</code></strong> :&ensp;<code>int</code></dt>
+<dd>The desired number of fields for resolution.</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Column to use as stud identifier. Defaults to 'population'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>Allele frequency data with all alleles of requested resolution.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def decrease_resolution(AFtab, newres, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Decrease allele resolution to a specified value so all alleles have the same resolution.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data.
+        newres (int): The desired number of fields for resolution.
+        datasetID (str, optional): Column to use as stud identifier. Defaults to &#39;population&#39;.
+
+    Returns:
+        pd.DataFrame: Allele frequency data with all alleles of requested resolution.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    resolution = 1 + df.allele.str.count(&#34;:&#34;)
+    assert all(resolution &gt;= newres), f&#34;Some alleles have resolution below {newres} fields&#34;
+    new_allele = df.allele.str.split(&#34;:&#34;).apply(lambda x: &#34;:&#34;.join(x[:newres]))
+    df.allele = new_allele
+    collapsed = collapse_reduced_alleles(df, datasetID=datasetID)
+    return collapsed</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.default_prior"><code class="name flex">
+<span>def <span class="ident">default_prior</span></span>(<span>k)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate a default prior, 1 observation of each class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>k</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of classes in the Dirichlet distribution.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of k 1s to use as prior.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def default_prior(k):
+    &#34;&#34;&#34;Calculate a default prior, 1 observation of each class.
+
+    Args:
+        k (int): Number of classes in the Dirichlet distribution.
+
+    Returns:
+        list: List of k 1s to use as prior.
+    &#34;&#34;&#34;
+    alpha = [1] * k
+    return alpha</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.duplicated_sample_size"><code class="name flex">
+<span>def <span class="ident">duplicated_sample_size</span></span>(<span>AFtab)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns True if any loci has more than 1 unique sample size</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def duplicated_sample_size(AFtab):
+    &#34;&#34;&#34;Returns True if any loci has more than 1 unique sample size&#34;&#34;&#34;
+    locus_sample_sizes = AFtab.groupby(&#39;loci&#39;).sample_size.apply(lambda x: len(x.unique()))
+    return any(locus_sample_sizes != 1)</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.formatAF"><code class="name flex">
+<span>def <span class="ident">formatAF</span></span>(<span>AFtab, ignoreG=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Format allele frequency table.
+Convert sample_size and allele_freq to numeric data type.
+Removes commas from sample size. Removes "(*)" from allele frequency if
+<code>ignoreG</code> is <code>True</code>. <code><a title="HLAfreq.HLAfreq.formatAF" href="#HLAfreq.HLAfreq.formatAF">formatAF()</a></code> is used internally by combineAF and getAFdata by default.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Allele frequency data downloaded from allelefrequency.net using <code><a title="HLAfreq.HLAfreq.getAFdata" href="#HLAfreq.HLAfreq.getAFdata">getAFdata()</a></code>.</dd>
+<dt><strong><code>ignoreG</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Treat G group alleles as normal. See <a href="http://hla.alleles.org/alleles/g_groups.html">http://hla.alleles.org/alleles/g_groups.html</a> for details. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>The formatted allele frequency data.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def formatAF(AFtab, ignoreG=True):
+    &#34;&#34;&#34;Format allele frequency table.
+    Convert sample_size and allele_freq to numeric data type.
+    Removes commas from sample size. Removes &#34;(*)&#34; from allele frequency if 
+    `ignoreG` is `True`. `formatAF()` is used internally by combineAF and getAFdata by default.
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data downloaded from allelefrequency.net using `getAFdata()`.
+        ignoreG (bool, optional): Treat G group alleles as normal. See http://hla.alleles.org/alleles/g_groups.html for details. Defaults to True.
+
+    Returns:
+        pd.DataFrame: The formatted allele frequency data.
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    if df.sample_size.dtype == &#34;O&#34;:
+        df.sample_size = pd.to_numeric(df.sample_size.str.replace(&#34;,&#34;, &#34;&#34;))
+    if df.allele_freq.dtype == &#34;O&#34;:
+        if ignoreG:
+            df.allele_freq = df.allele_freq.str.replace(&#34;(*)&#34;, &#34;&#34;, regex=False)
+        df.allele_freq = pd.to_numeric(df.allele_freq)
+    return df</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.getAFdata"><code class="name flex">
+<span>def <span class="ident">getAFdata</span></span>(<span>base_url, format=True, ignoreG=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get all allele frequency data from a search base url. Iterates over all
+pages regardless of which page is based.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>base_url</code></strong> :&ensp;<code>str</code></dt>
+<dd>URL for base search.</dd>
+<dt><strong><code>format</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Format the downloaded data using <code><a title="HLAfreq.HLAfreq.formatAF" href="#HLAfreq.HLAfreq.formatAF">formatAF()</a></code>.</dd>
+<dt><strong><code>ignoreG</code></strong> :&ensp;<code>bool</code></dt>
+<dd>treat allele G groups as normal. See <a href="http://hla.alleles.org/alleles/g_groups.html">http://hla.alleles.org/alleles/g_groups.html</a> for details. Default = True</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>allele frequency data parsed into a pandas dataframe</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getAFdata(base_url, format=True, ignoreG=True):
+    &#34;&#34;&#34;Get all allele frequency data from a search base url. Iterates over all
+        pages regardless of which page is based.
+
+    Args:
+        base_url (str): URL for base search.
+        format (bool): Format the downloaded data using `formatAF()`.
+        ignoreG (bool): treat allele G groups as normal. See http://hla.alleles.org/alleles/g_groups.html for details. Default = True
+
+    Returns:
+        pd.DataFrame: allele frequency data parsed into a pandas dataframe
+    &#34;&#34;&#34;
+    # Get BS object from base search
+    bs = BeautifulSoup(requests.get(base_url).text, &#39;html.parser&#39;)
+    # How many pages of results
+    N = Npages(bs)
+    print(&#34;%s pages of results&#34; %N)
+    # iterate over pages, parse and combine data from each
+    tabs = []
+    for i in range(N):
+        # print (&#34; Parsing page %s&#34; %(i+1))
+        print (&#34; Parsing page %s&#34; %(i+1), end=&#34;\r&#34;)
+        url = base_url + &#34;page=&#34; + str(i+1)
+        bs = BeautifulSoup(requests.get(url).text, &#39;html.parser&#39;)
+        tab = parseAF(bs)
+        tabs.append(tab)
+    print(&#34;Download complete&#34;)
+    tabs = pd.concat(tabs)
+    if format:
+        try:
+            tabs = formatAF(tabs, ignoreG)
+        except:
+            print(&#34;Formatting failed, non-numeric datatypes may remain.&#34;)
+    return tabs</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.id_duplicated_allele"><code class="name flex">
+<span>def <span class="ident">id_duplicated_allele</span></span>(<span>grouped)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reports the allele that has mupltiple sample sizes</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def id_duplicated_allele(grouped):
+    &#34;&#34;&#34; Reports the allele that has mupltiple sample sizes &#34;&#34;&#34;
+    duplicated_population = grouped.population.apply(lambda x: any(x.duplicated()))
+    assert all(~duplicated_population), &#34;duplicated population within allele %s&#34; %duplicated_population[duplicated_population].index.tolist()</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.incomplete_studies"><code class="name flex">
+<span>def <span class="ident">incomplete_studies</span></span>(<span>AFtab, llimit=0.95, ulimit=1.1, datasetID='population')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Report any studies with allele freqs that don't sum to 1</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Dataframe containing multiple studies</dd>
+<dt><strong><code>llimit</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Lower allele_freq sum limit that counts as complete. Defaults to 0.95.</dd>
+<dt><strong><code>ulimit</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Upper allele_freq sum limit that will not be reported. Defaults to 1.1.</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier column for study</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Report any studies with allele freqs that don&#39;t sum to 1
+
+    Args:
+        AFtab (pd.DataFrame): Dataframe containing multiple studies
+        llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
+        ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+        datasetID (str): Unique identifier column for study
+    &#34;&#34;&#34;
+    poplocs = AFtab.groupby([datasetID, &#39;loci&#39;]).allele_freq.sum()
+    lmask = poplocs &lt; llimit
+    if sum(lmask&gt;0):
+        print(poplocs[lmask])
+        print(f&#34;{sum(lmask)} studies have total allele frequency &lt; {llimit}&#34;)
+    umask = poplocs &gt; ulimit
+    if sum(umask&gt;0):
+        print(poplocs[umask])
+        print(f&#34;{sum(umask)} studies have total allele frequency &gt; {ulimit}&#34;)
+    incomplete = pd.concat([poplocs[lmask], poplocs[umask]])
+    return incomplete</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.makeURL"><code class="name flex">
+<span>def <span class="ident">makeURL</span></span>(<span>country='', standard='s', locus='', resolution_pattern='bigger_equal_than', resolution=2, region='', ethnic='', study_type='', dataset_source='', sample_year='', sample_year_pattern='', sample_size='', sample_size_pattern='')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create URL for search of allele frequency net database. All arguments are documented <a href="http://www.allelefrequencies.net/extaccess.asp">here</a></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>country</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Country name to retrieve records from. Defaults to "".</dd>
+<dt><strong><code>standard</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filter study quality standard to this or higher. {'g', 's', 'a'} Gold, silver, all. Defaults to 's'.</dd>
+<dt><strong><code>locus</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The locus to return allele data for. Defaults to "".</dd>
+<dt><strong><code>resolution_pattern</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Resolution comparitor {'equal', 'different', 'less_than', 'bigger_than', 'less_equal_than', 'bigger_equal_than'}. Filter created using <code>resolution</code> and <code>resolution_pattern</code>. Defaults to "bigger_equal_than".</dd>
+<dt><strong><code>resolution</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of fields of resolution of allele. Filter created using <code>resolution</code> and <code>resolution_pattern</code>. Defaults to 2.</dd>
+<dt><strong><code>region</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filter to geographic region. {Asia, Australia, Eastern Europe, &hellip;}. All regions listed <a href="http://www.allelefrequencies.net/pop6003a.asp">here</a>. Defaults to "".</dd>
+<dt><strong><code>ethnic</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Filter to ethnicity. {"Amerindian", "Black", "Caucasian", &hellip;}. All ethnicities listed <a href="http://www.allelefrequencies.net/pop6003a.asp">here</a>. Defaults to "".</dd>
+<dt><strong><code>study_type</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Type of study. {"Anthropology", "Blood+Donor", "Bone+Marrow+Registry", "Controls+for+Disease+Study", "Disease+Study+Patients", "Other", "Solid+Organd+Unrelated+Donors", "Stem+cell+donors"}. Defaults to "".</dd>
+<dt><strong><code>dataset_source</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Source of data. {"Literature", "Proceedings+of+IHWs", "Unpublished"}. Defaults to "".</dd>
+<dt><strong><code>sample_year</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Sample year to compare to. Filter created using sample_year and sample_year_pattern. Defaults to "".</dd>
+<dt><strong><code>sample_year_pattern</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Pattern to compare sample year to. Filter created using sample_year and sample_year_pattern. {'equal', 'different', 'less_than', 'bigger_than', 'less_equal_than', 'bigger_equal_than'}. Defaults to "".</dd>
+<dt><strong><code>sample_size</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Sample size to compare to. Filter created using sample_size and sample_size_pattern. Defaults to "".</dd>
+<dt><strong><code>sample_size_pattern</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Pattern to compare sample size to. Filter created using sample_size and sample_size_pattern. {'equal', 'different', 'less_than', 'bigger_than', 'less_equal_than', 'bigger_equal_than'}. Defaults to "".</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>URL to search allelefrequencies.net</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def makeURL(
+        country=&#34;&#34;,
+        standard=&#39;s&#39;,
+        locus=&#34;&#34;,
+        resolution_pattern=&#34;bigger_equal_than&#34;,
+        resolution=2,
+        region=&#34;&#34;,
+        ethnic=&#34;&#34;,
+        study_type=&#34;&#34;,
+        dataset_source=&#34;&#34;,
+        sample_year=&#34;&#34;,
+        sample_year_pattern=&#34;&#34;,
+        sample_size=&#34;&#34;,
+        sample_size_pattern=&#34;&#34;
+    ):
+    &#34;&#34;&#34;Create URL for search of allele frequency net database. All arguments are documented [here](http://www.allelefrequencies.net/extaccess.asp)
+    Args:
+        country (str, optional): Country name to retrieve records from. Defaults to &#34;&#34;.
+        standard (str, optional): Filter study quality standard to this or higher. {&#39;g&#39;, &#39;s&#39;, &#39;a&#39;} Gold, silver, all. Defaults to &#39;s&#39;.
+        locus (str, optional): The locus to return allele data for. Defaults to &#34;&#34;.
+        resolution_pattern (str, optional): Resolution comparitor {&#39;equal&#39;, &#39;different&#39;, &#39;less_than&#39;, &#39;bigger_than&#39;, &#39;less_equal_than&#39;, &#39;bigger_equal_than&#39;}. Filter created using `resolution` and `resolution_pattern`. Defaults to &#34;bigger_equal_than&#34;.
+        resolution (int, optional): Number of fields of resolution of allele. Filter created using `resolution` and `resolution_pattern`. Defaults to 2.
+        region (str, optional): Filter to geographic region. {Asia, Australia, Eastern Europe, ...}. All regions listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to &#34;&#34;.
+        ethnic (str, optional): Filter to ethnicity. {&#34;Amerindian&#34;, &#34;Black&#34;, &#34;Caucasian&#34;, ...}. All ethnicities listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to &#34;&#34;.
+        study_type (str, optional): Type of study. {&#34;Anthropology&#34;, &#34;Blood+Donor&#34;, &#34;Bone+Marrow+Registry&#34;, &#34;Controls+for+Disease+Study&#34;, &#34;Disease+Study+Patients&#34;, &#34;Other&#34;, &#34;Solid+Organd+Unrelated+Donors&#34;, &#34;Stem+cell+donors&#34;}. Defaults to &#34;&#34;.
+        dataset_source (str, optional): Source of data. {&#34;Literature&#34;, &#34;Proceedings+of+IHWs&#34;, &#34;Unpublished&#34;}. Defaults to &#34;&#34;.
+        sample_year (int, optional): Sample year to compare to. Filter created using sample_year and sample_year_pattern. Defaults to &#34;&#34;.
+        sample_year_pattern (str, optional): Pattern to compare sample year to. Filter created using sample_year and sample_year_pattern. {&#39;equal&#39;, &#39;different&#39;, &#39;less_than&#39;, &#39;bigger_than&#39;, &#39;less_equal_than&#39;, &#39;bigger_equal_than&#39;}. Defaults to &#34;&#34;.
+        sample_size (int, optional): Sample size to compare to. Filter created using sample_size and sample_size_pattern. Defaults to &#34;&#34;.
+        sample_size_pattern (str, optional): Pattern to compare sample size to. Filter created using sample_size and sample_size_pattern. {&#39;equal&#39;, &#39;different&#39;, &#39;less_than&#39;, &#39;bigger_than&#39;, &#39;less_equal_than&#39;, &#39;bigger_equal_than&#39;}. Defaults to &#34;&#34;.
+
+    Returns:
+        str: URL to search allelefrequencies.net
+    &#34;&#34;&#34;
+    base = &#34;http://www.allelefrequencies.net/hla6006a.asp?&#34;
+    locus_type = &#34;hla_locus_type=Classical&amp;&#34;
+    hla_locus = &#34;hla_locus=%s&amp;&#34; %(locus)
+    country = &#34;hla_country=%s&amp;&#34; %(country)
+    region = &#34;hla_region=%s&amp;&#34; %(region)
+    ethnic = &#34;hla_ethnic=%s&amp;&#34; %(ethnic)
+    study_type = &#34;hla_study=%s&amp;&#34; %(study_type)
+    dataset_source = &#34;hla_dataset_source=%s&amp;&#34; %(dataset_source)
+    sample_year = &#34;hla_sample_year=%s&amp;&#34; %(sample_year)
+    sample_year_pattern = &#34;hla_sample_year_pattern=%s&amp;&#34; %(sample_year_pattern)
+    sample_size = &#34;hla_sample_size=%s&amp;&#34; %(sample_size)
+    sample_size_pattern = &#34;hla_sample_size_pattern=%s&amp;&#34; %(sample_size_pattern)
+    hla_level_pattern = &#34;hla_level_pattern=%s&amp;&#34; %(resolution_pattern)
+    hla_level = &#34;hla_level=%s&amp;&#34; %(resolution)
+    standard = &#34;standard=%s&amp;&#34; %standard
+    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard + region + ethnic + study_type + dataset_source + sample_year + sample_year_pattern + sample_size + sample_size_pattern
+    return url</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.only_complete"><code class="name flex">
+<span>def <span class="ident">only_complete</span></span>(<span>AFtab, llimit=0.95, ulimit=1.1, datasetID='population')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns only complete studies. Studies are only dropped if their population and loci are in noncomplete together.
+This prevents throwing away data if another loci in the population is incomplete</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Dataframe containing multiple studies</dd>
+<dt><strong><code>llimit</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Lower allele_freq sum limit that counts as complete. Defaults to 0.95.</dd>
+<dt><strong><code>ulimit</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Upper allele_freq sum limit that will not be reported. Defaults to 1.1.</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier column for study. Defaults to 'population'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>Allele frequency data of multiple studies, but only complete studies.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;Returns only complete studies. Studies are only dropped if their population and loci are in noncomplete together.
+    This prevents throwing away data if another loci in the population is incomplete
+
+    Args:
+        AFtab (pd.DataFrame): Dataframe containing multiple studies
+        llimit (float, optional): Lower allele_freq sum limit that counts as complete. Defaults to 0.95.
+        ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
+        datasetID (str): Unique identifier column for study. Defaults to &#39;population&#39;.
+
+    Returns:
+        pd.DataFrame: Allele frequency data of multiple studies, but only complete studies.
+    &#34;&#34;&#34;
+    noncomplete = incomplete_studies(AFtab=AFtab, llimit=llimit, ulimit=ulimit, datasetID=datasetID)
+    # Returns False if population AND loci are in the noncomplete.index
+    # AS A PAIR
+    # This is important so that we don&#39;t throw away all data on a population
+    # just because one loci is incomplete.
+    complete_mask = AFtab.apply(lambda x: (x[datasetID], x.loci) not in noncomplete.index, axis=1)
+    df = AFtab[complete_mask]
+    return df</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.parseAF"><code class="name flex">
+<span>def <span class="ident">parseAF</span></span>(<span>bs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate a dataframe from a given html page</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bs</code></strong> :&ensp;<code>bs4.BeautifulSoup</code></dt>
+<dd>BeautifulSoup object from allelefrequencies.net page</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>Table of allele, allele frequency, samplesize, and population</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parseAF(bs):
+    &#34;&#34;&#34;Generate a dataframe from a given html page
+
+    Args:
+        bs (bs4.BeautifulSoup): BeautifulSoup object from allelefrequencies.net page
+
+    Returns:
+        pd.DataFrame: Table of allele, allele frequency, samplesize, and population
+    &#34;&#34;&#34;
+    # Get the results table from the div `divGenDetail`
+    tab = bs.find(&#39;div&#39;, {&#39;id&#39;: &#39;divGenDetail&#39;}).find(&#39;table&#39;, {&#39;class&#39;: &#39;tblNormal&#39;})
+    # Get the column headers from the first row of the table
+    columns = [
+        &#39;line&#39;, &#39;allele&#39;, &#39;flag&#39;, &#39;population&#39;, &#39;carriers%&#39;,
+        &#39;allele_freq&#39;, &#39;AF_graphic&#39;, &#39;sample_size&#39;, &#39;database&#39;,
+        &#39;distribution&#39;,&#39;haplotype_association&#39;, &#39;notes&#39;
+        ]
+    rows =[]
+    for row in tab.find_all(&#39;tr&#39;):
+        rows.append(
+            [td.get_text(strip=True) for td in row.find_all(&#39;td&#39;)]
+            )
+    # Make dataframe of table rows
+    # skip the first row as it&#39;s `th` headers
+    df = pd.DataFrame(rows[1:], columns = columns)
+
+    # Get HLA loci
+    df[&#39;loci&#39;] = df.allele.apply(lambda x: x.split(&#34;*&#34;)[0])
+
+    # Drop unwanted columns
+    df = df[[&#39;allele&#39;, &#39;loci&#39;, &#39;population&#39;, &#39;allele_freq&#39;, &#39;carriers%&#39;, &#39;sample_size&#39;]]
+    return df</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.plotAFprob"><code class="name flex">
+<span>def <span class="ident">plotAFprob</span></span>(<span>caf=Empty DataFrame
+Columns: []
+Index: [], AFtab=Empty DataFrame
+Columns: []
+Index: [], datasetID='population', concentration=[], log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the posterior density function of all frequencies
+for all alleles based on concentration for Dirichlet
+distribution. Supply AFtab to add empirical values to plot.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>caf</code></strong> :&ensp;<code>pd.DataFrame</code>, optional</dt>
+<dd>Combined allele frequence data produced by combineAF(). Defaults to pd.DataFrame().</dd>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code>, optional</dt>
+<dd>The uncombined allele frequency data used by combinedAF(). You must use the same dataframe as this function doesn't have the error checking that combineAF() has. Defaults to pd.DataFrame().</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The column used to define datasets. Defaults to "population".</dd>
+<dt><strong><code>concentration</code></strong> :&ensp;<code>pd.Series</code>, optional</dt>
+<dd>Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False</dd>
+<dt><strong><code>log</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Plot log pdf instead of pdf? Defaults to False.</dd>
+<dt><strong><code>psteps</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.</dd>
+<dt><strong><code>ncol</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>How many columns to arrange subplots in. Defaults to 2.</dd>
+<dt><strong><code>xmin</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Set x axis min. Defaults to -0.05.</dd>
+<dt><strong><code>xmax</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Set x axis max. Defaults to 1.05.</dd>
+<dt><strong><code>ci</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.</dd>
+<dt><strong><code>alleles</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>List of alleles to plot. Plots all if none supplied. Defaults to [].</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID=&#34;population&#34;, concentration=[], log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[]):
+    &#34;&#34;&#34;Plot the posterior density function of all frequencies
+        for all alleles based on concentration for Dirichlet
+        distribution. Supply AFtab to add empirical values to plot.
+
+    Args:
+        caf (pd.DataFrame, optional): Combined allele frequence data produced by combineAF(). Defaults to pd.DataFrame().
+        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by combinedAF(). You must use the same dataframe as this function doesn&#39;t have the error checking that combineAF() has. Defaults to pd.DataFrame().
+        datasetID (str, optional): The column used to define datasets. Defaults to &#34;population&#34;.
+        concentration (pd.Series, optional): Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False
+        log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
+        psteps (int, optional): Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
+        ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
+        xmin (float, optional): Set x axis min. Defaults to -0.05.
+        xmax (float, optional): Set x axis max. Defaults to 1.05.
+        ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
+        alleles (list, optional): List of alleles to plot. Plots all if none supplied. Defaults to [].
+    &#34;&#34;&#34;
+    def allele_mask(alleles, concentration):
+        &#34;&#34;&#34;Create boolean mask either to keep only supplied `alleles`. If empty keep all.
+
+        Args:
+            alleles (list): list of alleles
+            concentration (list): Dirichlet concentration
+
+        Returns:
+            list: List of booleans to use as mask
+        &#34;&#34;&#34;
+        assert isinstance(alleles, list), f&#34;alleles must be a list, not {type(alleles)}&#34;
+        if not alleles:
+            mask = [True] * len(concentration)
+        else:
+            mask = caf.allele.isin(alleles)
+        return mask
+
+    if not concentration:
+        concentration = caf.alpha + caf.c
+    # Get beta parameters for each k in Dirichlet
+    ab = betaAB(concentration)
+    pline = np.linspace(0,1,psteps)
+    if not AFtab.empty:
+        # Format the population allele frequencies
+        df = AFtab.copy()
+        df = unmeasured_alleles(df, datasetID=datasetID)
+        df = df.sort_values(&#39;allele&#39;)
+        assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), &#34;Alleles not matching between AFtab and caf&#34;
+    mask = allele_mask(alleles, concentration)
+    fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol, sharex=True)
+    # Only indexes that pass the mask
+    masked_indexes = [i for i,x in enumerate(mask) if x]
+    for subploti,i in enumerate(masked_indexes):
+        subplotselector = subploti//ncol, subploti%ncol
+        a,b = ab[i]
+        bd = beta(a,b)
+        if log:
+            pdf = [bd.logpdf(p) for p in pline]
+        else:
+            with warnings.catch_warnings():
+                warnings.simplefilter(&#34;ignore&#34;)
+                pdf = [bd.pdf(p) for p in pline]
+        ax = axs[subplotselector]
+        ax.set_xlim(xmin,xmax)
+        if not AFtab.empty:
+            # Add the empirical allele frequency for each population
+            for af in df.groupby(datasetID).allele_freq.apply(list).apply(lambda x: x[i]):
+                # x is the reported allele freq, y is it&#39;s pdf with scatter
+                if log:
+                    ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
+                else:
+                    ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
+        ax.plot(pline, pdf)
+        # Annotate with allele
+        if not caf.empty:
+            ax.text((xmax-xmin)/2, max(pdf)/2, f&#34;{caf.allele.iloc[i]}&#34;)
+        # Annotate with concentration
+        # ax.text(0.5, max(pdf)/3, f&#34;Concentration {round(concentration.iloc[i])}&#34;)
+        if not caf.empty:
+            # Plot the combined average
+            ax.axvline(caf.allele_freq[i], color=&#34;black&#34;, ls=&#34;--&#34;)
+        if ci:
+            cl,cu = betaCI(a,b, ci)
+            ax.axvline(cl, color=&#34;black&#34;, linestyle=&#34;dotted&#34;)
+            ax.axvline(cu, color=&#34;black&#34;, linestyle=&#34;dotted&#34;)
+        # fig.tight_layout()
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.population_coverage"><code class="name flex">
+<span>def <span class="ident">population_coverage</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the proportion of people with at least 1 copy of this allele
+assuming HWE.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Allele frequency</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Sum of homozygotes and heterozygotes for this allele</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def population_coverage(p):
+    &#34;&#34;&#34;Calculate the proportion of people with at least 1 copy of this allele
+        assuming HWE.
+
+    Args:
+        p (float): Allele frequency
+
+    Returns:
+        float: Sum of homozygotes and heterozygotes for this allele
+    &#34;&#34;&#34;
+    q = 1-p
+    homo = p**2
+    hetero = 2*p*q
+    return homo + hetero</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.single_loci"><code class="name flex">
+<span>def <span class="ident">single_loci</span></span>(<span>AFtab)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check that allele frequency data is only of one locus</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Allele frequency data</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def single_loci(AFtab):
+    &#34;&#34;&#34;Check that allele frequency data is only of one locus
+
+    Args:
+        AFtab (pd.DataFrame): Allele frequency data
+    &#34;&#34;&#34;
+    assert len(AFtab.loci.unique()) == 1, f&#34;&#39;AFtab&#39; must conatain only 1 loci&#34;</code></pre>
+</details>
+</dd>
+<dt id="HLAfreq.HLAfreq.unmeasured_alleles"><code class="name flex">
+<span>def <span class="ident">unmeasured_alleles</span></span>(<span>AFtab, datasetID='population')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>When combining AF estimates, unreported alleles can inflate frequencies
+so AF sums to &gt;1. Therefore we add unreported alleles with frequency zero.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>AFtab</code></strong> :&ensp;<code>pd.DataFrame</code></dt>
+<dd>Formatted allele frequency data</dd>
+<dt><strong><code>datasetID</code></strong> :&ensp;<code>str</code></dt>
+<dd>Unique identifier column for study</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pd.DataFrame</code></dt>
+<dd>Allele frequency data with all locus alleles reported
+for each dataset</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unmeasured_alleles(AFtab, datasetID=&#39;population&#39;):
+    &#34;&#34;&#34;When combining AF estimates, unreported alleles can inflate frequencies
+        so AF sums to &gt;1. Therefore we add unreported alleles with frequency zero.
+
+    Args:
+        AFtab (pd.DataFrame): Formatted allele frequency data
+        datasetID (str): Unique identifier column for study
+
+    Returns:
+        pd.DataFrame: Allele frequency data with all locus alleles reported 
+            for each dataset
+    &#34;&#34;&#34;
+    df = AFtab.copy()
+    loci = df.loci.unique()
+    # Iterate over loci separately
+    for locus in loci:
+        # Iterate over each dataset reporting that locus
+        datasets = df[df.loci == locus][datasetID].unique()
+        for dataset in datasets:
+            # Single locus, single dataset
+            datasetAF = df[(df[datasetID] == dataset) &amp; (df.loci == locus)]
+            # What was the sample size for this data?
+            dataset_sample_size = datasetAF.sample_size.unique()
+            assert len(dataset_sample_size) == 1, &#34;dataset_sample_size must be 1, not %s&#34; %len(dataset_sample_size)
+            dataset_sample_size = dataset_sample_size[0]
+            # Get all alleles for this locus (across datasets)
+            ualleles = df[df.loci == locus].allele.unique()
+            # Which of these alleles are not in this dataset?
+            missing_alleles = [allele for allele in ualleles if not allele in datasetAF.allele.values]
+            missing_rows = [(al, locus, dataset, 0, 0, dataset_sample_size) for al in missing_alleles]
+            missing_rows = pd.DataFrame(missing_rows, columns=[&#39;allele&#39;,&#39;loci&#39;,datasetID,&#39;allele_freq&#39;,&#39;carriers%&#39;,&#39;sample_size&#39;])
+            # Add them in with zero frequency
+            df = pd.concat([df, missing_rows], ignore_index=True)
+    return df</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="HLAfreq" href="index.html">HLAfreq</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="HLAfreq.HLAfreq.AFci" href="#HLAfreq.HLAfreq.AFci">AFci</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.Npages" href="#HLAfreq.HLAfreq.Npages">Npages</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.alleles_unique_in_study" href="#HLAfreq.HLAfreq.alleles_unique_in_study">alleles_unique_in_study</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.betaAB" href="#HLAfreq.HLAfreq.betaAB">betaAB</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.betaCI" href="#HLAfreq.HLAfreq.betaCI">betaCI</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.check_resolution" href="#HLAfreq.HLAfreq.check_resolution">check_resolution</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.collapse_reduced_alleles" href="#HLAfreq.HLAfreq.collapse_reduced_alleles">collapse_reduced_alleles</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.combineAF" href="#HLAfreq.HLAfreq.combineAF">combineAF</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.decrease_resolution" href="#HLAfreq.HLAfreq.decrease_resolution">decrease_resolution</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.default_prior" href="#HLAfreq.HLAfreq.default_prior">default_prior</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.duplicated_sample_size" href="#HLAfreq.HLAfreq.duplicated_sample_size">duplicated_sample_size</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.formatAF" href="#HLAfreq.HLAfreq.formatAF">formatAF</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.getAFdata" href="#HLAfreq.HLAfreq.getAFdata">getAFdata</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.id_duplicated_allele" href="#HLAfreq.HLAfreq.id_duplicated_allele">id_duplicated_allele</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.incomplete_studies" href="#HLAfreq.HLAfreq.incomplete_studies">incomplete_studies</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.makeURL" href="#HLAfreq.HLAfreq.makeURL">makeURL</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.only_complete" href="#HLAfreq.HLAfreq.only_complete">only_complete</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.parseAF" href="#HLAfreq.HLAfreq.parseAF">parseAF</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.plotAFprob" href="#HLAfreq.HLAfreq.plotAFprob">plotAFprob</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.population_coverage" href="#HLAfreq.HLAfreq.population_coverage">population_coverage</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.single_loci" href="#HLAfreq.HLAfreq.single_loci">single_loci</a></code></li>
+<li><code><a title="HLAfreq.HLAfreq.unmeasured_alleles" href="#HLAfreq.HLAfreq.unmeasured_alleles">unmeasured_alleles</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
