@@ -27,10 +27,13 @@ def makeURL(
         region="",
         ethnic="",
         study_type="",
-        dataset_source=""
+        dataset_source="",
+        sample_year="",
+        sample_year_pattern="",
+        sample_size="",
+        sample_size_pattern=""
     ):
-    """Create URL for search of allele frequency net database. All arguments are documented [here](www.allelefrequencies.net/extaccess.asp)
-
+    """Create URL for search of allele frequency net database. All arguments are documented [here](http://www.allelefrequencies.net/extaccess.asp)
     Args:
         country (str, optional): Country name to retrieve records from. Defaults to "".
         standard (str, optional): Filter study quality standard to this or higher. {'g', 's', 'a'} Gold, silver, all. Defaults to 's'.
@@ -41,6 +44,10 @@ def makeURL(
         ethnic (str, optional): Filter to ethnicity. {"Amerindian", "Black", "Caucasian", ...}. All ethnicities listed [here](http://www.allelefrequencies.net/pop6003a.asp). Defaults to "".
         study_type (str, optional): Type of study. {"Anthropology", "Blood+Donor", "Bone+Marrow+Registry", "Controls+for+Disease+Study", "Disease+Study+Patients", "Other", "Solid+Organd+Unrelated+Donors", "Stem+cell+donors"}. Defaults to "".
         dataset_source (str, optional): Source of data. {"Literature", "Proceedings+of+IHWs", "Unpublished"}. Defaults to "".
+        sample_year (int, optional): Sample year to compare to. Filter created using sample_year and sample_year_pattern. Defaults to "".
+        sample_year_pattern (str, optional): Pattern to compare sample year to. Filter created using sample_year and sample_year_pattern. {'equal', 'different', 'less_than', 'bigger_than', 'less_equal_than', 'bigger_equal_than'}. Defaults to "".
+        sample_size (int, optional): Sample size to compare to. Filter created using sample_size and sample_size_pattern. Defaults to "".
+        sample_size_pattern (str, optional): Pattern to compare sample size to. Filter created using sample_size and sample_size_pattern. {'equal', 'different', 'less_than', 'bigger_than', 'less_equal_than', 'bigger_equal_than'}. Defaults to "".
 
     Returns:
         str: URL to search allelefrequencies.net
@@ -53,10 +60,14 @@ def makeURL(
     ethnic = "hla_ethnic=%s&" %(ethnic)
     study_type = "hla_study=%s&" %(study_type)
     dataset_source = "hla_dataset_source=%s&" %(dataset_source)
+    sample_year = "hla_sample_year=%s&" %(sample_year)
+    sample_year_pattern = "hla_sample_year_pattern=%s&" %(sample_year_pattern)
+    sample_size = "hla_sample_size=%s&" %(sample_size)
+    sample_size_pattern = "hla_sample_size_pattern=%s&" %(sample_size_pattern)
     hla_level_pattern = "hla_level_pattern=%s&" %(resolution_pattern)
     hla_level = "hla_level=%s&" %(resolution)
     standard = "standard=%s&" %standard
-    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard + region + ethnic + study_type + dataset_source
+    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard + region + ethnic + study_type + dataset_source + sample_year + sample_year_pattern + sample_size + sample_size_pattern
     return url
 
 def parseAF(bs):
