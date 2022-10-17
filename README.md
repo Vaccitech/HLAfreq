@@ -1,7 +1,7 @@
 # HLAfreq
 
-`HLAfreq` allows you to estimate the HLA allele
-frequencies at large multi population scale, e.g. combine data from
+`HLAfreq` allows you to download and combine HLA allele
+frequencies from multiple datasets, e.g. combine data from
 several studies within a country or combine countries.
 
 Automated download of allele frequency data download from 
@@ -55,6 +55,7 @@ For more detailed walkthroughs see [HLAfreq/examples](https://github.com/Vaccite
 - [Using priors](https://github.com/Vaccitech/HLAfreq/blob/main/examples/working_with_priors.ipynb)
 
 ## Docs
+For help on specific functions view the docstring, `help(function_name)`.
 Full documentation API at [HLAfreq/docs](https://github.com/Vaccitech/HLAfreq/blob/main/docs/HLAfreq.md)
 created with pdoc3 in pdf mode.
 
