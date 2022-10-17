@@ -1,4 +1,8 @@
 """
+Tests on a toy allele frequency data set
+
+Tests dropping incomplete studies, merging different resolution
+alleles, and combing allele frequency estimates.
 """
 import pytest
 import HLAfreq
