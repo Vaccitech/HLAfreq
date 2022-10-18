@@ -69,9 +69,11 @@ plt.barh(df.country, df.coverage, color="black")
 plt.barh()
 for region in df.largeRegion.unique():
     mask = df.largeRegion == region
-    plt.barh(df[mask].country, df[mask].coverage, label=region)
-plt.axvline(0.95, linestyle="--", c="black")
-plt.legend()
+    plt.barh(df[mask].country, df[mask].coverage, label=region, zorder=3)
+plt.axvline(0.95, linestyle="--", c="black", zorder=5)
+plt.tight_layout()
+plt.legend(loc="upper left")
+plt.grid(zorder=0)
 plt.show()
 
 #############
@@ -93,6 +95,7 @@ m = cafb[maskb].allele_freq.sum()
 # Population proportion with no IEDB ref alleles
 # at HLA A or HLA B
 coverage = 1 - ((1-p)**2 * (1-m)**2)
+print(coverage)
 
 cafa = cafa.sort_values("allele_freq", ascending=False, ignore_index=True)
 cafb = cafb.sort_values("allele_freq", ascending=False, ignore_index=True)
