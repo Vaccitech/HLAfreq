@@ -3,6 +3,9 @@
 `HLAfreq` allows you to download and combine HLA allele
 frequencies from multiple datasets, e.g. combine data from
 several studies within a country or combine countries.
+Useful for studying regional diversity in immune genes
+and, when paired with epitope prediction, estimating a population's ability to mount an immune response to
+ specific epitopes.
 
 Automated download of allele frequency data download from 
 [allele frequencies.net](http://www.allelefrequencies.net/).
