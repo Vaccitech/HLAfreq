@@ -11,6 +11,7 @@ of alleles.
 
 # Use umap conda env
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
@@ -32,6 +33,11 @@ AFeatures['umap1'] = umap_embedding[:,1]
 # Add region to countries
 AFeatures = pd.merge(AFeatures, regions, how="left", left_on="country", right_on="Country")
 
+# Select Venezuela With Prior
+vwp = AFeatures[AFeatures.country == "Venezuela with prior"]
+# Drop countries without largeRegion, this is Venezuela with a prior
+AFeatures = AFeatures.dropna(subset=['largeRegion'])
+
 # plt.style.use('fivethirtyeight')
 
 for region in AFeatures.largeRegion.unique():
@@ -40,6 +46,13 @@ for region in AFeatures.largeRegion.unique():
     for i in AFeatures[mask].index:
         plt.annotate(AFeatures.loc[i].country.replace("+", " "), AFeatures.loc[i][['pca0','pca1']])
 plt.legend()
+# Arrow shows change of Venezuela with prior
+plt.annotate(
+    "",
+    xy=(vwp.pca0, vwp.pca1),
+    xytext=(AFeatures[AFeatures.country == "Venezuela"].pca0, AFeatures[AFeatures.country == "Venezuela"].pca1),
+    arrowprops=dict(arrowstyle="->")
+    )
 plt.show()
 
 for region in AFeatures.largeRegion.unique():
