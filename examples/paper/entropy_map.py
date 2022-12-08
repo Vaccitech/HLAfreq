@@ -53,7 +53,7 @@ world = gpd.read_file(
 # Some of this is due to alternative naming
 # Will require manual editting.
 
-#regions not in world
+# Regions not in world
 regions[~regions.country.isin(world.name)].country
 # world not in regions
 world.name[~world.name.isin(regions.country)]

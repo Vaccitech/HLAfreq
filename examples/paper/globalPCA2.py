@@ -40,7 +40,9 @@ AFeatures = AFeatures.dropna(subset=['largeRegion'])
 
 # plt.style.use('fivethirtyeight')
 
-for region in AFeatures.largeRegion.unique():
+regions = AFeatures.largeRegion.unique()
+regions.sort()
+for region in regions:
     mask = AFeatures.largeRegion == region
     plt.scatter(AFeatures.pca0[mask], AFeatures.pca1[mask], label=region)
     for i in AFeatures[mask].index:
@@ -53,6 +55,7 @@ plt.annotate(
     xytext=(AFeatures[AFeatures.country == "Venezuela"].pca0, AFeatures[AFeatures.country == "Venezuela"].pca1),
     arrowprops=dict(arrowstyle="->")
     )
+plt.xlabel('1st principal component'); plt.ylabel('2nd principal component')
 plt.show()
 
 for region in AFeatures.largeRegion.unique():
