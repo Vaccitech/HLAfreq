@@ -553,6 +553,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
         assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
     mask = allele_mask(alleles, concentration)
     fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol, sharex=True)
+    fig.suptitle("Allele frequency vs probability density")
     # Only indexes that pass the mask
     masked_indexes = [i for i,x in enumerate(mask) if x]
     for subploti,i in enumerate(masked_indexes):
