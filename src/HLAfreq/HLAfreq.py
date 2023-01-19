@@ -14,7 +14,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from scipy.stats import dirichlet, beta
+import scipy as sp
 import logging
 import warnings
 
@@ -391,7 +391,7 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
         alpha = default_prior(len(combined.allele))
     combined['alpha'] = alpha
     # Calculate Dirichlet mean for each allele
-    combined['allele_freq'] = dirichlet(combined.alpha + combined.c).mean()
+    combined['allele_freq'] = sp.stats.dirichlet(combined.alpha + combined.c).mean()
 
     return combined
 
@@ -482,7 +482,7 @@ def betaCI(a,b,credible_interval=0.95):
     Returns:
         tuple: Lower and upper credible interval of beta distribution.
     """
-    bd = beta(a,b)
+    bd = sp.stats.beta(a,b)
     lower_quantile = (1-credible_interval)/2
     upper_quantile = 1-lower_quantile
     lower_interval = bd.ppf(lower_quantile)
@@ -559,7 +559,7 @@ def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population",
     for subploti,i in enumerate(masked_indexes):
         subplotselector = subploti//ncol, subploti%ncol
         a,b = ab[i]
-        bd = beta(a,b)
+        bd = sp.stats.beta(a,b)
         if log:
             pdf = [bd.logpdf(p) for p in pline]
         else:
