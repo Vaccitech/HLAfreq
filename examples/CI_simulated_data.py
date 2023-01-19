@@ -33,7 +33,7 @@ def simulateAF(k, concentration, n, samplesize_lo=5, samplesize_hi=200):
 results = []
 for i in range(100):
     print(i)
-    alpha, popAF, allele_counts = simulateAF(4, 10, 3)
+    alpha, popAF, allele_counts = simulateAF(k=15, concentration=10, n=5)
 
     # Key data derived from simulated data
     # Number of alleles
@@ -78,9 +78,9 @@ def popAF_in_hdi(result):
 aih = [alpha_in_hdi(result) for result in results]
 pih = [popAF_in_hdi(result) for result in results]
 
-# 97% simulated global AF are within the estimated hdi intervals
+# 95-97% simulated global AF are within the estimated hdi intervals
 np.mean(aih)
-# 80% simulated population AF are within the estimated hdi intervals
+# 50-80% simulated population AF are within the estimated hdi intervals
 # This is expected to be <95% because the hdi is on the global AF
 np.mean(pih)
 
