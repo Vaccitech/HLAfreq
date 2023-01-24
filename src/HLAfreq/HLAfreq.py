@@ -17,6 +17,7 @@ import math
 import scipy as sp
 import logging
 import warnings
+import matplotlib.colors as mcolors
 
 def makeURL(
         country="",
@@ -471,124 +472,131 @@ def betaAB(alpha):
     ab = [(a,sum(alpha)-a) for a in alpha]
     return ab
 
-def betaCI(a,b,credible_interval=0.95):
-    """Calculat the central credible interval of a beta distribution
+# def betaCI(a,b,credible_interval=0.95):
+#     """Calculat the central credible interval of a beta distribution
+
+#     Args:
+#         a (float): Beta shape parameter `a`, i.e. the number of times the allele was observed.
+#         b (float): Beta shape parameter `b`, i.e. the number of times the allele was not observed.
+#         credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
+
+#     Returns:
+#         tuple: Lower and upper credible interval of beta distribution.
+#     """
+#     bd = sp.stats.beta(a,b)
+#     lower_quantile = (1-credible_interval)/2
+#     upper_quantile = 1-lower_quantile
+#     lower_interval = bd.ppf(lower_quantile)
+#     upper_interval = bd.ppf(upper_quantile)
+#     return lower_interval, upper_interval
+
+# def AFci(caf, credible_interval=0.95):
+#     """Calculate credible interval for combined allele frequency table.
+#     Note that this ignores sampling error so confidence interval is too tight.
+#     Use HLAhdi.AFhdi() instead.
+
+#     Args:
+#         caf (pd.DataFrame): Table produced by combineAF()
+#         credible_interval (float, optional): The desired confidence interval. Defaults to 0.95.
+
+#     Returns:
+#         list: Lower and upper credible intervals as a list of tuples
+#     """
+#     ab = betaAB(
+#         caf.alpha + caf.c,
+#     )
+#     ci = [betaCI(a, b, credible_interval) for a,b in ab]
+#     return ci
+
+def plot_prior(concentration, ncol=2, psteps=1000, labels=""):
+    """Plot probability density function for prior values.
 
     Args:
-        a (float): Beta shape parameter `a`, i.e. the number of times the allele was observed.
-        b (float): Beta shape parameter `b`, i.e. the number of times the allele was not observed.
-        credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
-
-    Returns:
-        tuple: Lower and upper credible interval of beta distribution.
+        concentration (list): Vector of the prior Dirichlet concentration values.
+        ncol (int, optional): Number of columns. Defaults to 2.
+        labels (list, optional): Labels for elements of concentration in the same order. Defaults to "".
     """
-    bd = sp.stats.beta(a,b)
-    lower_quantile = (1-credible_interval)/2
-    upper_quantile = 1-lower_quantile
-    lower_interval = bd.ppf(lower_quantile)
-    upper_interval = bd.ppf(upper_quantile)
-    return lower_interval, upper_interval
-
-def AFci(caf, credible_interval=0.95):
-    """Calculate credible interval for combined allele frequency table
-
-    Args:
-        caf (pd.DataFrame): Table produced by combineAF()
-        credible_interval (float, optional): The desired confidence interval. Defaults to 0.95.
-
-    Returns:
-        list: Lower and upper credible intervals as a list of tuples
-    """
-    ab = betaAB(
-        caf.alpha + caf.c,
-    )
-    ci = [betaCI(a, b, credible_interval) for a,b in ab]
-    return ci
-
-def plotAFprob(caf=pd.DataFrame(), AFtab=pd.DataFrame(), datasetID="population", concentration=[], log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[]):
-    """Plot the posterior density function of all frequencies
-        for all alleles based on concentration for Dirichlet
-        distribution. Supply AFtab to add empirical values to plot.
-
-    Args:
-        caf (pd.DataFrame, optional): Combined allele frequence data produced by combineAF(). Defaults to pd.DataFrame().
-        AFtab (pd.DataFrame, optional): The uncombined allele frequency data used by combinedAF(). You must use the same dataframe as this function doesn't have the error checking that combineAF() has. Defaults to pd.DataFrame().
-        datasetID (str, optional): The column used to define datasets. Defaults to "population".
-        concentration (pd.Series, optional): Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False
-        log (bool, optional): Plot log pdf instead of pdf? Defaults to False.
-        psteps (int, optional): Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
-        ncol (int, optional): How many columns to arrange subplots in. Defaults to 2.
-        xmin (float, optional): Set x axis min. Defaults to -0.05.
-        xmax (float, optional): Set x axis max. Defaults to 1.05.
-        ci (float, optional): Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
-        alleles (list, optional): List of alleles to plot. Plots all if none supplied. Defaults to [].
-    """
-    def allele_mask(alleles, concentration):
-        """Create boolean mask either to keep only supplied `alleles`. If empty keep all.
-
-        Args:
-            alleles (list): list of alleles
-            concentration (list): Dirichlet concentration
-
-        Returns:
-            list: List of booleans to use as mask
-        """
-        assert isinstance(alleles, list), f"alleles must be a list, not {type(alleles)}"
-        if not alleles:
-            mask = [True] * len(concentration)
-        else:
-            mask = caf.allele.isin(alleles)
-        return mask
-
-    if not concentration:
-        concentration = caf.alpha + caf.c
-    # Get beta parameters for each k in Dirichlet
     ab = betaAB(concentration)
-    pline = np.linspace(0,1,psteps)
-    if not AFtab.empty:
-        # Format the population allele frequencies
-        df = AFtab.copy()
-        df = unmeasured_alleles(df, datasetID=datasetID)
-        df = df.sort_values('allele')
-        assert all(df.groupby(datasetID).allele.apply(list).apply(lambda x: x == caf.allele.tolist())), "Alleles not matching between AFtab and caf"
-    mask = allele_mask(alleles, concentration)
-    fig, axs = plt.subplots(math.ceil(sum(mask)/ncol), ncol, sharex=True)
-    fig.suptitle("Allele frequency vs probability density")
-    # Only indexes that pass the mask
-    masked_indexes = [i for i,x in enumerate(mask) if x]
-    for subploti,i in enumerate(masked_indexes):
-        subplotselector = subploti//ncol, subploti%ncol
+    pline = np.linspace(0, 1, psteps)
+    nrow = math.ceil(len(concentration)/ncol)
+    fig, ax = plt.subplots(nrow, ncol, sharex=True)
+    fig.suptitle("Probability density")
+    # If labels is a list nothing happens,
+    # But if it's a series it converts to a list
+    labels = list(labels)
+    if not labels:
+        labels = [""] * len(concentration)
+    assert len(concentration) == len(labels), "concentration must be same length as labels"
+    for i,alpha in enumerate(concentration):
         a,b = ab[i]
         bd = sp.stats.beta(a,b)
-        if log:
-            pdf = [bd.logpdf(p) for p in pline]
-        else:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                pdf = [bd.pdf(p) for p in pline]
-        ax = axs[subplotselector]
-        ax.set_xlim(xmin,xmax)
-        if not AFtab.empty:
-            # Add the empirical allele frequency for each population
-            for af in df.groupby(datasetID).allele_freq.apply(list).apply(lambda x: x[i]):
-                # x is the reported allele freq, y is it's pdf with scatter
-                if log:
-                    ax.scatter(af, bd.logpdf(af)*(0.95+np.random.random()/5))
-                else:
-                    ax.scatter(af, bd.pdf(af)*(0.95+np.random.random()/5))
-        ax.plot(pline, pdf)
-        # Annotate with allele
-        if not caf.empty:
-            ax.text((xmax-xmin)/2, max(pdf)/2, f"{caf.allele.iloc[i]}")
-        # Annotate with concentration
-        # ax.text(0.5, max(pdf)/3, f"Concentration {round(concentration.iloc[i])}")
-        if not caf.empty:
-            # Plot the combined average
-            ax.axvline(caf.allele_freq[i], color="black", ls="--")
-        if ci:
-            cl,cu = betaCI(a,b, ci)
-            ax.axvline(cl, color="black", linestyle="dotted")
-            ax.axvline(cu, color="black", linestyle="dotted")
-        # fig.tight_layout()
+        pdf = [bd.pdf(p) for p in pline]
+        ax.flat[i].plot(pline, pdf)
+        ax.flat[i].set_title(labels[i])
+    for axi in ax[-1,:]:
+        axi.set(xlabel='Allele freq')
+    for axi in ax[:,0]:
+        axi.set(ylabel='PDF')
     plt.show()
 
+def plotAF(
+    caf=pd.DataFrame(),
+    AFtab=pd.DataFrame(),
+    cols = list(mcolors.TABLEAU_COLORS.keys()),
+    datasetID="population",
+    weights = "2n",
+    credible_interval=None,
+    ):
+    """Plot combined allele frequencies, individual allele frequencies,
+    and credible intervals on combined allele frequency estimates.
+    Credible interval is only plotted if a value is given for `credible_interval`.
+    Credible interval is calculated using HLAfreq_pymc.AFhdi() and PyMc.
+
+    Args:
+        caf (pd.DataFrame, optional): Combined allele frequency estimates from HLAfreq.combineAF. Defaults to pd.DataFrame().
+        AFtab (pd.DataFrame, optional): Table of allele frequency data. Defaults to pd.DataFrame().
+        cols (list, optional): List of colours to use for each individual dataset. Defaults to list(mcolors.TABLEAU_COLORS.keys()).
+        datasetID (str, optional): Column used to define separate datasets. Defaults to "population".
+        weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
+        credible_interval (float, optional): The credible interval to plot. Defaults to None.
+    """
+    # Plot allele frequency for each dataset
+    if not AFtab.empty:
+        # Cols must be longer than the list of alleles
+        # If not, repeat the list of cols
+        repeat_cols = np.ceil(len(AFtab[datasetID])/len(cols))
+        repeat_cols = int(repeat_cols)
+        cols = cols * repeat_cols
+        # Make a dictionary mapping datasetID to colours
+        cmap = dict(zip(AFtab[datasetID].unique(), cols))
+        plt.scatter(
+            x = AFtab.allele_freq,
+            y = AFtab.allele,
+            c = [cmap[x] for x in AFtab[datasetID]],
+            alpha = 0.7,
+            zorder=2
+            )
+    # Plot combined allele frequency
+    if not caf.empty:
+        plt.scatter(
+            x = caf.allele_freq,
+            y = caf.allele,
+            edgecolors='black',
+            facecolors='none',
+            zorder=3
+            )
+    # Plot high density interval
+    if credible_interval:
+        assert not AFtab.empty, "AFtab is needed to calculate credible interval"
+        from HLAfreq import HLAfreq_pymc as HLAhdi
+        print("Fitting model with PyMc, make take a few seconds")
+        hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval)
+        for interval in hdi:
+            plt.hlines(
+                y = interval[2],
+                xmin = float(interval[0]),
+                xmax = float(interval[1]),
+                color="black"
+            )
+    plt.grid(zorder=0)
+    plt.show()

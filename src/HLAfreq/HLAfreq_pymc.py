@@ -50,7 +50,17 @@ def _fit_Dirichlet_Multinomial(c_array):
     return idata
 
 def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
-    """Calculate high posterior density interval on combined allele frequency
+    """Calculate high posterior density interval on combined allele frequency.
+    Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
+    
+    In brief, the global allele frequency is modelled as a Dirichlet distribution,
+    and each population (defined by `datasetID`) is a Dirichlet distribution draw from
+    the global Dirichlet distribution, and the observed allele count data of that
+    population is multinomial count data drawn from the population Dirichlet distribution.
+
+    The observed allele frequencies are transformed into allele counts using `weights`.
+    The variability of population allele frequencies around the global mean is defined
+    by a latent, lognormal variable `conc`.
 
     Args:
         AFtab (pd.DataFrame): Table of allele frequency data
