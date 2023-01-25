@@ -599,5 +599,6 @@ def plotAF(
                 xmax = interval[1]['hi'],
                 color="black"
             )
+    plt.xlabel("Allele frequency")
     plt.grid(zorder=0)
     plt.show()

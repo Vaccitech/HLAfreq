@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
-from HLAfreq import makeURL, getAFdata, combineAF, plotAFprob, population_coverage
+from HLAfreq import makeURL, getAFdata, combineAF, plotAF, population_coverage
 
 base_url = makeURL("Mongolia", standard="g", locus="DQB1")
 aftab = getAFdata(base_url)
 aftab.population.unique()
 caf = combineAF(aftab)
-plotAFprob(caf, aftab, ncol=2, xmin=-0.02, xmax=0.5)
+plotAF(caf, aftab)
 
 caf = caf.sort_values('allele_freq', ascending=False, ignore_index=True)
 plt.scatter(caf.allele, caf.allele_freq.cumsum().apply(population_coverage))
