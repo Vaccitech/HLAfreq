@@ -5,7 +5,7 @@ base_url = makeURL("Mongolia", standard="g", locus="DQB1")
 aftab = getAFdata(base_url)
 aftab.population.unique()
 caf = combineAF(aftab)
-plotAF(caf, aftab)
+plotAF(caf, aftab, credible_interval=0.95)
 
 caf = caf.sort_values('allele_freq', ascending=False, ignore_index=True)
 plt.scatter(caf.allele, caf.allele_freq.cumsum().apply(population_coverage))
