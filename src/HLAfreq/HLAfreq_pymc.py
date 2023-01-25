@@ -5,7 +5,7 @@ import arviz as az
 import pandas as pd
 import HLAfreq
 
-def _make_c_array(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
+def _make_c_array(AFtab, weights="2n", datasetID="population"):
     df = AFtab.copy()
     df = HLAfreq.unmeasured_alleles(df, datasetID)
     try:
@@ -50,7 +50,7 @@ def _fit_Dirichlet_Multinomial(c_array):
     return idata
 
 def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
-    """Calculate high posterior density interval on combined allele frequency.
+    """Calculate mean and high posterior density interval on combined allele frequency.
     Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
     
     In brief, the global allele frequency is modelled as a Dirichlet distribution,
@@ -69,12 +69,15 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
         credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
 
     Returns:
-        np.array: Pairs of high density interval limits as a 2 by n array.
+        np.array: Pairs of high density interval limits, allele name, and posterior mean.
+            as a 4 by n array.
             In alphabetical order of alleles, regardless of input order.
             This way it matches the output of combineAF().
     """
-    c_array, allele_names = _make_c_array(AFtab, weights, datasetID, credible_interval)
+    c_array, allele_names = _make_c_array(AFtab, weights, datasetID)
     idata = _fit_Dirichlet_Multinomial(c_array)
     hdi = az.hdi(idata, hdi_prob=credible_interval).frac.values
-    hdi = np.column_stack([hdi, allele_names])
-    return hdi
+    post_mean = az.summary(idata, var_names='frac')['mean']
+    post = pd.DataFrame([hdi[:,0], hdi[:,1], allele_names, post_mean]).T
+    post.columns = ['lo','hi','allele','post_mean']
+    return post

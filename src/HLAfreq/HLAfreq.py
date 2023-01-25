@@ -589,13 +589,14 @@ def plotAF(
     if credible_interval:
         assert not AFtab.empty, "AFtab is needed to calculate credible interval"
         from HLAfreq import HLAfreq_pymc as HLAhdi
-        print("Fitting model with PyMc, make take a few seconds")
+        print("Fitting model with PyMC, make take a few seconds")
         hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval)
-        for interval in hdi:
+        for interval in hdi.iterrows():
+            # .iterrows returns a index and data as a tuple for each row
             plt.hlines(
-                y = interval[2],
-                xmin = float(interval[0]),
-                xmax = float(interval[1]),
+                y = interval[1]['allele'],
+                xmin = interval[1]['lo'],
+                xmax = interval[1]['hi'],
                 color="black"
             )
     plt.grid(zorder=0)
