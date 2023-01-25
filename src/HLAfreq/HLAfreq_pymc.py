@@ -29,7 +29,7 @@ def _make_c_array(AFtab, weights="2n", datasetID="population"):
         assert math.isclose(a,b), "Error making c_array sum of single allele frequency differs between c_array and AFloc"
     return c_array, allele_names
 
-def _fit_Dirichlet_Multinomial(c_array):
+def _fit_Dirichlet_Multinomial(c_array, prior=[]):
     # Number of populations
     n = c_array.shape[0]
     # number of alleles
@@ -39,9 +39,11 @@ def _fit_Dirichlet_Multinomial(c_array):
     # for the multinomial
     c_array = np.round(c_array)
     effective_samples = np.apply_along_axis(sum, 1, c_array)
-
+    if len(prior)==0:
+        prior = np.ones(k)
+    assert len(prior) == k, "For k alleles, prior must be length k"
     with pm.Model() as mod:
-        frac = pm.Dirichlet('frac', a=np.ones(k))
+        frac = pm.Dirichlet('frac', a=prior)
         conc = pm.Lognormal('conc', mu=1, sigma=1)
         y = pm.DirichletMultinomial('y', n=effective_samples, a=frac*conc, shape=(n,k), observed=c_array)
 
@@ -49,7 +51,7 @@ def _fit_Dirichlet_Multinomial(c_array):
         idata = pm.sample()
     return idata
 
-def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
+def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[]):
     """Calculate mean and high posterior density interval on combined allele frequency.
     Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
     
@@ -67,6 +69,7 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
         weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
         datasetID (str, optional): Unique identifier column for study. Defaults to 'population'.
         credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
+        prior (list, optional): Prior vector for global allele frequency. Order should match alphabetical alleles, i.e. the first value is used for the alphabetically first allele.
 
     Returns:
         np.array: Pairs of high density interval limits, allele name, and posterior mean.
@@ -75,7 +78,7 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95):
             This way it matches the output of combineAF().
     """
     c_array, allele_names = _make_c_array(AFtab, weights, datasetID)
-    idata = _fit_Dirichlet_Multinomial(c_array)
+    idata = _fit_Dirichlet_Multinomial(c_array, prior)
     hdi = az.hdi(idata, hdi_prob=credible_interval).frac.values
     post_mean = az.summary(idata, var_names='frac')['mean']
     post = pd.DataFrame([hdi[:,0], hdi[:,1], allele_names, post_mean]).T
