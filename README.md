@@ -18,8 +18,6 @@ default. Sample size is doubled as each person in the study
 contributes two alleles. Alternative weightings can be used
 for example population size when averaging across countries.
 
-A note on credible intervals... **(to be written)**
-
 When selecting a panel of HLA alleles to represent a population,
 allele frequency is not the only thing to consider. Depending on
 the purpose of the panel, you should include a range of loci and
@@ -56,6 +54,7 @@ For more detailed walkthroughs see [HLAfreq/examples](https://github.com/Vaccite
 - [Single country](https://github.com/Vaccitech/HLAfreq/blob/main/examples/single_country.ipynb) download and combine
 - [Multi-country](https://github.com/Vaccitech/HLAfreq/blob/main/examples/multi_country.ipynb) download and combine, weight by population coverage
 - [Using priors](https://github.com/Vaccitech/HLAfreq/blob/main/examples/working_with_priors.ipynb)
+- [Credible intervals](https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb)
 
 ## Docs
 For help on specific functions view the docstring, `help(function_name)`.
