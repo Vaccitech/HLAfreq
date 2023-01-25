@@ -1,5 +1,4 @@
 data/
-docs/
 writeup/
 *__pycache__/
 *.code-workspace

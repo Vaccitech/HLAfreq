@@ -1,6 +1,6 @@
 ---
 description: |
-    API documentation for modules: HLAfreq, HLAfreq.HLAfreq, HLAfreq.HLAfreq_data.
+    API documentation for modules: HLAfreq, HLAfreq.HLAfreq, HLAfreq.HLAfreq_data, HLAfreq.HLAfreq_pymc.
 
 lang: en
 
@@ -24,6 +24,7 @@ links-as-notes: true
 
 * [HLAfreq.HLAfreq](#HLAfreq.HLAfreq)
 * [HLAfreq.HLAfreq_data](#HLAfreq.HLAfreq_data)
+* [HLAfreq.HLAfreq_pymc](#HLAfreq.HLAfreq_pymc)
 
 
 
@@ -46,36 +47,6 @@ global HLA frequencies.
 
     
 ## Functions
-
-
-    
-### Function `AFci` {#HLAfreq.HLAfreq.AFci}
-
-
-
-    
-> `def AFci(caf, credible_interval=0.95)`
-
-
-Calculate credible interval for combined allele frequency table
-
-
-###### Args
-
-**```caf```** :&ensp;<code>pd.DataFrame</code>
-:   Table produced by combineAF()
-
-
-**```credible_interval```** :&ensp;<code>float</code>, optional
-:   The desired confidence interval. Defaults to 0.95.
-
-
-
-###### Returns
-
-<code>list</code>
-:   Lower and upper credible intervals as a list of tuples
-
 
 
     
@@ -157,40 +128,6 @@ Given the alpha vector defining a Dirichlet distribution calculate the a b value
 
 <code>list</code>
 :   List of a b values defining beta values, i.e. for each allele it is the number of times it was and wasn't observed.
-
-
-
-    
-### Function `betaCI` {#HLAfreq.HLAfreq.betaCI}
-
-
-
-    
-> `def betaCI(a, b, credible_interval=0.95)`
-
-
-Calculat the central credible interval of a beta distribution
-
-
-###### Args
-
-**```a```** :&ensp;<code>float</code>
-:   Beta shape parameter <code>a</code>, i.e. the number of times the allele was observed.
-
-
-**```b```** :&ensp;<code>float</code>
-:   Beta shape parameter <code>b</code>, i.e. the number of times the allele was not observed.
-
-
-**```credible_interval```** :&ensp;<code>float</code>, optional
-:   The size of the credible interval requested. Defaults to 0.95.
-
-
-
-###### Returns
-
-<code>tuple</code>
-:   Lower and upper credible interval of beta distribution.
 
 
 
@@ -623,67 +560,75 @@ Generate a dataframe from a given html page
 
 
     
-### Function `plotAFprob` {#HLAfreq.HLAfreq.plotAFprob}
+### Function `plotAF` {#HLAfreq.HLAfreq.plotAF}
 
 
 
     
-> `def plotAFprob(caf=Empty DataFrame
+> `def plotAF(caf=Empty DataFrame
 Columns: []
 Index: [], AFtab=Empty DataFrame
 Columns: []
-Index: [], datasetID='population', concentration=[], log=False, psteps=1000, ncol=2, xmin=-0.05, xmax=1.05, ci=0.95, alleles=[])`
+Index: [], cols=['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan'], datasetID='population', weights='2n', credible_interval=None)`
 
 
-Plot the posterior density function of all frequencies
-    for all alleles based on concentration for Dirichlet
-    distribution. Supply AFtab to add empirical values to plot.
+Plot combined allele frequencies, individual allele frequencies,
+and credible intervals on combined allele frequency estimates.
+Credible interval is only plotted if a value is given for <code>credible\_interval</code>.
+Credible interval is calculated using HLAfreq_pymc.AFhdi() and PyMc.
 
 
 ###### Args
 
 **```caf```** :&ensp;<code>pd.DataFrame</code>, optional
-:   Combined allele frequence data produced by combineAF(). Defaults to pd.DataFrame().
+:   Combined allele frequency estimates from HLAfreq.combineAF. Defaults to pd.DataFrame().
 
 
 **```AFtab```** :&ensp;<code>pd.DataFrame</code>, optional
-:   The uncombined allele frequency data used by combinedAF(). You must use the same dataframe as this function doesn't have the error checking that combineAF() has. Defaults to pd.DataFrame().
+:   Table of allele frequency data. Defaults to pd.DataFrame().
+
+
+**```cols```** :&ensp;<code>list</code>, optional
+:   List of colours to use for each individual dataset. Defaults to list(mcolors.TABLEAU_COLORS.keys()).
 
 
 **```datasetID```** :&ensp;<code>str</code>, optional
-:   The column used to define datasets. Defaults to "population".
+:   Column used to define separate datasets. Defaults to "population".
 
 
-**```concentration```** :&ensp;<code>pd.Series</code>, optional
-:   Dirichlet concentration parameters, if not set calculated as caf.alpha + caf.c. Defaults to False
+**```weights```** :&ensp;<code>str</code>, optional
+:   Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
 
 
-**```log```** :&ensp;<code>bool</code>, optional
-:   Plot log pdf instead of pdf? Defaults to False.
+**```credible_interval```** :&ensp;<code>float</code>, optional
+:   The credible interval to plot. Defaults to None.
 
 
-**```psteps```** :&ensp;<code>int</code>, optional
-:   Number of increments in pdf calculation, higher values make smoother plots. Defaults to 1000.
+
+    
+### Function `plot_prior` {#HLAfreq.HLAfreq.plot_prior}
+
+
+
+    
+> `def plot_prior(concentration, ncol=2, psteps=1000, labels='')`
+
+
+Plot probability density function for prior values.
+
+
+###### Args
+
+**```concentration```** :&ensp;<code>list</code>
+:   Vector of the prior Dirichlet concentration values.
 
 
 **```ncol```** :&ensp;<code>int</code>, optional
-:   How many columns to arrange subplots in. Defaults to 2.
+:   Number of columns. Defaults to 2.
 
 
-**```xmin```** :&ensp;<code>float</code>, optional
-:   Set x axis min. Defaults to -0.05.
-
-
-**```xmax```** :&ensp;<code>float</code>, optional
-:   Set x axis max. Defaults to 1.05.
-
-
-**```ci```** :&ensp;<code>float</code>, optional
-:   Central credible interval to plot. Set as 0 to hide. Defaults to 0.95.
-
-
-**```alleles```** :&ensp;<code>list</code>, optional
-:   List of alleles to plot. Plots all if none supplied. Defaults to [].
+**```labels```** :&ensp;<code>list</code>, optional
+:   Labels for elements of concentration in the same order. Defaults to "".
 
 
 
@@ -799,6 +744,76 @@ Data loaders
     
 > `def load_countries()`
 
+
+
+
+
+
+
+    
+# Module `HLAfreq.HLAfreq_pymc` {#HLAfreq.HLAfreq_pymc}
+
+
+
+
+
+
+    
+## Functions
+
+
+    
+### Function `AFhdi` {#HLAfreq.HLAfreq_pymc.AFhdi}
+
+
+
+    
+> `def AFhdi(AFtab, weights='2n', datasetID='population', credible_interval=0.95, prior=[])`
+
+
+Calculate mean and high posterior density interval on combined allele frequency.
+Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](<https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html>).
+
+In brief, the global allele frequency is modelled as a Dirichlet distribution,
+and each population (defined by <code>datasetID</code>) is a Dirichlet distribution draw from
+the global Dirichlet distribution, and the observed allele count data of that
+population is multinomial count data drawn from the population Dirichlet distribution.
+
+The observed allele frequencies are transformed into allele counts using <code>weights</code>.
+The variability of population allele frequencies around the global mean is defined
+by a latent, lognormal variable <code>conc</code>.
+
+
+###### Args
+
+**```AFtab```** :&ensp;<code>pd.DataFrame</code>
+:   Table of allele frequency data
+
+
+**```weights```** :&ensp;<code>str</code>, optional
+:   Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
+
+
+**```datasetID```** :&ensp;<code>str</code>, optional
+:   Unique identifier column for study. Defaults to 'population'.
+
+
+**```credible_interval```** :&ensp;<code>float</code>, optional
+:   The size of the credible interval requested. Defaults to 0.95.
+
+
+**```prior```** :&ensp;<code>list</code>, optional
+:   Prior vector for global allele frequency. Order should match alphabetical alleles, i.e. the first value is used for the alphabetically first allele.
+
+
+
+###### Returns
+
+<code>np.array</code>
+:   Pairs of high density interval limits, allele name, and posterior mean.
+    as a 4 by n array.
+    In alphabetical order of alleles, regardless of input order.
+    This way it matches the output of combineAF().
 
 
 
