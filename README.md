@@ -62,12 +62,15 @@ Full documentation API at [HLAfreq/docs](https://github.com/Vaccitech/HLAfreq/bl
 created with pdoc3 in pdf mode.
 
 <!-- ## Developer notes
+# Install in dev mode
+pip install -e HLAfreq
+
 Update documentation with `pdoc --pdf -o docs/ src/HLAfreq/ > docs/HLAfreq.md`.
 
 Run tests `pytest` 
 
 # Clear old build info
-rm -rf build dist *.egg-info
+rm -rf build dist src/*.egg-info 
 
 Build with `python -m build`.
 
@@ -75,6 +78,12 @@ twine check dist/*
 
 # Upload to test pypi
 twine upload --repository testpypi dist/*
+
+# Install from test pypi
+python3 -m pip install --extra-index-url https://test.pypi.org/simple/ HLAfreq
+
+# Upload to pypi
+twine upload dist/*
 -->
 
 ## Citation
