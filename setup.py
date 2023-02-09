@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="HLAfreq",
-    version="0.0.1dev1",
+    version="0.0.1dev2",
     url="https://github.com/Vaccitech/HLAfreq",
     project_urls={
         'Tracker': "https://github.com/Vaccitech/HLAfreq/issues"

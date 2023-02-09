@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: HLAfreq
-Version: 0.0.1.dev1
+Version: 0.0.1.dev2
 Summary: Download and combine HLA frequency data from multiple studies
 Home-page: https://github.com/Vaccitech/HLAfreq
 Author: David Wells
@@ -9,12 +9,16 @@ Project-URL: Tracker, https://github.com/Vaccitech/HLAfreq/issues
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: OS Independent
 Description-Content-Type: text/markdown
+License-File: LICENSE
 
 # HLAfreq
 
 `HLAfreq` allows you to download and combine HLA allele
 frequencies from multiple datasets, e.g. combine data from
 several studies within a country or combine countries.
+Useful for studying regional diversity in immune genes
+and, when paired with epitope prediction, estimating a population's
+ability to mount an immune response to specific epitopes.
 
 Automated download of allele frequency data download from 
 [allele frequencies.net](http://www.allelefrequencies.net/).
@@ -26,8 +30,6 @@ allele. When combining studies their estimates are weighted as 2x sample size by
 default. Sample size is doubled as each person in the study
 contributes two alleles. Alternative weightings can be used
 for example population size when averaging across countries.
-
-A note on credible intervals... **(to be written)**
 
 When selecting a panel of HLA alleles to represent a population,
 allele frequency is not the only thing to consider. Depending on
@@ -65,6 +67,7 @@ For more detailed walkthroughs see [HLAfreq/examples](https://github.com/Vaccite
 - [Single country](https://github.com/Vaccitech/HLAfreq/blob/main/examples/single_country.ipynb) download and combine
 - [Multi-country](https://github.com/Vaccitech/HLAfreq/blob/main/examples/multi_country.ipynb) download and combine, weight by population coverage
 - [Using priors](https://github.com/Vaccitech/HLAfreq/blob/main/examples/working_with_priors.ipynb)
+- [Credible intervals](https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb)
 
 ## Docs
 For help on specific functions view the docstring, `help(function_name)`.

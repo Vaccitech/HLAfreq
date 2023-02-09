@@ -63,8 +63,19 @@ created with pdoc3 in pdf mode.
 
 <!-- ## Developer notes
 Update documentation with `pdoc --pdf -o docs/ src/HLAfreq/ > docs/HLAfreq.md`.
-Build with `pythom -m build`.
-Run tests `pytest` -->
+
+Run tests `pytest` 
+
+# Clear old build info
+rm -rf build dist *.egg-info
+
+Build with `python -m build`.
+
+twine check dist/*
+
+# Upload to test pypi
+twine upload --repository testpypi dist/*
+-->
 
 ## Citation
 *In prep.*
