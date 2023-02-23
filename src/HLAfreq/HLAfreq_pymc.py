@@ -29,7 +29,7 @@ def _make_c_array(AFtab, weights="2n", datasetID="population"):
         assert math.isclose(a,b), "Error making c_array sum of single allele frequency differs between c_array and AFloc"
     return c_array, allele_names
 
-def _fit_Dirichlet_Multinomial(c_array, prior=[]):
+def _fit_Dirichlet_Multinomial(c_array, prior=[], conc_mu=1, conc_sigma=1):
     # Number of populations
     n = c_array.shape[0]
     # number of alleles
@@ -40,18 +40,18 @@ def _fit_Dirichlet_Multinomial(c_array, prior=[]):
     c_array = np.round(c_array)
     effective_samples = np.apply_along_axis(sum, 1, c_array)
     if len(prior)==0:
-        prior = np.ones(k)
+        prior = HLAfreq.default_prior(k)
     assert len(prior) == k, "For k alleles, prior must be length k"
     with pm.Model() as mod:
         frac = pm.Dirichlet('frac', a=prior)
-        conc = pm.Lognormal('conc', mu=1, sigma=1)
+        conc = pm.Lognormal('conc', mu=conc_mu, sigma=conc_sigma)
         y = pm.DirichletMultinomial('y', n=effective_samples, a=frac*conc, shape=(n,k), observed=c_array)
 
     with mod:
         idata = pm.sample()
     return idata
 
-def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[]):
+def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[], conc_mu=1, conc_sigma=1, compare_models=True):
     """Calculate mean and high posterior density interval on combined allele frequency.
     Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
     
@@ -70,6 +70,9 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, p
         datasetID (str, optional): Unique identifier column for study. Defaults to 'population'.
         credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
         prior (list, optional): Prior vector for global allele frequency. Order should match alphabetical alleles, i.e. the first value is used for the alphabetically first allele.
+        conc_mu (float, optional): Mean to parameterise lognormal distribution of `conc` prior. Defaults to 1.
+        conc_sigma (float, optional): Standard deviation to parameterise lognormal distribution of `conc` prior. Defaults to 1.
+        compare_models (bool, optional): Check that default estimated allele_freq is within compound model estimated credible intervals. Defaults to True.
 
     Returns:
         np.array: Pairs of high density interval limits, allele name, and posterior mean.
@@ -78,9 +81,29 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, p
             This way it matches the output of combineAF().
     """
     c_array, allele_names = _make_c_array(AFtab, weights, datasetID)
-    idata = _fit_Dirichlet_Multinomial(c_array, prior)
+    idata = _fit_Dirichlet_Multinomial(c_array, prior, conc_mu=conc_mu, conc_sigma=conc_sigma)
     hdi = az.hdi(idata, hdi_prob=credible_interval).frac.values
     post_mean = az.summary(idata, var_names='frac')['mean']
     post = pd.DataFrame([hdi[:,0], hdi[:,1], allele_names, post_mean]).T
     post.columns = ['lo','hi','allele','post_mean']
+    if compare_models:
+        compare_estimates(AFtab, post)
     return post
+
+def compare_estimates(AFtab, hdi):
+    """Does the defaul estimate of `allele_freq` sit within the compound
+    model's estimated credible intervals? If not, print warnings.
+
+    Args:
+        AFtab (pd.DataFrame): Table of allele frequency data
+        hdi (np.array): Pairs of high density interval limits, allele name, and posterior mean from compound model.
+    """
+    caf = HLAfreq.combineAF(AFtab)
+    caf = pd.merge(caf, hdi, how="left", on="allele")
+    mask = (caf.allele_freq > caf.lo) & (caf.allele_freq < caf.hi)
+    if mask.sum() > 0:
+        print()
+        print("WARNING: The default allele frequency estimate is outside of the CI estimated by the compound method for some alleles!")
+        print("There are several possible reasons, see the credible intervals example: https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb")
+        print("If you have set `credible_interval` to < 0.95, this may be a non-issue.")
+    

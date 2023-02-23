@@ -546,6 +546,8 @@ def plotAF(
     datasetID="population",
     weights = "2n",
     credible_interval=None,
+    conc_mu=1,
+    conc_sigma=1
     ):
     """Plot combined allele frequencies, individual allele frequencies,
     and credible intervals on combined allele frequency estimates.
@@ -590,7 +592,7 @@ def plotAF(
         assert not AFtab.empty, "AFtab is needed to calculate credible interval"
         from HLAfreq import HLAfreq_pymc as HLAhdi
         print("Fitting model with PyMC, make take a few seconds")
-        hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval)
+        hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval, conc_mu=conc_mu, conc_sigma=conc_sigma)
         for interval in hdi.iterrows():
             # .iterrows returns a index and data as a tuple for each row
             plt.hlines(
