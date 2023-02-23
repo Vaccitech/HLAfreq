@@ -545,14 +545,14 @@ def plotAF(
     cols = list(mcolors.TABLEAU_COLORS.keys()),
     datasetID="population",
     weights = "2n",
-    credible_interval=None,
+    hdi=pd.DataFrame(),
     conc_mu=1,
     conc_sigma=1
     ):
     """Plot combined allele frequencies, individual allele frequencies,
     and credible intervals on combined allele frequency estimates.
-    Credible interval is only plotted if a value is given for `credible_interval`.
-    Credible interval is calculated using HLAfreq_pymc.AFhdi() and PyMc.
+    Credible interval is only plotted if a value is given for `hdi`.
+    The plotted Credible interval is whatever was passed to HLAfreq_pymc.AFhdi() when calculating hdi.
 
     Args:
         caf (pd.DataFrame, optional): Combined allele frequency estimates from HLAfreq.combineAF. Defaults to pd.DataFrame().
@@ -560,7 +560,7 @@ def plotAF(
         cols (list, optional): List of colours to use for each individual dataset. Defaults to list(mcolors.TABLEAU_COLORS.keys()).
         datasetID (str, optional): Column used to define separate datasets. Defaults to "population".
         weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
-        credible_interval (float, optional): The credible interval to plot. Defaults to None.
+        hdi (float, optional): The high density interval object to plot credible intervals. Produced by HLAfreq.HLA_pymc.AFhdi(). Defaults to pd.DataFrame().
     """
     # Plot allele frequency for each dataset
     if not AFtab.empty:
@@ -588,11 +588,11 @@ def plotAF(
             zorder=3
             )
     # Plot high density interval
-    if credible_interval:
-        assert not AFtab.empty, "AFtab is needed to calculate credible interval"
-        from HLAfreq import HLAfreq_pymc as HLAhdi
-        print("Fitting model with PyMC, make take a few seconds")
-        hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval, conc_mu=conc_mu, conc_sigma=conc_sigma)
+    if not hdi.empty:
+        # assert not AFtab.empty, "AFtab is needed to calculate credible interval"
+        # from HLAfreq import HLAfreq_pymc as HLAhdi
+        # print("Fitting model with PyMC, make take a few seconds")
+        # hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval, conc_mu=conc_mu, conc_sigma=conc_sigma)
         for interval in hdi.iterrows():
             # .iterrows returns a index and data as a tuple for each row
             plt.hlines(
