@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 
 # The IEDB reference panel
 iedb_ref = ['B*35:01', 'A*30:01', 'A*02:03', 'B*15:01', 'B*57:01', 'A*68:02', 'A*23:01', 'B*53:01', 'A*03:01', 'B*40:01', 'B*44:02', 'B*51:01', 'A*33:01', 'A*01:01', 'A*68:01', 'A*24:02', 'B*07:02', 'B*08:01', 'A*02:06', 'A*26:01', 'A*11:01', 'A*30:02', 'A*31:01', 'B*58:01', 'B*44:03', 'A*32:01', 'A*02:01']
+iedb_refa = [i for i in iedb_ref if "A" in i]
+iedb_refb = [i for i in iedb_ref if "B" in i]
 
 regions = pd.read_csv("data/example/countries.csv")
 countries = regions.Country.tolist()
@@ -84,6 +86,58 @@ plt.tight_layout()
 plt.legend(loc="upper left")
 plt.grid(zorder=0)
 plt.show()
+
+##############
+# Plot cumulative frequency of IEDB panel
+# vs
+# country specific alleles
+#A
+country = "Indonesia"
+afa = pd.read_csv(f"data/example/population_coverage/{country}_A_raw.csv")
+afa = HLAfreq.only_complete(afa)
+afa = HLAfreq.decrease_resolution(afa, 2)
+cafa = HLAfreq.combineAF(afa)
+
+cafa = cafa.sort_values('allele_freq', ascending=False, ignore_index=True)
+plt.scatter(cafa.allele, cafa.allele_freq.cumsum().apply(HLAfreq.population_coverage))
+plt.grid(True); plt.xticks(rotation=90); plt.tight_layout()
+plt.xlabel('Allele'); plt.ylabel('Cumulative population coverage')
+# plt.tight_layout(); plt.show()
+
+maska = cafa.allele.isin(iedb_refa)
+cafai = cafa[maska].sort_values('allele_freq', ascending=False, ignore_index=True)
+# Add unobserved IEDB ref alleles
+missing_iedb = pd.DataFrame([[i, 'A',0,0,473,1,0] for i in iedb_refa if not i in cafai.allele.values], columns=cafai.columns)
+cafai = pd.concat([cafai, missing_iedb])
+plt.scatter(cafai.allele, cafai.allele_freq.cumsum().apply(HLAfreq.population_coverage))
+plt.grid(True); plt.xticks(rotation=90); plt.tight_layout()
+plt.xlabel('Allele'); plt.ylabel('Cumulative population coverage')
+plt.ylim(0,1.05)
+plt.tight_layout(); plt.show()
+
+#B
+country = "Indonesia"
+afb = pd.read_csv(f"data/example/population_coverage/{country}_B_raw.csv")
+afb = HLAfreq.only_complete(afb)
+afb = HLAfreq.decrease_resolution(afb, 2)
+cafb = HLAfreq.combineAF(afb)
+
+cafb = cafb.sort_values('allele_freq', ascending=False, ignore_index=True)
+plt.scatter(cafb.allele, cafb.allele_freq.cumsum().apply(HLAfreq.population_coverage))
+plt.grid(True); plt.xticks(rotation=90); plt.tight_layout()
+plt.xlabel('Allele'); plt.ylabel('Cumulative population coverage')
+# plt.tight_layout(); plt.show()
+
+maskb = cafb.allele.isin(iedb_ref)
+cafbi = cafb[maskb].sort_values('allele_freq', ascending=False, ignore_index=True)
+# Add unobserved IEDB ref alleles
+missing_iedb = pd.DataFrame([[i, 'B',0,0,473,1,0] for i in iedb_refb if not i in cafbi.allele.values], columns=cafbi.columns)
+cafbi = pd.concat([cafbi, missing_iedb])
+plt.scatter(cafbi.allele, cafbi.allele_freq.cumsum().apply(HLAfreq.population_coverage))
+plt.grid(True); plt.xticks(rotation=90); plt.tight_layout()
+plt.xlabel('Allele'); plt.ylabel('Cumulative population coverage')
+plt.ylim(0,1.05)
+plt.tight_layout(); plt.show()
 
 #############
 # Plot the cumulative allele frequency of HLA-A and HLA-B
