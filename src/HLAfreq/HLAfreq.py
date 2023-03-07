@@ -544,10 +544,8 @@ def plotAF(
     AFtab=pd.DataFrame(),
     cols = list(mcolors.TABLEAU_COLORS.keys()),
     datasetID="population",
-    weights = "2n",
     hdi=pd.DataFrame(),
-    conc_mu=1,
-    conc_sigma=1
+    compound_mean=pd.DataFrame()
     ):
     """Plot combined allele frequencies, individual allele frequencies,
     and credible intervals on combined allele frequency estimates.
@@ -600,6 +598,14 @@ def plotAF(
                 xmin = interval[1]['lo'],
                 xmax = interval[1]['hi'],
                 color="black"
+            )
+    if not compound_mean.empty:
+        for row in compound_mean.iterrows():
+            plt.scatter(
+                y = row[1]['allele'],
+                x = row[1]['post_mean'],
+                color = 'black',
+                marker = "|"
             )
     plt.xlabel("Allele frequency")
     plt.grid(zorder=0)

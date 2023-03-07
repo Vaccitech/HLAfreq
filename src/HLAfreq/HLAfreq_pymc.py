@@ -51,7 +51,8 @@ def _fit_Dirichlet_Multinomial(c_array, prior=[], conc_mu=1, conc_sigma=1):
         idata = pm.sample()
     return idata
 
-def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[], conc_mu=1, conc_sigma=1, compare_models=True):
+def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[], conc_mu=1, conc_sigma=1, compare_models=True,
+          format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
     """Calculate mean and high posterior density interval on combined allele frequency.
     Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
     
@@ -80,17 +81,30 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, p
             In alphabetical order of alleles, regardless of input order.
             This way it matches the output of combineAF().
     """
-    c_array, allele_names = _make_c_array(AFtab, weights, datasetID)
+
+    df = AFtab.copy()
+    HLAfreq.single_loci(df)
+    if unique:
+        assert HLAfreq.alleles_unique_in_study(df, datasetID=datasetID), "The same allele appears multiple times in a dataset"
+    if complete:
+        assert HLAfreq.incomplete_studies(df, datasetID=datasetID).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+    if resolution:
+        assert HLAfreq.check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
+    if format:
+        df = HLAfreq.formatAF(df, ignoreG)
+    if add_unmeasured:
+        df = HLAfreq.unmeasured_alleles(df, datasetID)
+    c_array, allele_names = _make_c_array(df, weights, datasetID)
     idata = _fit_Dirichlet_Multinomial(c_array, prior, conc_mu=conc_mu, conc_sigma=conc_sigma)
     hdi = az.hdi(idata, hdi_prob=credible_interval).frac.values
     post_mean = az.summary(idata, var_names='frac')['mean']
     post = pd.DataFrame([hdi[:,0], hdi[:,1], allele_names, post_mean]).T
     post.columns = ['lo','hi','allele','post_mean']
     if compare_models:
-        compare_estimates(AFtab, post)
+        compare_estimates(AFtab, post, datasetID)
     return post
 
-def compare_estimates(AFtab, hdi):
+def compare_estimates(AFtab, hdi, datasetID):
     """Does the defaul estimate of `allele_freq` sit within the compound
     model's estimated credible intervals? If not, print warnings.
 
@@ -98,9 +112,10 @@ def compare_estimates(AFtab, hdi):
         AFtab (pd.DataFrame): Table of allele frequency data
         hdi (np.array): Pairs of high density interval limits, allele name, and posterior mean from compound model.
     """
-    caf = HLAfreq.combineAF(AFtab)
+    
+    caf = HLAfreq.combineAF(AFtab, datasetID=datasetID)
     caf = pd.merge(caf, hdi, how="left", on="allele")
-    mask = (caf.allele_freq > caf.lo) & (caf.allele_freq < caf.hi)
+    mask = (caf.allele_freq < caf.lo) | (caf.allele_freq > caf.hi)
     if mask.sum() > 0:
         print()
         print("WARNING: The default allele frequency estimate is outside of the CI estimated by the compound method for some alleles!")
