@@ -31,12 +31,6 @@ HLAfreq.check_resolution(aftab)
 aftab = HLAfreq.decrease_resolution(aftab, 2)
 caf = HLAfreq.combineAF(aftab)
 
-#           #
-#   Plot CI #
-#           #
-
-HLAfreq.plotAF(AFtab=aftab, credible_interval=0.95)
-
 #                   #
 #   Calculate CI    #
 #                   #
@@ -45,3 +39,19 @@ hdi = HLAhdi.AFhdi(aftab)
 # Add to caf
 caf = pd.merge(caf, hdi, 'left', on='allele')
 caf[['allele', 'allele_freq', 'post_mean', 'lo', 'hi']]
+
+#           #
+#   Plot CI #
+#           #
+
+HLAfreq.plotAF(caf, AFtab=aftab, hdi=hdi, compound_mean=hdi)
+
+#                           #
+#   Access model directly   #
+#                           #
+
+c_array, allele_names = HLAhdi._make_c_array(aftab)
+idata = HLAhdi._fit_Dirichlet_Multinomial(c_array)
+idata.posterior.frac
+
+az.plot_trace(idata); plt.show()
