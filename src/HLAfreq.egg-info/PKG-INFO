@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: HLAfreq
-Version: 0.0.1.dev3
+Version: 0.0.1.dev4
 Summary: Download and combine HLA frequency data from multiple studies
 Home-page: https://github.com/Vaccitech/HLAfreq
 Author: David Wells
@@ -77,6 +77,8 @@ created with pdoc3 in pdf mode.
 <!-- ## Developer notes
 # Install in dev mode
 pip install -e HLAfreq
+
+Update version in setup.py
 
 Update documentation with `pdoc --pdf -o docs/ src/HLAfreq/ > docs/HLAfreq.md`.
 

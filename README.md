@@ -65,6 +65,8 @@ created with pdoc3 in pdf mode.
 # Install in dev mode
 pip install -e HLAfreq
 
+Update version in setup.py
+
 Update documentation with `pdoc --pdf -o docs/ src/HLAfreq/ > docs/HLAfreq.md`.
 
 Run tests `pytest` 

@@ -569,13 +569,17 @@ Generate a dataframe from a given html page
 Columns: []
 Index: [], AFtab=Empty DataFrame
 Columns: []
-Index: [], cols=['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan'], datasetID='population', weights='2n', credible_interval=None)`
+Index: [], cols=['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan'], datasetID='population', hdi=Empty DataFrame
+Columns: []
+Index: [], compound_mean=Empty DataFrame
+Columns: []
+Index: [])`
 
 
 Plot combined allele frequencies, individual allele frequencies,
 and credible intervals on combined allele frequency estimates.
-Credible interval is only plotted if a value is given for <code>credible\_interval</code>.
-Credible interval is calculated using HLAfreq_pymc.AFhdi() and PyMc.
+Credible interval is only plotted if a value is given for <code>hdi</code>.
+The plotted Credible interval is whatever was passed to HLAfreq_pymc.AFhdi() when calculating hdi.
 
 
 ###### Args
@@ -600,8 +604,12 @@ Credible interval is calculated using HLAfreq_pymc.AFhdi() and PyMc.
 :   Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
 
 
-**```credible_interval```** :&ensp;<code>float</code>, optional
-:   The credible interval to plot. Defaults to None.
+**```hdi```** :&ensp;<code>pd.DataFrame</code>, optional
+:   The high density interval object to plot credible intervals. Produced by HLAfreq.HLA_pymc.AFhdi(). Defaults to pd.DataFrame().
+
+
+**```compound_mean```** :&ensp;<code>pd.DataFrame</code>, optional
+:   The high density interval object to plot post_mean. Produced by HLAfreq.HLA_pymc.AFhdi(). Defaults to pd.DataFrame().
 
 
 
@@ -768,7 +776,7 @@ Data loaders
 
 
     
-> `def AFhdi(AFtab, weights='2n', datasetID='population', credible_interval=0.95, prior=[])`
+> `def AFhdi(AFtab, weights='2n', datasetID='population', credible_interval=0.95, prior=[], conc_mu=1, conc_sigma=1, compare_models=True)`
 
 
 Calculate mean and high posterior density interval on combined allele frequency.
@@ -806,6 +814,18 @@ by a latent, lognormal variable <code>conc</code>.
 :   Prior vector for global allele frequency. Order should match alphabetical alleles, i.e. the first value is used for the alphabetically first allele.
 
 
+**```conc_mu```** :&ensp;<code>float</code>, optional
+:   Mean to parameterise lognormal distribution of <code>conc</code> prior. Defaults to 1.
+
+
+**```conc_sigma```** :&ensp;<code>float</code>, optional
+:   Standard deviation to parameterise lognormal distribution of <code>conc</code> prior. Defaults to 1.
+
+
+**```compare_models```** :&ensp;<code>bool</code>, optional
+:   Check that default estimated allele_freq is within compound model estimated credible intervals. Defaults to True.
+
+
 
 ###### Returns
 
@@ -814,6 +834,34 @@ by a latent, lognormal variable <code>conc</code>.
     as a 4 by n array.
     In alphabetical order of alleles, regardless of input order.
     This way it matches the output of combineAF().
+
+
+
+    
+### Function `compare_estimates` {#HLAfreq.HLAfreq_pymc.compare_estimates}
+
+
+
+    
+> `def compare_estimates(AFtab, hdi, datasetID)`
+
+
+Does the defaul estimate of <code>allele\_freq</code> sit within the compound
+model's estimated credible intervals? If not, print warnings.
+
+
+###### Args
+
+**```AFtab```** :&ensp;<code>pd.DataFrame</code>
+:   Table of allele frequency data
+
+
+**```hdi```** :&ensp;<code>np.array</code>
+:   Pairs of high density interval limits, allele name, and posterior mean from compound model.
+
+
+**```datasetID```** :&ensp;<code>str</code>, optional
+:   Unique identifier column for study.
 
 
 
