@@ -558,7 +558,8 @@ def plotAF(
         cols (list, optional): List of colours to use for each individual dataset. Defaults to list(mcolors.TABLEAU_COLORS.keys()).
         datasetID (str, optional): Column used to define separate datasets. Defaults to "population".
         weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
-        hdi (float, optional): The high density interval object to plot credible intervals. Produced by HLAfreq.HLA_pymc.AFhdi(). Defaults to pd.DataFrame().
+        hdi (pd.DataFrame, optional): The high density interval object to plot credible intervals. Produced by HLAfreq.HLA_pymc.AFhdi(). Defaults to pd.DataFrame().
+        compound_mean (pd.DataFrame, optional): The high density interval object to plot post_mean. Produced by HLAfreq.HLA_pymc.AFhdi(). Defaults to pd.DataFrame().
     """
     # Plot allele frequency for each dataset
     if not AFtab.empty:

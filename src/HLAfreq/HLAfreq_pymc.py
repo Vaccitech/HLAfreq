@@ -109,6 +109,7 @@ def compare_estimates(AFtab, hdi, datasetID):
     Args:
         AFtab (pd.DataFrame): Table of allele frequency data
         hdi (np.array): Pairs of high density interval limits, allele name, and posterior mean from compound model.
+        datasetID (str, optional): Unique identifier column for study.
     """
     
     caf = HLAfreq.combineAF(AFtab, datasetID=datasetID)
