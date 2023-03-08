@@ -5,9 +5,20 @@ import arviz as az
 import pandas as pd
 import HLAfreq
 
-def _make_c_array(AFtab, weights="2n", datasetID="population"):
+def _make_c_array(AFtab, weights="2n", datasetID="population",
+                  format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
     df = AFtab.copy()
-    df = HLAfreq.unmeasured_alleles(df, datasetID)
+    HLAfreq.single_loci(df)
+    if unique:
+        assert HLAfreq.alleles_unique_in_study(df, datasetID=datasetID), "The same allele appears multiple times in a dataset"
+    if complete:
+        assert HLAfreq.incomplete_studies(df, datasetID=datasetID).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+    if resolution:
+        assert HLAfreq.check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
+    if format:
+        df = HLAfreq.formatAF(df, ignoreG)
+    if add_unmeasured:
+        df = HLAfreq.unmeasured_alleles(df, datasetID)
     try:
         df['2n'] = df.sample_size * 2
     except:
@@ -51,8 +62,7 @@ def _fit_Dirichlet_Multinomial(c_array, prior=[], conc_mu=1, conc_sigma=1):
         idata = pm.sample()
     return idata
 
-def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[], conc_mu=1, conc_sigma=1, compare_models=True,
-          format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
+def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, prior=[], conc_mu=1, conc_sigma=1, compare_models=True):
     """Calculate mean and high posterior density interval on combined allele frequency.
     Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
     
@@ -82,19 +92,7 @@ def AFhdi(AFtab, weights="2n", datasetID="population", credible_interval=0.95, p
             This way it matches the output of combineAF().
     """
 
-    df = AFtab.copy()
-    HLAfreq.single_loci(df)
-    if unique:
-        assert HLAfreq.alleles_unique_in_study(df, datasetID=datasetID), "The same allele appears multiple times in a dataset"
-    if complete:
-        assert HLAfreq.incomplete_studies(df, datasetID=datasetID).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
-    if resolution:
-        assert HLAfreq.check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
-    if format:
-        df = HLAfreq.formatAF(df, ignoreG)
-    if add_unmeasured:
-        df = HLAfreq.unmeasured_alleles(df, datasetID)
-    c_array, allele_names = _make_c_array(df, weights, datasetID)
+    c_array, allele_names = _make_c_array(AFtab, weights, datasetID)
     idata = _fit_Dirichlet_Multinomial(c_array, prior, conc_mu=conc_mu, conc_sigma=conc_sigma)
     hdi = az.hdi(idata, hdi_prob=credible_interval).frac.values
     post_mean = az.summary(idata, var_names='frac')['mean']
