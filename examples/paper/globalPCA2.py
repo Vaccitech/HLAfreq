@@ -20,6 +20,10 @@ import umap
 AFeatures = pd.read_csv("data/example/globalPCA/AF_features.csv")
 regions = pd.read_csv("data/example/countries.csv")
 
+# Remove Guinea because it includes data from
+# Guinea-Bissau and Papua New Guinea
+AFeatures = AFeatures[AFeatures.country != "Guinea"]
+
 pca = PCA(n_components=2)
 pca_embedding = pca.fit_transform(AFeatures.loc[:,'A*01:01':].values)
 AFeatures['pca0'] = pca_embedding[:,0]
