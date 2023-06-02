@@ -19,21 +19,22 @@ import logging
 import warnings
 import matplotlib.colors as mcolors
 
+
 def makeURL(
-        country="",
-        standard='s',
-        locus="",
-        resolution_pattern="bigger_equal_than",
-        resolution=2,
-        region="",
-        ethnic="",
-        study_type="",
-        dataset_source="",
-        sample_year="",
-        sample_year_pattern="",
-        sample_size="",
-        sample_size_pattern=""
-    ):
+    country="",
+    standard="s",
+    locus="",
+    resolution_pattern="bigger_equal_than",
+    resolution=2,
+    region="",
+    ethnic="",
+    study_type="",
+    dataset_source="",
+    sample_year="",
+    sample_year_pattern="",
+    sample_size="",
+    sample_size_pattern="",
+):
     """Create URL for search of allele frequency net database. All arguments are documented [here](http://www.allelefrequencies.net/extaccess.asp)
     Args:
         country (str, optional): Country name to retrieve records from. Defaults to "".
@@ -55,21 +56,38 @@ def makeURL(
     """
     base = "http://www.allelefrequencies.net/hla6006a.asp?"
     locus_type = "hla_locus_type=Classical&"
-    hla_locus = "hla_locus=%s&" %(locus)
-    country = "hla_country=%s&" %(country)
-    region = "hla_region=%s&" %(region)
-    ethnic = "hla_ethnic=%s&" %(ethnic)
-    study_type = "hla_study=%s&" %(study_type)
-    dataset_source = "hla_dataset_source=%s&" %(dataset_source)
-    sample_year = "hla_sample_year=%s&" %(sample_year)
-    sample_year_pattern = "hla_sample_year_pattern=%s&" %(sample_year_pattern)
-    sample_size = "hla_sample_size=%s&" %(sample_size)
-    sample_size_pattern = "hla_sample_size_pattern=%s&" %(sample_size_pattern)
-    hla_level_pattern = "hla_level_pattern=%s&" %(resolution_pattern)
-    hla_level = "hla_level=%s&" %(resolution)
-    standard = "standard=%s&" %standard
-    url = base + locus_type + hla_locus + country + hla_level_pattern + hla_level + standard + region + ethnic + study_type + dataset_source + sample_year + sample_year_pattern + sample_size + sample_size_pattern
+    hla_locus = "hla_locus=%s&" % (locus)
+    country = "hla_country=%s&" % (country)
+    region = "hla_region=%s&" % (region)
+    ethnic = "hla_ethnic=%s&" % (ethnic)
+    study_type = "hla_study=%s&" % (study_type)
+    dataset_source = "hla_dataset_source=%s&" % (dataset_source)
+    sample_year = "hla_sample_year=%s&" % (sample_year)
+    sample_year_pattern = "hla_sample_year_pattern=%s&" % (sample_year_pattern)
+    sample_size = "hla_sample_size=%s&" % (sample_size)
+    sample_size_pattern = "hla_sample_size_pattern=%s&" % (sample_size_pattern)
+    hla_level_pattern = "hla_level_pattern=%s&" % (resolution_pattern)
+    hla_level = "hla_level=%s&" % (resolution)
+    standard = "standard=%s&" % standard
+    url = (
+        base
+        + locus_type
+        + hla_locus
+        + country
+        + hla_level_pattern
+        + hla_level
+        + standard
+        + region
+        + ethnic
+        + study_type
+        + dataset_source
+        + sample_year
+        + sample_year_pattern
+        + sample_size
+        + sample_size_pattern
+    )
     return url
+
 
 def parseAF(bs):
     """Generate a dataframe from a given html page
@@ -81,29 +99,37 @@ def parseAF(bs):
         pd.DataFrame: Table of allele, allele frequency, samplesize, and population
     """
     # Get the results table from the div `divGenDetail`
-    tab = bs.find('div', {'id': 'divGenDetail'}).find('table', {'class': 'tblNormal'})
+    tab = bs.find("div", {"id": "divGenDetail"}).find("table", {"class": "tblNormal"})
     # Get the column headers from the first row of the table
     columns = [
-        'line', 'allele', 'flag', 'population', 'carriers%',
-        'allele_freq', 'AF_graphic', 'sample_size', 'database',
-        'distribution','haplotype_association', 'notes'
-        ]
-    rows =[]
-    for row in tab.find_all('tr'):
-        rows.append(
-            [td.get_text(strip=True) for td in row.find_all('td')]
-            )
+        "line",
+        "allele",
+        "flag",
+        "population",
+        "carriers%",
+        "allele_freq",
+        "AF_graphic",
+        "sample_size",
+        "database",
+        "distribution",
+        "haplotype_association",
+        "notes",
+    ]
+    rows = []
+    for row in tab.find_all("tr"):
+        rows.append([td.get_text(strip=True) for td in row.find_all("td")])
     # Make dataframe of table rows
     # skip the first row as it's `th` headers
-    df = pd.DataFrame(rows[1:], columns = columns)
+    df = pd.DataFrame(rows[1:], columns=columns)
 
     # Get HLA loci
-    df['loci'] = df.allele.apply(lambda x: x.split("*")[0])
+    df["loci"] = df.allele.apply(lambda x: x.split("*")[0])
 
     # Drop unwanted columns
-    df = df[['allele', 'loci', 'population', 'allele_freq', 'carriers%', 'sample_size']]
+    df = df[["allele", "loci", "population", "allele_freq", "carriers%", "sample_size"]]
     return df
-   
+
+
 def Npages(bs):
     """How many pages of results are there?
 
@@ -114,21 +140,26 @@ def Npages(bs):
         int: Total number of results pages
     """
     # Get the table with number of pages
-    navtab = bs.find('div', {'id': 'divGenNavig'}).find('table', {'class': 'table10'})
-    assert navtab, f"navtab does not evaluate to True. Check URL returns results in web browser."
-    # Get cell with ' of ' in 
-    pagesOfN = [td.get_text(strip=True) for td in navtab.find_all('td') if " of " in td.text]
+    navtab = bs.find("div", {"id": "divGenNavig"}).find("table", {"class": "table10"})
+    assert (
+        navtab
+    ), f"navtab does not evaluate to True. Check URL returns results in web browser."
+    # Get cell with ' of ' in
+    pagesOfN = [
+        td.get_text(strip=True) for td in navtab.find_all("td") if " of " in td.text
+    ]
     # Check single cell returned
-    assert len(pagesOfN) == 1, "divGenNavig should contain 1 of not %s" %len(pagesOfN)
+    assert len(pagesOfN) == 1, "divGenNavig should contain 1 of not %s" % len(pagesOfN)
     # Get total number of pages
     N = pagesOfN[0].split("of ")[1]
     N = int(N)
     return N
 
+
 def formatAF(AFtab, ignoreG=True):
     """Format allele frequency table.
     Convert sample_size and allele_freq to numeric data type.
-    Removes commas from sample size. Removes "(*)" from allele frequency if 
+    Removes commas from sample size. Removes "(*)" from allele frequency if
     `ignoreG` is `True`. `formatAF()` is used internally by combineAF and getAFdata by default.
 
     Args:
@@ -147,6 +178,7 @@ def formatAF(AFtab, ignoreG=True):
         df.allele_freq = pd.to_numeric(df.allele_freq)
     return df
 
+
 def getAFdata(base_url, format=True, ignoreG=True):
     """Get all allele frequency data from a search base url. Iterates over all
         pages regardless of which page is based.
@@ -160,17 +192,17 @@ def getAFdata(base_url, format=True, ignoreG=True):
         pd.DataFrame: allele frequency data parsed into a pandas dataframe
     """
     # Get BS object from base search
-    bs = BeautifulSoup(requests.get(base_url).text, 'html.parser')
+    bs = BeautifulSoup(requests.get(base_url).text, "html.parser")
     # How many pages of results
     N = Npages(bs)
-    print("%s pages of results" %N)
+    print("%s pages of results" % N)
     # iterate over pages, parse and combine data from each
     tabs = []
     for i in range(N):
         # print (" Parsing page %s" %(i+1))
-        print (" Parsing page %s" %(i+1), end="\r")
-        url = base_url + "page=" + str(i+1)
-        bs = BeautifulSoup(requests.get(url).text, 'html.parser')
+        print(" Parsing page %s" % (i + 1), end="\r")
+        url = base_url + "page=" + str(i + 1)
+        bs = BeautifulSoup(requests.get(url).text, "html.parser")
         tab = parseAF(bs)
         tabs.append(tab)
     print("Download complete")
@@ -182,7 +214,8 @@ def getAFdata(base_url, format=True, ignoreG=True):
             print("Formatting failed, non-numeric datatypes may remain.")
     return tabs
 
-def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
+
+def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID="population"):
     """Report any studies with allele freqs that don't sum to 1
 
     Args:
@@ -191,19 +224,20 @@ def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
         ulimit (float, optional): Upper allele_freq sum limit that will not be reported. Defaults to 1.1.
         datasetID (str): Unique identifier column for study
     """
-    poplocs = AFtab.groupby([datasetID, 'loci']).allele_freq.sum()
+    poplocs = AFtab.groupby([datasetID, "loci"]).allele_freq.sum()
     lmask = poplocs < llimit
-    if sum(lmask>0):
+    if sum(lmask > 0):
         print(poplocs[lmask])
         print(f"{sum(lmask)} studies have total allele frequency < {llimit}")
     umask = poplocs > ulimit
-    if sum(umask>0):
+    if sum(umask > 0):
         print(poplocs[umask])
         print(f"{sum(umask)} studies have total allele frequency > {ulimit}")
     incomplete = pd.concat([poplocs[lmask], poplocs[umask]])
     return incomplete
 
-def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
+
+def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID="population"):
     """Returns only complete studies. Studies are only dropped if their population and loci are in noncomplete together.
     This prevents throwing away data if another loci in the population is incomplete
 
@@ -216,14 +250,19 @@ def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID='population'):
     Returns:
         pd.DataFrame: Allele frequency data of multiple studies, but only complete studies.
     """
-    noncomplete = incomplete_studies(AFtab=AFtab, llimit=llimit, ulimit=ulimit, datasetID=datasetID)
+    noncomplete = incomplete_studies(
+        AFtab=AFtab, llimit=llimit, ulimit=ulimit, datasetID=datasetID
+    )
     # Returns False if population AND loci are in the noncomplete.index
     # AS A PAIR
     # This is important so that we don't throw away all data on a population
     # just because one loci is incomplete.
-    complete_mask = AFtab.apply(lambda x: (x[datasetID], x.loci) not in noncomplete.index, axis=1)
+    complete_mask = AFtab.apply(
+        lambda x: (x[datasetID], x.loci) not in noncomplete.index, axis=1
+    )
     df = AFtab[complete_mask]
     return df
+
 
 def check_resolution(AFtab):
     """Check if all alleles in AFtab have the same resolution.
@@ -243,7 +282,8 @@ def check_resolution(AFtab):
         print(f"Multiple resolutions in AFtab. Fix with decrease_resolution()")
     return pass_check
 
-def decrease_resolution(AFtab, newres, datasetID='population'):
+
+def decrease_resolution(AFtab, newres, datasetID="population"):
     """Decrease allele resolution to a specified value so all alleles have the same resolution.
 
     Args:
@@ -256,16 +296,19 @@ def decrease_resolution(AFtab, newres, datasetID='population'):
     """
     df = AFtab.copy()
     resolution = 1 + df.allele.str.count(":")
-    assert all(resolution >= newres), f"Some alleles have resolution below {newres} fields"
+    assert all(
+        resolution >= newres
+    ), f"Some alleles have resolution below {newres} fields"
     new_allele = df.allele.str.split(":").apply(lambda x: ":".join(x[:newres]))
     df.allele = new_allele
     collapsed = collapse_reduced_alleles(df, datasetID=datasetID)
     return collapsed
 
-def collapse_reduced_alleles(AFtab, datasetID='population'):
+
+def collapse_reduced_alleles(AFtab, datasetID="population"):
     df = AFtab.copy()
     # Group by alleles within datasets
-    grouped = df.groupby([datasetID,'allele'])
+    grouped = df.groupby([datasetID, "allele"])
     # Sum allele freq but keep other columns
     collapsed = grouped.apply(
         lambda row: [
@@ -273,22 +316,29 @@ def collapse_reduced_alleles(AFtab, datasetID='population'):
             row.sample_size.unique()[0],
             row.loci.unique()[0],
             len(row.loci.unique()),
-            len(row.sample_size.unique())
+            len(row.sample_size.unique()),
         ]
     )
     collapsed = pd.DataFrame(
         collapsed.tolist(),
         index=collapsed.index,
-        columns = ['allele_freq', 'sample_size', 'loci', '#loci', '#sample_sizes']
+        columns=["allele_freq", "sample_size", "loci", "#loci", "#sample_sizes"],
     ).reset_index()
     # Within a study each all identical alleles should have the same loci and sample size
-    assert all(collapsed['#loci'] == 1), "Multiple loci found for a single allele in a single population"
-    assert all(collapsed['#sample_sizes'] == 1), "Multiple sample_sizes found for a single allele in a single population"
-    collapsed = collapsed[['allele', 'loci','population','allele_freq','sample_size']]
+    assert all(
+        collapsed["#loci"] == 1
+    ), "Multiple loci found for a single allele in a single population"
+    assert all(
+        collapsed["#sample_sizes"] == 1
+    ), "Multiple sample_sizes found for a single allele in a single population"
+    collapsed = collapsed[
+        ["allele", "loci", "population", "allele_freq", "sample_size"]
+    ]
     alleles_unique_in_study(collapsed)
     return collapsed
 
-def unmeasured_alleles(AFtab, datasetID='population'):
+
+def unmeasured_alleles(AFtab, datasetID="population"):
     """When combining AF estimates, unreported alleles can inflate frequencies
         so AF sums to >1. Therefore we add unreported alleles with frequency zero.
 
@@ -297,7 +347,7 @@ def unmeasured_alleles(AFtab, datasetID='population'):
         datasetID (str): Unique identifier column for study
 
     Returns:
-        pd.DataFrame: Allele frequency data with all locus alleles reported 
+        pd.DataFrame: Allele frequency data with all locus alleles reported
             for each dataset
     """
     df = AFtab.copy()
@@ -311,19 +361,48 @@ def unmeasured_alleles(AFtab, datasetID='population'):
             datasetAF = df[(df[datasetID] == dataset) & (df.loci == locus)]
             # What was the sample size for this data?
             dataset_sample_size = datasetAF.sample_size.unique()
-            assert len(dataset_sample_size) == 1, "dataset_sample_size must be 1, not %s" %len(dataset_sample_size)
+            assert (
+                len(dataset_sample_size) == 1
+            ), "dataset_sample_size must be 1, not %s" % len(dataset_sample_size)
             dataset_sample_size = dataset_sample_size[0]
             # Get all alleles for this locus (across datasets)
             ualleles = df[df.loci == locus].allele.unique()
             # Which of these alleles are not in this dataset?
-            missing_alleles = [allele for allele in ualleles if not allele in datasetAF.allele.values]
-            missing_rows = [(al, locus, dataset, 0, 0, dataset_sample_size) for al in missing_alleles]
-            missing_rows = pd.DataFrame(missing_rows, columns=['allele','loci',datasetID,'allele_freq','carriers%','sample_size'])
+            missing_alleles = [
+                allele for allele in ualleles if not allele in datasetAF.allele.values
+            ]
+            missing_rows = [
+                (al, locus, dataset, 0, 0, dataset_sample_size)
+                for al in missing_alleles
+            ]
+            missing_rows = pd.DataFrame(
+                missing_rows,
+                columns=[
+                    "allele",
+                    "loci",
+                    datasetID,
+                    "allele_freq",
+                    "carriers%",
+                    "sample_size",
+                ],
+            )
             # Add them in with zero frequency
             df = pd.concat([df, missing_rows], ignore_index=True)
     return df
 
-def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=True, ignoreG=True, add_unmeasured=True, complete=True, resolution=True, unique=True):
+
+def combineAF(
+    AFtab,
+    weights="2n",
+    alpha=[],
+    datasetID="population",
+    format=True,
+    ignoreG=True,
+    add_unmeasured=True,
+    complete=True,
+    resolution=True,
+    unique=True,
+):
     """Combine allele frequencies from multiple studies. `datasetID` is the unique identifier for studies to combine.
     Allele frequencies combined using a Dirichlet distribution where each study's contribution to the concentration parameter is $2 * sample_size * allele_frequency$.
     Sample size is doubled to get `2n` due to diploidy. If an alternative `weights` is set it is not doubled.
@@ -353,35 +432,38 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
     df = AFtab.copy()
     single_loci(df)
     if unique:
-        assert alleles_unique_in_study(df, datasetID=datasetID), "The same allele appears multiple times in a dataset"
+        assert alleles_unique_in_study(
+            df, datasetID=datasetID
+        ), "The same allele appears multiple times in a dataset"
     if complete:
-        assert incomplete_studies(df, datasetID=datasetID).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+        assert incomplete_studies(
+            df, datasetID=datasetID
+        ).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
     if resolution:
-        assert check_resolution(df), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
+        assert check_resolution(
+            df
+        ), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
     if format:
         df = formatAF(df, ignoreG)
     if add_unmeasured:
         df = unmeasured_alleles(df, datasetID)
     try:
-        df['2n'] = df.sample_size * 2
+        df["2n"] = df.sample_size * 2
     except:
         print("column '2n' could not be created")
-    df['c'] =  df.allele_freq * df[weights]
-    grouped = df.groupby('allele', sort=True)
+    df["c"] = df.allele_freq * df[weights]
+    grouped = df.groupby("allele", sort=True)
     combined = grouped.apply(
         lambda row: [
-        row.name,
-        row.loci.unique()[0],
-        np.average(row.allele_freq, weights=row[weights]),
-        row.c.sum(),
-        row.sample_size.sum()
+            row.name,
+            row.loci.unique()[0],
+            np.average(row.allele_freq, weights=row[weights]),
+            row.c.sum(),
+            row.sample_size.sum(),
         ]
     )
     combined = pd.DataFrame(
-        combined.tolist(),
-        columns = ['allele', 'loci',
-            'wav',
-            'c', 'sample_size']
+        combined.tolist(), columns=["allele", "loci", "wav", "c", "sample_size"]
     )
     combined = combined.reset_index(drop=True)
     # Check that all alleles in a locus have the same sample size
@@ -390,11 +472,12 @@ def combineAF(AFtab, weights='2n', alpha = [], datasetID='population', format=Tr
         id_duplicated_allele(grouped)
     if not alpha:
         alpha = default_prior(len(combined.allele))
-    combined['alpha'] = alpha
+    combined["alpha"] = alpha
     # Calculate Dirichlet mean for each allele
-    combined['allele_freq'] = sp.stats.dirichlet(combined.alpha + combined.c).mean()
+    combined["allele_freq"] = sp.stats.dirichlet(combined.alpha + combined.c).mean()
 
     return combined
+
 
 def default_prior(k):
     """Calculate a default prior, 1 observation of each class.
@@ -408,6 +491,7 @@ def default_prior(k):
     alpha = [1] * k
     return alpha
 
+
 def single_loci(AFtab):
     """Check that allele frequency data is only of one locus
 
@@ -416,7 +500,8 @@ def single_loci(AFtab):
     """
     assert len(AFtab.loci.unique()) == 1, f"'AFtab' must conatain only 1 loci"
 
-def alleles_unique_in_study(AFtab, datasetID='population'):
+
+def alleles_unique_in_study(AFtab, datasetID="population"):
     """Are all alleles unique in each study? Checks that no alleles are reported more than once in a single study. Study is defined by `datasetID`.
 
     Args:
@@ -427,23 +512,31 @@ def alleles_unique_in_study(AFtab, datasetID='population'):
         bool: `True` on if no alleles occur more than once in any study, otherwise `False`.
     """
     df = AFtab.copy()
-    grouped = df.groupby([datasetID,'allele'])
+    grouped = df.groupby([datasetID, "allele"])
     # Are allele alleles unique? i.e. do any occur multiple times in grouping?
-    unique = grouped.size()[grouped.size()>1].empty
+    unique = grouped.size()[grouped.size() > 1].empty
     if not unique:
         print(f"Non unique alleles in study, is datasetID correct? {datasetID}")
-        print(grouped.size()[grouped.size()>1])
+        print(grouped.size()[grouped.size() > 1])
     return unique
+
 
 def duplicated_sample_size(AFtab):
     """Returns True if any loci has more than 1 unique sample size"""
-    locus_sample_sizes = AFtab.groupby('loci').sample_size.apply(lambda x: len(x.unique()))
+    locus_sample_sizes = AFtab.groupby("loci").sample_size.apply(
+        lambda x: len(x.unique())
+    )
     return any(locus_sample_sizes != 1)
 
+
 def id_duplicated_allele(grouped):
-    """ Reports the allele that has mupltiple sample sizes """
+    """Reports the allele that has mupltiple sample sizes"""
     duplicated_population = grouped.population.apply(lambda x: any(x.duplicated()))
-    assert all(~duplicated_population), "duplicated population within allele %s" %duplicated_population[duplicated_population].index.tolist()
+    assert all(~duplicated_population), (
+        "duplicated population within allele %s"
+        % duplicated_population[duplicated_population].index.tolist()
+    )
+
 
 def population_coverage(p):
     """Calculate the proportion of people with at least 1 copy of this allele
@@ -455,10 +548,11 @@ def population_coverage(p):
     Returns:
         float: Sum of homozygotes and heterozygotes for this allele
     """
-    q = 1-p
+    q = 1 - p
     homo = p**2
-    hetero = 2*p*q
+    hetero = 2 * p * q
     return homo + hetero
+
 
 def betaAB(alpha):
     """Given the alpha vector defining a Dirichlet distribution calculate the a b values for all composite beta distributions.
@@ -469,8 +563,9 @@ def betaAB(alpha):
     Returns:
         list: List of a b values defining beta values, i.e. for each allele it is the number of times it was and wasn't observed.
     """
-    ab = [(a,sum(alpha)-a) for a in alpha]
+    ab = [(a, sum(alpha) - a) for a in alpha]
     return ab
+
 
 # def betaCI(a,b,credible_interval=0.95):
 #     """Calculat the central credible interval of a beta distribution
@@ -508,6 +603,7 @@ def betaAB(alpha):
 #     ci = [betaCI(a, b, credible_interval) for a,b in ab]
 #     return ci
 
+
 def plot_prior(concentration, ncol=2, psteps=1000, labels=""):
     """Plot probability density function for prior values.
 
@@ -518,7 +614,7 @@ def plot_prior(concentration, ncol=2, psteps=1000, labels=""):
     """
     ab = betaAB(concentration)
     pline = np.linspace(0, 1, psteps)
-    nrow = math.ceil(len(concentration)/ncol)
+    nrow = math.ceil(len(concentration) / ncol)
     fig, ax = plt.subplots(nrow, ncol, sharex=True)
     fig.suptitle("Probability density")
     # If labels is a list nothing happens,
@@ -526,27 +622,30 @@ def plot_prior(concentration, ncol=2, psteps=1000, labels=""):
     labels = list(labels)
     if not labels:
         labels = [""] * len(concentration)
-    assert len(concentration) == len(labels), "concentration must be same length as labels"
-    for i,alpha in enumerate(concentration):
-        a,b = ab[i]
-        bd = sp.stats.beta(a,b)
+    assert len(concentration) == len(
+        labels
+    ), "concentration must be same length as labels"
+    for i, alpha in enumerate(concentration):
+        a, b = ab[i]
+        bd = sp.stats.beta(a, b)
         pdf = [bd.pdf(p) for p in pline]
         ax.flat[i].plot(pline, pdf)
         ax.flat[i].set_title(labels[i])
-    for axi in ax[-1,:]:
-        axi.set(xlabel='Allele freq')
-    for axi in ax[:,0]:
-        axi.set(ylabel='PDF')
+    for axi in ax[-1, :]:
+        axi.set(xlabel="Allele freq")
+    for axi in ax[:, 0]:
+        axi.set(ylabel="PDF")
     plt.show()
+
 
 def plotAF(
     caf=pd.DataFrame(),
     AFtab=pd.DataFrame(),
-    cols = list(mcolors.TABLEAU_COLORS.keys()),
+    cols=list(mcolors.TABLEAU_COLORS.keys()),
     datasetID="population",
     hdi=pd.DataFrame(),
-    compound_mean=pd.DataFrame()
-    ):
+    compound_mean=pd.DataFrame(),
+):
     """Plot combined allele frequencies, individual allele frequencies,
     and credible intervals on combined allele frequency estimates.
     Credible interval is only plotted if a value is given for `hdi`.
@@ -565,27 +664,27 @@ def plotAF(
     if not AFtab.empty:
         # Cols must be longer than the list of alleles
         # If not, repeat the list of cols
-        repeat_cols = np.ceil(len(AFtab[datasetID])/len(cols))
+        repeat_cols = np.ceil(len(AFtab[datasetID]) / len(cols))
         repeat_cols = int(repeat_cols)
         cols = cols * repeat_cols
         # Make a dictionary mapping datasetID to colours
         cmap = dict(zip(AFtab[datasetID].unique(), cols))
         plt.scatter(
-            x = AFtab.allele_freq,
-            y = AFtab.allele,
-            c = [cmap[x] for x in AFtab[datasetID]],
-            alpha = 0.7,
-            zorder=2
-            )
+            x=AFtab.allele_freq,
+            y=AFtab.allele,
+            c=[cmap[x] for x in AFtab[datasetID]],
+            alpha=0.7,
+            zorder=2,
+        )
     # Plot combined allele frequency
     if not caf.empty:
         plt.scatter(
-            x = caf.allele_freq,
-            y = caf.allele,
-            edgecolors='black',
-            facecolors='none',
-            zorder=3
-            )
+            x=caf.allele_freq,
+            y=caf.allele,
+            edgecolors="black",
+            facecolors="none",
+            zorder=3,
+        )
     # Plot high density interval
     if not hdi.empty:
         # assert not AFtab.empty, "AFtab is needed to calculate credible interval"
@@ -595,18 +694,15 @@ def plotAF(
         for interval in hdi.iterrows():
             # .iterrows returns a index and data as a tuple for each row
             plt.hlines(
-                y = interval[1]['allele'],
-                xmin = interval[1]['lo'],
-                xmax = interval[1]['hi'],
-                color="black"
+                y=interval[1]["allele"],
+                xmin=interval[1]["lo"],
+                xmax=interval[1]["hi"],
+                color="black",
             )
     if not compound_mean.empty:
         for row in compound_mean.iterrows():
             plt.scatter(
-                y = row[1]['allele'],
-                x = row[1]['post_mean'],
-                color = 'black',
-                marker = "|"
+                y=row[1]["allele"], x=row[1]["post_mean"], color="black", marker="|"
             )
     plt.xlabel("Allele frequency")
     plt.grid(zorder=0)
