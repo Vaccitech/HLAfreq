@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: HLAfreq
-Version: 0.0.1.dev4
+Version: 0.0.2
 Summary: Download and combine HLA frequency data from multiple studies
 Home-page: https://github.com/Vaccitech/HLAfreq
 Author: David Wells
