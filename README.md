@@ -15,7 +15,7 @@ Estimates are combined by modelling allele frequency as a
 Dirichlet distribution which defines the probability of drawing each
 allele. When combining studies their estimates are weighted as 2x sample size by
 default. Sample size is doubled as each person in the study
-contributes two alleles. Alternative weightings can be used
+contributes two alleles. Alternative weightings can be used,
 for example population size when averaging across countries.
 
 When selecting a panel of HLA alleles to represent a population,
@@ -24,9 +24,43 @@ the purpose of the panel, you should include a range of loci and
 supertypes (groups alleles sharing binding specificies).
 
 ## Install
+`HLAfreq` is a `python` package.
+
+### Linux and Mac
+You can install directly using pip
 ```
 pip install HLAfreq
 ```
+See the [pip documentation](https://pip.pypa.io/en/stable/)
+to get started with pip.
+
+### Windows
+On windows we recommend installing `HLAfreq` with `conda`.
+```
+conda create -n hlafreq -c bioconda -c conda-forge hlafreq
+conda activate hlafreq
+```
+See the [miniconda documentation](https://docs.conda.io/en/latest/miniconda.html)
+to get started with `conda`.
+
+### Troubleshooting
+`HLAfreq` uses `pymc` to estimate credible intervals,
+which is the source of most installation difficulty, see
+[pymc installation guide](https://www.pymc.io/projects/docs/en/stable/installation.html).
+
+You can try installing a specific `python` or `pymc` version
+(as long as it is >=3) and then add `HLAfreq` with pip or conda.
+For example
+```
+conda create -n hlafreq
+conda activate hlafreq
+conda install -c conda-forge python=3.10 pymc=5.0.2
+conda install -c bioconda hlafreq
+```
+If you don't intend to use credible intervals you can install
+with pip: `pip install HLAfreq`.
+However, if you do import `HLAfreq_pymc` you may get warnings
+about degraded performance.
 
 ## Minimal example
 Download HLA data using `makeURL()` and `getAFdata()`.
