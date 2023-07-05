@@ -32,7 +32,9 @@ You can install directly using pip
 pip install HLAfreq
 ```
 See the [pip documentation](https://pip.pypa.io/en/stable/)
-to get started with pip.
+to get started with pip. If you do have issues with pip,
+try installing with conda as described in
+the windows and troubleshooting sections below.
 
 ### Windows
 On windows we recommend installing `HLAfreq` with `conda`.
