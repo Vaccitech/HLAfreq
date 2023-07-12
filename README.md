@@ -24,45 +24,51 @@ the purpose of the panel, you should include a range of loci and
 supertypes (groups alleles sharing binding specificies).
 
 ## Install
-`HLAfreq` is a `python` package.
-
-### Linux and Mac
-You can install directly using pip
-```
-pip install HLAfreq
-```
-See the [pip documentation](https://pip.pypa.io/en/stable/)
-to get started with pip. If you do have issues with pip,
-try installing with conda as described in
-the windows and troubleshooting sections below.
-
-### Windows
-On windows we recommend installing `HLAfreq` with `conda`.
+`HLAfreq` is a `python` package. We recommend installing
+with `conda`.
 ```
 conda create -n hlafreq -c bioconda -c conda-forge hlafreq
 conda activate hlafreq
 ```
-See the [miniconda documentation](https://docs.conda.io/en/latest/miniconda.html)
+If you're new to conda see the miniconda [installation guide](https://conda.io/projects/conda/en/stable/user-guide/install/index.html) and [documentation](https://docs.conda.io/projects/conda/en/stable/user-guide/index.html)
 to get started with `conda`.
+Enter the above command into your conda prompt to create and
+activate a conda environment with `HLAfreq` installed.
+Typing `python` into this activated environment will start
+a python session where you can enter your python code such as
+the HLAfreq [minimal example](#minimal-example) below.
+
+If you prefer to write your python code as scripts using an IDE such as
+PyCharm or VScode, you'll need to look up how to configure a conda
+virtual environment with those tools.
 
 ### Troubleshooting
 `HLAfreq` uses `pymc` to estimate credible intervals,
 which is the source of most installation difficulty, see
 [pymc installation guide](https://www.pymc.io/projects/docs/en/stable/installation.html).
 
-You can try installing a specific `python` or `pymc` version
-(as long as it is >=3) and then add `HLAfreq` with pip or conda.
+At time of writing `pymc` doesn't play nice with python 3.11, so
+you can try installing a specific `python` version
+and then add `HLAfreq` with pip or conda.
 For example
 ```
 conda create -n hlafreq
 conda activate hlafreq
-conda install -c conda-forge python=3.10 pymc=5.0.2
+conda install -c conda-forge python=3.10
+conda install -c conda-forge pymc
 conda install -c bioconda hlafreq
 ```
+
+`HLAfreq` requires `python>=3.8` and `pymc>=3`.
+
 If you don't intend to use credible intervals you can install
 with pip: `pip install HLAfreq`.
 However, if you do import `HLAfreq_pymc` you may get warnings
 about degraded performance.
+
+See the [pip documentation](https://pip.pypa.io/en/stable/)
+to get started with pip. If you do have issues with pip,
+try installing with conda as described above.
 
 ## Minimal example
 Download HLA data using `makeURL()` and `getAFdata()`.
