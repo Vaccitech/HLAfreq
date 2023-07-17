@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import HLAfreq
 from HLAfreq import HLAfreq_pymc
 
-base_url = HLAfreq.makeURL("Mongolia", standard="g", locus="DQB1")
+base_url = HLAfreq.makeURL(country="Mongolia", standard="g", locus="DQB1")
 aftab = HLAfreq.getAFdata(base_url)
 caf = HLAfreq.combineAF(aftab)
 hdi = HLAfreq_pymc.AFhdi(aftab, credible_interval=0.95)
