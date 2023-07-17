@@ -24,7 +24,7 @@ the purpose of the panel, you should include a range of loci and
 supertypes (groups alleles sharing binding specificies).
 
 ## Install
-`HLAfreq` is a `python` package. We recommend installing
+`HLAfreq` is a `python` package available on windows, mac, and linux. We recommend installing
 with `conda`.
 ```
 conda create -n hlafreq -c bioconda -c conda-forge hlafreq
