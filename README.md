@@ -132,4 +132,4 @@ twine upload dist/*
 -->
 
 ## Citation
-*In prep.*
+Wells, D. A., & McAuley, M. (2023). HLAfreq: Download and combine HLA allele frequency data. bioRxiv, 2023-09. https://doi.org/10.1101/2023.09.15.557761 
