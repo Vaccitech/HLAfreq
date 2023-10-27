@@ -1,0 +1,248 @@
+Region,Country,largeRegion
+Central Asia,Afghanistan,Central Asia
+Central Asia,Kazakhstan,Central Asia
+Central Asia,Kyrgyzstan,Central Asia
+Central Asia,Tajikistan,Central Asia
+Central Asia,Turkmenistan,Central Asia
+Central Asia,Uzbekistan,Central Asia
+North-East Asia,Japan,East Asia
+North-East Asia,Mongolia,East Asia
+North-East Asia,North+Korea,East Asia
+North-East Asia,Russia,East Asia
+North-East Asia,South+Korea,East Asia
+South Asia,Bangladesh,East Asia
+South Asia,India,East Asia
+South Asia,Pakistan,East Asia
+South Asia,Sri+Lanka,East Asia
+South-East Asia,Bhutan,East Asia
+South-East Asia,Brunei,East Asia
+South-East Asia,Cambodia,East Asia
+South-East Asia,China,East Asia
+South-East Asia,Hong+Kong,East Asia
+South-East Asia,Laos,East Asia
+South-East Asia,Macau,East Asia
+South-East Asia,Malaysia,East Asia
+South-East Asia,Myanmar,East Asia
+South-East Asia,Nepal,East Asia
+South-East Asia,Singapore,East Asia
+South-East Asia,Taiwan,East Asia
+South-East Asia,Thailand,East Asia
+South-East Asia,Vietnam,East Asia
+Western Asia,Armenia,Western Asia
+Western Asia,Azerbaijan,Western Asia
+Western Asia,Bahrain,Western Asia
+Western Asia,Cyprus,Western Asia
+Western Asia,Gaza,Western Asia
+Western Asia,Georgia,Western Asia
+Western Asia,Iran,Western Asia
+Western Asia,Iraq,Western Asia
+Western Asia,Israel,Western Asia
+Western Asia,Jordan,Western Asia
+Western Asia,Kuwait,Western Asia
+Western Asia,Lebanon,Western Asia
+Western Asia,Oman,Western Asia
+Western Asia,Qatar,Western Asia
+Western Asia,Saudi+Arabia,Western Asia
+Western Asia,Syria,Western Asia
+Western Asia,Turkey,Western Asia
+Western Asia,United+Arab+Emirates,Western Asia
+Western Asia,West+Bank,Western Asia
+Western Asia,Yemen,Western Asia
+Australia,Australia,Oceania
+Europe,Albania,Europe
+Europe,Andorra,Europe
+Europe,Austria,Europe
+Europe,Belarus,Europe
+Europe,Belgium,Europe
+Europe,Bosnia+and+Herzegovina,Europe
+Europe,Bulgaria,Europe
+Europe,Croatia,Europe
+Europe,Czech+Republic,Europe
+Europe,Denmark,Europe
+Europe,England,Europe
+Europe,Estonia,Europe
+Europe,Faroe+Islands,Europe
+Europe,Finland,Europe
+Europe,France,Europe
+Europe,Germany,Europe
+Europe,Gibraltar,Europe
+Europe,Greece,Europe
+Europe,Hungary,Europe
+Europe,Iceland,Europe
+Europe,Ireland,Europe
+Europe,Italy,Europe
+Europe,Latvia,Europe
+Europe,Liechtenstein,Europe
+Europe,Lithuania,Europe
+Europe,Luxembourg,Europe
+Europe,Macedonia,Europe
+Europe,Malta,Europe
+Europe,Moldova,Europe
+Europe,Monaco,Europe
+Europe,Montenegro,Europe
+Europe,Netherlands,Europe
+Europe,Northern+Ireland,Europe
+Europe,Norway,Europe
+Europe,Poland,Europe
+Europe,Portugal,Europe
+Europe,Romania,Europe
+Europe,San+Marino,Europe
+Europe,Scotland,Europe
+Europe,Serbia,Europe
+Europe,Slovakia,Europe
+Europe,Slovenia,Europe
+Europe,Spain,Europe
+Europe,Svalbard+and+Jan+Mayen+Islands,Europe
+Europe,Sweden,Europe
+Europe,Switzerland,Europe
+Europe,Ukraine,Europe
+Europe,United+Kingdom,Europe
+Europe,Vatican,Europe
+Europe,Wales,Europe
+North America,Canada,America
+North America,Greenland,America
+North America,Mexico,America
+North America,United+States,America
+North Africa,Algeria,North Africa
+North Africa,Chad,North Africa
+North Africa,Djibouti,North Africa
+North Africa,Egypt,North Africa
+North Africa,Eritrea,North Africa
+North Africa,Ethiopia,North Africa
+North Africa,Libya,North Africa
+North Africa,Mali,North Africa
+North Africa,Mauritania,North Africa
+North Africa,Morocco,North Africa
+North Africa,Niger,North Africa
+North Africa,Sudan,North Africa
+North Africa,Tunisia,North Africa
+North Africa,Western+Sahara,North Africa
+Oceania,American+Samoa,Oceania
+Oceania,Borneo,Oceania
+Oceania,Bouvet+Island,Oceania
+Oceania,British+Indian+Ocean+Territory,Oceania
+Oceania,Christmas+Island,Oceania
+Oceania,Cocos+Islands,Oceania
+Oceania,Cook+Islands,Oceania
+Oceania,East+Timor,Oceania
+Oceania,Federal+States+of+Micronesia,Oceania
+Oceania,Fiji,Oceania
+Oceania,French+Polynesia,Oceania
+Oceania,French+Southern+Territories,Oceania
+Oceania,Guam,Oceania
+Oceania,Heard+and+Mc+Donald+Islands,Oceania
+Oceania,Indonesia,Oceania
+Oceania,Kiribati,Oceania
+Oceania,Madagascar,Oceania
+Oceania,Maldives,Oceania
+Oceania,Marshall+Islands,Oceania
+Oceania,Nauru,Oceania
+Oceania,New+Caledonia,Oceania
+Oceania,New+Zealand,Oceania
+Oceania,Niue,Oceania
+Oceania,Norfolk+Island,Oceania
+Oceania,Northern+Mariana+Islands,Oceania
+Oceania,Palau,Oceania
+Oceania,Papua+New+Guinea,Oceania
+Oceania,Philippines,Oceania
+Oceania,Pitcairn+Islands,Oceania
+Oceania,Samoa,Oceania
+Oceania,Solomon+Islands,Oceania
+Oceania,Timor-Leste,Oceania
+Oceania,Tokelau,Oceania
+Oceania,Tonga,Oceania
+Oceania,Tuvalu,Oceania
+Oceania,Vanuatu,Oceania
+Oceania,Wallis+and+Futuna+Islands,Oceania
+South and Central America,Anguilla,America
+South and Central America,Antigua+and+Barbuda,America
+South and Central America,Argentina,America
+South and Central America,Aruba,America
+South and Central America,Bahamas,America
+South and Central America,Barbados,America
+South and Central America,Belice,America
+South and Central America,Bermuda,America
+South and Central America,Bolivia,America
+South and Central America,Brazil,America
+South and Central America,British+Virgin+Islands,America
+South and Central America,Cayman+Islands,America
+South and Central America,Chile,America
+South and Central America,Colombia,America
+South and Central America,Costa+Rica,America
+South and Central America,Cuba,America
+South and Central America,Dominica,America
+South and Central America,Dominican+Republic,America
+South and Central America,Ecuador,America
+South and Central America,El+Salvador,America
+South and Central America,Falkland+Islands,America
+South and Central America,French+Guiana,America
+South and Central America,Grenada,America
+South and Central America,Guadeloupe,America
+South and Central America,Guatemala,America
+South and Central America,Guyana,America
+South and Central America,Haiti,America
+South and Central America,Honduras,America
+South and Central America,Jamaica,America
+South and Central America,Martinique,America
+South and Central America,Montserrat,America
+South and Central America,Netherlands+Antilles,America
+South and Central America,Nicaragua,America
+South and Central America,Panama,America
+South and Central America,Paraguay,America
+South and Central America,Peru,America
+South and Central America,Puerto+Rico,America
+South and Central America,Saint+Berthelemy,America
+South and Central America,Saint+Kitts+and+Nevis,America
+South and Central America,Saint+Lucia,America
+South and Central America,Saint+Martin,America
+South and Central America,Saint+Vincent+and+the+Grenadines,America
+South and Central America,Sant+Pierre+and+Miquelon,America
+South and Central America,South+Georgia+and+South+Sandwich+Islands,America
+South and Central America,Suriname,America
+South and Central America,Trinidad+and+Tobago,America
+South and Central America,Turks+and+Caicos+Islands,America
+South and Central America,United+States+Virgin+Islands,America
+South and Central America,Uruguay,America
+South and Central America,Venezuela,America
+Sub-Saharan Africa,Angola,Sub-Saharan Africa
+Sub-Saharan Africa,Benin,Sub-Saharan Africa
+Sub-Saharan Africa,Botwsana,Sub-Saharan Africa
+Sub-Saharan Africa,Burkina+Faso,Sub-Saharan Africa
+Sub-Saharan Africa,Burundi,Sub-Saharan Africa
+Sub-Saharan Africa,Cameroon,Sub-Saharan Africa
+Sub-Saharan Africa,Cape+Verde,Sub-Saharan Africa
+Sub-Saharan Africa,Central+African+Republic,Sub-Saharan Africa
+Sub-Saharan Africa,Comoros,Sub-Saharan Africa
+Sub-Saharan Africa,Congo,Sub-Saharan Africa
+Sub-Saharan Africa,Cote+d+Ivoire,Sub-Saharan Africa
+Sub-Saharan Africa,Democratic+Republic+of+the+Congo,Sub-Saharan Africa
+Sub-Saharan Africa,Equatorial+Guinea,Sub-Saharan Africa
+Sub-Saharan Africa,Gabon,Sub-Saharan Africa
+Sub-Saharan Africa,Gambia,Sub-Saharan Africa
+Sub-Saharan Africa,Ghana,Sub-Saharan Africa
+Sub-Saharan Africa,Guinea,Sub-Saharan Africa
+Sub-Saharan Africa,Guinea-Bissau,Sub-Saharan Africa
+Sub-Saharan Africa,Kenya,Sub-Saharan Africa
+Sub-Saharan Africa,Lesotho,Sub-Saharan Africa
+Sub-Saharan Africa,Liberia,Sub-Saharan Africa
+Sub-Saharan Africa,Malawi,Sub-Saharan Africa
+Sub-Saharan Africa,Mauritius,Sub-Saharan Africa
+Sub-Saharan Africa,Mayotte,Sub-Saharan Africa
+Sub-Saharan Africa,Mozambique,Sub-Saharan Africa
+Sub-Saharan Africa,Namibia,Sub-Saharan Africa
+Sub-Saharan Africa,Nigeria,Sub-Saharan Africa
+Sub-Saharan Africa,Reunion,Sub-Saharan Africa
+Sub-Saharan Africa,Rwanda,Sub-Saharan Africa
+Sub-Saharan Africa,Saint+Helena,Sub-Saharan Africa
+Sub-Saharan Africa,Sao+Tome+and+Principe,Sub-Saharan Africa
+Sub-Saharan Africa,Senegal,Sub-Saharan Africa
+Sub-Saharan Africa,Seychelles,Sub-Saharan Africa
+Sub-Saharan Africa,Sierra+Leone,Sub-Saharan Africa
+Sub-Saharan Africa,Somalia,Sub-Saharan Africa
+Sub-Saharan Africa,South+Africa,Sub-Saharan Africa
+Sub-Saharan Africa,Swaziland,Sub-Saharan Africa
+Sub-Saharan Africa,Tanzania,Sub-Saharan Africa
+Sub-Saharan Africa,Togo,Sub-Saharan Africa
+Sub-Saharan Africa,Uganda,Sub-Saharan Africa
+Sub-Saharan Africa,Zambia,Sub-Saharan Africa
+Sub-Saharan Africa,Zimbabwe,Sub-Saharan Africa
