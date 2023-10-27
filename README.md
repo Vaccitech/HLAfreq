@@ -59,7 +59,10 @@ conda install -c conda-forge pymc
 conda install -c bioconda hlafreq
 ```
 
-`HLAfreq` requires `python>=3.8` and `pymc>=3`.
+`HLAfreq` requires `python>=3.8`, `matplotlib>=3.5`, and `pymc>=3`.
+Conda should handle this automatically, but if you get errors check
+the package versions with `conda list`.
+
 If you do run into trouble please open an [issue](https://github.com/Vaccitech/HLAfreq/issues).
 
 If you don't intend to use credible intervals you can install
