@@ -52,11 +52,7 @@ you can try installing a specific `python` version
 and then add `HLAfreq` with pip or conda.
 For example
 ```
-conda create -n hlafreq
-conda activate hlafreq
-conda install -c conda-forge python=3.10
-conda install -c conda-forge pymc
-conda install -c bioconda hlafreq
+conda create -n hlafreq -c conda-forge -c bioconda python=3.10 numpy=1.25.2 pymc=5.6.1 hlafreq
 ```
 
 `HLAfreq` requires `python>=3.8`, `matplotlib>=3.5`, and `pymc>=3`.
