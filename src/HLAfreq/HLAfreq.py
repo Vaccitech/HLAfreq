@@ -387,7 +387,8 @@ def unmeasured_alleles(AFtab, datasetID="population"):
                 ],
             )
             # Add them in with zero frequency
-            df = pd.concat([df, missing_rows], ignore_index=True)
+            if not missing_rows.empty:
+                df = pd.concat([df, missing_rows], ignore_index=True)
     return df
 
 
