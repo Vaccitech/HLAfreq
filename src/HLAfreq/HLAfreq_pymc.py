@@ -1,3 +1,8 @@
+"""
+Functions using `pymc` to acurately estimate credible intervals
+on allele frequency estimates.
+"""
+
 import math
 import pymc as pm
 import numpy as np

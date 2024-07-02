@@ -21,7 +21,7 @@ for example population size when averaging across countries.
 When selecting a panel of HLA alleles to represent a population,
 allele frequency is not the only thing to consider. Depending on
 the purpose of the panel, you should include a range of loci and
-supertypes (groups alleles sharing binding specificies).
+supertypes (grouped alleles sharing binding specificies).
 
 ## Install
 `HLAfreq` is a `python` package available on windows, mac, and linux. We recommend installing
@@ -71,7 +71,7 @@ to get started with pip. If you do have issues with pip,
 try installing with conda as described above.
 
 ## Minimal example
-Download HLA data using `makeURL()` and `getAFdata()`.
+Download HLA data using `HLAfreq.HLAfreq.makeURL()` and `HLAfreq.HLAfreq.getAFdata()`.
 All arguments that can be specified in the webpage form are available,
 see `help(HLAfreq.makeURL)` for details (press `q` to exit).
 ```
@@ -83,7 +83,8 @@ aftab = HLAfreq.getAFdata(base_url)
 After downloading the data, it must be filtered so that all studies
 sum to allele frequency 1 (within tolerence). Then we must ensure
 that all studies report alleles at the same resolution.
-Finaly we can combine frequency estimates.
+Finaly we can combine frequency estimates, for more details see
+the `HLAfreq.HLAfreq.combineAF()` api documentation.
 ```
 aftab = HLAfreq.only_complete(aftab)
 aftab = HLAfreq.decrease_resolution(aftab, 2)
@@ -100,16 +101,19 @@ For more detailed walkthroughs see [HLAfreq/examples](https://github.com/Vaccite
 
 ## Docs
 For help on specific functions view the docstring, `help(function_name)`.
-Full documentation API at [HLAfreq/docs](https://github.com/Vaccitech/HLAfreq/blob/main/docs/HLAfreq.md)
-created with pdoc3 in pdf mode.
+Full documentation API at [HLAfreq/docs](https://github.com/Vaccitech/HLAfreq/docs/index.html)
+created with pdoc3 with `pdoc -d google -o docs/ HLAfreq`.
 
 <!-- ## Developer notes
 # Install in dev mode
 pip install -e HLAfreq
+pip install -e .
 
 Update version in setup.py
 
 Update documentation with `pdoc --pdf -o docs/ src/HLAfreq/ > docs/HLAfreq.md`.
+Or html documentation with:
+`pdoc -d google -o docs/ HLAfreq`
 
 Run tests `pytest` 
 

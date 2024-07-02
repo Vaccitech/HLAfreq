@@ -1,6 +1,4 @@
 """
-HLAfreq
-
 Download allele frequency data from
 [allelefrequencies.net](www.allelefrequencies.net). Allele
 frequencies from different populations can be combined to
