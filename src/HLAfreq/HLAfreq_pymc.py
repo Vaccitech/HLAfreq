@@ -42,7 +42,7 @@ def _make_c_array(
         df = HLAfreq.unmeasured_alleles(df, datasetID)
     try:
         df["2n"] = df.sample_size * 2
-    except:
+    except AttributeError:
         print("column '2n' could not be created")
     df["c"] = df.allele_freq * df[weights]
 

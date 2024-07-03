@@ -15,8 +15,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import scipy as sp
-import logging
-import warnings
 import matplotlib.colors as mcolors
 
 
@@ -167,7 +165,7 @@ def Npages(bs):
     navtab = bs.find("div", {"id": "divGenNavig"}).find("table", {"class": "table10"})
     assert (
         navtab
-    ), f"navtab does not evaluate to True. Check URL returns results in web browser."
+    ), "navtab does not evaluate to True. Check URL returns results in web browser."
     # Get cell with ' of ' in
     pagesOfN = [
         td.get_text(strip=True) for td in navtab.find_all("td") if " of " in td.text
@@ -239,7 +237,7 @@ def getAFdata(base_url, format=True, ignoreG=True):
     if format:
         try:
             tabs = formatAF(tabs, ignoreG)
-        except:
+        except AttributeError:
             print("Formatting failed, non-numeric datatypes may remain.")
     return tabs
 
@@ -270,7 +268,7 @@ def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID="population"):
 
 def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID="population"):
     """Returns only complete studies.
-    
+
     Studies are only dropped if their population and loci are in noncomplete together.
     This prevents throwing away data if another loci in the population is incomplete
 
@@ -314,7 +312,7 @@ def check_resolution(AFtab):
     pass_check = len(resVC) == 1
     if not pass_check:
         print(resVC)
-        print(f"Multiple resolutions in AFtab. Fix with decrease_resolution()")
+        print("Multiple resolutions in AFtab. Fix with decrease_resolution()")
     return pass_check
 
 
@@ -441,7 +439,7 @@ def combineAF(
     unique=True,
 ):
     """Combine allele frequencies from multiple studies.
-    
+
     `datasetID` is the unique identifier for studies to combine.
     Allele frequencies combined using a Dirichlet distribution where each study's
     contribution to the concentration parameter is $2 * sample_size * allele_frequency$.
@@ -500,7 +498,7 @@ def combineAF(
         df = unmeasured_alleles(df, datasetID)
     try:
         df["2n"] = df.sample_size * 2
-    except:
+    except AttributeError:
         print("column '2n' could not be created")
     df["c"] = df.allele_freq * df[weights]
     grouped = df.groupby("allele", sort=True)
@@ -549,12 +547,12 @@ def single_loci(AFtab):
     Args:
         AFtab (pd.DataFrame): Allele frequency data
     """
-    assert len(AFtab.loci.unique()) == 1, f"'AFtab' must conatain only 1 loci"
+    assert len(AFtab.loci.unique()) == 1, "'AFtab' must conatain only 1 loci"
 
 
 def alleles_unique_in_study(AFtab, datasetID="population"):
     """Are all alleles unique in each study?
-    
+
     Checks that no alleles are reported more than once in a single study.
     Study is defined by `datasetID`.
 
@@ -610,7 +608,7 @@ def population_coverage(p):
 
 def betaAB(alpha):
     """Calculate `a` `b` values for all composite beta distributions.
-    
+
     Given the `alpha` vector defining a Dirichlet distribution calculate the `a` `b` values
     for all composite beta distributions.
 
@@ -760,7 +758,14 @@ def plotAF(
         # assert not AFtab.empty, "AFtab is needed to calculate credible interval"
         # from HLAfreq import HLAfreq_pymc as HLAhdi
         # print("Fitting model with PyMC, make take a few seconds")
-        # hdi = HLAhdi.AFhdi(AFtab=AFtab, weights=weights, datasetID=datasetID, credible_interval=credible_interval, conc_mu=conc_mu, conc_sigma=conc_sigma)
+        # hdi = HLAhdi.AFhdi(
+        #     AFtab=AFtab,
+        #     weights=weights,
+        #     datasetID=datasetID,
+        #     credible_interval=credible_interval,
+        #     conc_mu=conc_mu,
+        #     conc_sigma=conc_sigma
+        # )
         for interval in hdi.iterrows():
             # .iterrows returns a index and data as a tuple for each row
             plt.hlines(
