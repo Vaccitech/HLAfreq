@@ -9,7 +9,7 @@ def lint(session):
     session.run("flake8", "src", "--count", "--exit-zero", "--max-complexity=10", "--max-line-length=127", "--statistics")
 
 
-@nox.session(python=["3.8", "3.9", "3.10"])
+@nox.session(python=["3.10", "3.11", "3.12"])
 def tests(session):
     session.install("pytest")
     session.install(".")
