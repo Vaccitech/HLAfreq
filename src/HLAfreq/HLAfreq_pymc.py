@@ -1,3 +1,8 @@
+"""
+Functions using `pymc` to acurately estimate credible intervals
+on allele frequency estimates.
+"""
+
 import math
 import pymc as pm
 import numpy as np
@@ -37,7 +42,7 @@ def _make_c_array(
         df = HLAfreq.unmeasured_alleles(df, datasetID)
     try:
         df["2n"] = df.sample_size * 2
-    except:
+    except AttributeError:
         print("column '2n' could not be created")
     df["c"] = df.allele_freq * df[weights]
 
@@ -92,7 +97,9 @@ def AFhdi(
     compare_models=True,
 ):
     """Calculate mean and high posterior density interval on combined allele frequency.
-    Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
+
+    Fits a Marginalized Dirichlet-Multinomial Model in PyMc as described
+    [here](https://docs.pymc.io/en/v3/pymc-examples/examples/mixture_models/dirichlet_mixture_of_multinomials.html).
 
     In brief, the global allele frequency is modelled as a Dirichlet distribution,
     and each population (defined by `datasetID`) is a Dirichlet distribution draw from
@@ -105,13 +112,21 @@ def AFhdi(
 
     Args:
         AFtab (pd.DataFrame): Table of allele frequency data
-        weights (str, optional): Column to be weighted by allele frequency to generate concentration parameter of Dirichlet distribution. Defaults to '2n'.
-        datasetID (str, optional): Unique identifier column for study. Defaults to 'population'.
-        credible_interval (float, optional): The size of the credible interval requested. Defaults to 0.95.
-        prior (list, optional): Prior vector for global allele frequency. Order should match alphabetical alleles, i.e. the first value is used for the alphabetically first allele.
-        conc_mu (float, optional): Mean to parameterise lognormal distribution of `conc` prior. Defaults to 1.
-        conc_sigma (float, optional): Standard deviation to parameterise lognormal distribution of `conc` prior. Defaults to 1.
-        compare_models (bool, optional): Check that default estimated allele_freq is within compound model estimated credible intervals. Defaults to True.
+        weights (str, optional): Column to be weighted by allele frequency to generate
+            concentration parameter of Dirichlet distribution. Defaults to '2n'.
+        datasetID (str, optional): Unique identifier column for study. Defaults to
+            'population'.
+        credible_interval (float, optional): The size of the credible interval requested.
+            Defaults to 0.95.
+        prior (list, optional): Prior vector for global allele frequency. Order should
+            match alphabetical alleles, i.e. the first value is used for the alphabetically
+            first allele.
+        conc_mu (float, optional): Mean to parameterise lognormal distribution of `conc`
+            prior. Defaults to 1.
+        conc_sigma (float, optional): Standard deviation to parameterise lognormal
+            distribution of `conc` prior. Defaults to 1.
+        compare_models (bool, optional): Check that default estimated allele_freq is
+            within compound model estimated credible intervals. Defaults to True.
 
     Returns:
         np.array: Pairs of high density interval limits, allele name, and posterior mean.
@@ -139,7 +154,8 @@ def compare_estimates(AFtab, hdi, datasetID):
 
     Args:
         AFtab (pd.DataFrame): Table of allele frequency data
-        hdi (np.array): Pairs of high density interval limits, allele name, and posterior mean from compound model.
+        hdi (np.array): Pairs of high density interval limits, allele name,
+            and posterior mean from compound model.
         datasetID (str, optional): Unique identifier column for study.
     """
 
@@ -149,9 +165,11 @@ def compare_estimates(AFtab, hdi, datasetID):
     if mask.sum() > 0:
         print()
         print(
-            "WARNING: The default allele frequency estimate is outside of the CI estimated by the compound method for some alleles!"
+            "WARNING: The default allele frequency estimate is outside of the CI"
+            "estimated by the compound method for some alleles!"
         )
         print(
-            "There are several possible reasons, see the credible intervals example: https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb"
+            "There are several possible reasons, see the credible intervals example:"
+            "https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb"
         )
         print("If you have set `credible_interval` to < 0.95, this may be a non-issue.")
