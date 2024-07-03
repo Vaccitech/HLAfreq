@@ -3,3 +3,5 @@ writeup/
 *__pycache__/
 *.code-workspace
 envs/.venv
+build/
+dist/
