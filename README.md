@@ -122,7 +122,8 @@ Note that github actions will automatically run this when pushed
 to `main` branch.
 
 Run tests `pytest`
-Or allow nox to do it `nox`.
+Or allow nox to do it `nox`. Nox will also run linting.
+On push github actions will run linting and pytest
 
 # Clear old build info
 rm -rf build dist src/*.egg-info 
