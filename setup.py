@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="HLAfreq",
-    version="0.0.3.dev1",
+    version="0.0.3.dev2",
     url="https://github.com/Vaccitech/HLAfreq",
     project_urls={
         'Tracker': "https://github.com/Vaccitech/HLAfreq/issues"
@@ -12,6 +12,7 @@ setup(
     description="Download and combine HLA frequency data from multiple studies",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
+    python_requires='>=3.10',
     install_requires=[
         'bs4',
         'requests',
