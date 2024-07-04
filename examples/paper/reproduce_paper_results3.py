@@ -187,6 +187,7 @@ for region in regions:
             offset[AFeatures.loc[i].country],
             textcoords="offset points",
             fontsize=8)
+
 plt.legend()
 # Arrow shows change of Venezuela with prior
 plt.annotate(
@@ -194,7 +195,7 @@ plt.annotate(
     xy=(vwp.pca0, vwp.pca1),
     xytext=(AFeatures[AFeatures.country == "Venezuela"].pca0, AFeatures[AFeatures.country == "Venezuela"].pca1),
     arrowprops=dict(arrowstyle="->")
-    )
+)
 # Open point to show updated Venezuela
 plt.scatter(vwp.pca0, vwp.pca1, color="tab:blue", facecolors="none")
 plt.xlabel('1st principal component'); plt.ylabel('2nd principal component')
