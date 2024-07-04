@@ -163,15 +163,15 @@ def Npages(bs):
     """
     # Get the table with number of pages
     navtab = bs.find("div", {"id": "divGenNavig"}).find("table", {"class": "table10"})
-    assert (
-        navtab
-    ), "navtab does not evaluate to True. Check URL returns results in web browser."
+    if not navtab:
+        raise AssertionError("navtab does not evaluate to True. Check URL returns results in web browser.")
     # Get cell with ' of ' in
     pagesOfN = [
         td.get_text(strip=True) for td in navtab.find_all("td") if " of " in td.text
     ]
     # Check single cell returned
-    assert len(pagesOfN) == 1, "divGenNavig should contain 1 of not %s" % len(pagesOfN)
+    if not len(pagesOfN) == 1:
+        raise AssertionError("divGenNavig should contain 1 of not %s" % len(pagesOfN))
     # Get total number of pages
     N = pagesOfN[0].split("of ")[1]
     N = int(N)
@@ -205,12 +205,14 @@ def formatAF(AFtab, ignoreG=True):
     return df
 
 
-def getAFdata(base_url, format=True, ignoreG=True):
-    """Get all allele frequency data from a search base url. Iterates over all
-        pages regardless of which page is based.
+def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
+    """Get all allele frequency data from a search base_url.
+
+    Iterates over all pages regardless of which page is based.
 
     Args:
         base_url (str): URL for base search.
+        timeout (int): How long to wait to receive a response.
         format (bool): Format the downloaded data using `formatAF()`.
         ignoreG (bool): treat allele G groups as normal.
             See http://hla.alleles.org/alleles/g_groups.html for details. Default = True
@@ -219,7 +221,10 @@ def getAFdata(base_url, format=True, ignoreG=True):
         pd.DataFrame: allele frequency data parsed into a pandas dataframe
     """
     # Get BS object from base search
-    bs = BeautifulSoup(requests.get(base_url).text, "html.parser")
+    try:
+        bs = BeautifulSoup(requests.get(base_url, timeout=timeout).text, "html.parser")
+    except requests.exceptions.ReadTimeout as e:
+        raise Exception("Requests timeout, try a larger `timeout` value for `getAFdata()`") from e
     # How many pages of results
     N = Npages(bs)
     print("%s pages of results" % N)
@@ -229,7 +234,10 @@ def getAFdata(base_url, format=True, ignoreG=True):
         # print (" Parsing page %s" %(i+1))
         print(" Parsing page %s" % (i + 1), end="\r")
         url = base_url + "page=" + str(i + 1)
-        bs = BeautifulSoup(requests.get(url).text, "html.parser")
+        try:
+            bs = BeautifulSoup(requests.get(url, timeout=timeout).text, "html.parser")
+        except requests.exceptions.ReadTimeout as e:
+            raise Exception("Requests timeout, try a larger `timeout` value for `getAFdata()`") from e
         tab = parseAF(bs)
         tabs.append(tab)
     print("Download complete")
@@ -330,9 +338,8 @@ def decrease_resolution(AFtab, newres, datasetID="population"):
     """
     df = AFtab.copy()
     resolution = 1 + df.allele.str.count(":")
-    assert all(
-        resolution >= newres
-    ), f"Some alleles have resolution below {newres} fields"
+    if not all(resolution >= newres):
+        raise AssertionError(f"Some alleles have resolution below {newres} fields")
     new_allele = df.allele.str.split(":").apply(lambda x: ":".join(x[:newres]))
     df.allele = new_allele
     collapsed = collapse_reduced_alleles(df, datasetID=datasetID)
@@ -359,12 +366,10 @@ def collapse_reduced_alleles(AFtab, datasetID="population"):
         columns=["allele_freq", "sample_size", "loci", "#loci", "#sample_sizes"],
     ).reset_index()
     # Within a study each all identical alleles should have the same loci and sample size
-    assert all(
-        collapsed["#loci"] == 1
-    ), "Multiple loci found for a single allele in a single population"
-    assert all(
-        collapsed["#sample_sizes"] == 1
-    ), "Multiple sample_sizes found for a single allele in a single population"
+    if not all(collapsed["#loci"] == 1):
+        raise AssertionError("Multiple loci found for a single allele in a single population")
+    if not all(collapsed["#sample_sizes"] == 1):
+        raise AssertionError("Multiple sample_sizes found for a single allele in a single population")
     collapsed = collapsed[
         ["allele", "loci", "population", "allele_freq", "sample_size"]
     ]
@@ -395,9 +400,8 @@ def unmeasured_alleles(AFtab, datasetID="population"):
             datasetAF = df[(df[datasetID] == dataset) & (df.loci == locus)]
             # What was the sample size for this data?
             dataset_sample_size = datasetAF.sample_size.unique()
-            assert (
-                len(dataset_sample_size) == 1
-            ), "dataset_sample_size must be 1, not %s" % len(dataset_sample_size)
+            if not (len(dataset_sample_size) == 1):
+                raise AssertionError("dataset_sample_size must be 1, not %s" % len(dataset_sample_size))
             dataset_sample_size = dataset_sample_size[0]
             # Get all alleles for this locus (across datasets)
             ualleles = df[df.loci == locus].allele.unique()
@@ -481,17 +485,14 @@ def combineAF(
     df = AFtab.copy()
     single_loci(df)
     if unique:
-        assert alleles_unique_in_study(
-            df, datasetID=datasetID
-        ), "The same allele appears multiple times in a dataset"
+        if not alleles_unique_in_study(df, datasetID=datasetID):
+            raise AssertionError("The same allele appears multiple times in a dataset")
     if complete:
-        assert incomplete_studies(
-            df, datasetID=datasetID
-        ).empty, "AFtab contains studies with AF that doesn't sum to 1. Checkincomplete_studies(AFtab)"
+        if not incomplete_studies(df, datasetID=datasetID).empty:
+            raise AssertionError("AFtab contains studies with AF that doesn't sum to 1. Checkincomplete_studies(AFtab)")
     if resolution:
-        assert check_resolution(
-            df
-        ), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
+        if not check_resolution(df):
+            raise AssertionError("AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)")
     if format:
         df = formatAF(df, ignoreG)
     if add_unmeasured:
@@ -547,7 +548,8 @@ def single_loci(AFtab):
     Args:
         AFtab (pd.DataFrame): Allele frequency data
     """
-    assert len(AFtab.loci.unique()) == 1, "'AFtab' must conatain only 1 loci"
+    if not len(AFtab.loci.unique()) == 1:
+        raise AssertionError("'AFtab' must conatain only 1 loci")
 
 
 def alleles_unique_in_study(AFtab, datasetID="population"):
@@ -585,10 +587,8 @@ def duplicated_sample_size(AFtab):
 def id_duplicated_allele(grouped):
     """Reports the allele that has mupltiple sample sizes"""
     duplicated_population = grouped.population.apply(lambda x: any(x.duplicated()))
-    assert all(~duplicated_population), (
-        "duplicated population within allele %s"
-        % duplicated_population[duplicated_population].index.tolist()
-    )
+    if not all(~duplicated_population):
+        raise AssertionError(f"duplicated population within allele {duplicated_population[duplicated_population].index.tolist()}")
 
 
 def population_coverage(p):
@@ -680,9 +680,8 @@ def plot_prior(concentration, ncol=2, psteps=1000, labels=""):
     labels = list(labels)
     if not labels:
         labels = [""] * len(concentration)
-    assert len(concentration) == len(
-        labels
-    ), "concentration must be same length as labels"
+    if not len(concentration) == len(labels):
+        raise AssertionError("concentration must be same length as labels")
     for i, alpha in enumerate(concentration):
         a, b = ab[i]
         bd = sp.stats.beta(a, b)

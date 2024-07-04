@@ -25,17 +25,14 @@ def _make_c_array(
     df = AFtab.copy()
     HLAfreq.single_loci(df)
     if unique:
-        assert HLAfreq.alleles_unique_in_study(
-            df, datasetID=datasetID
-        ), "The same allele appears multiple times in a dataset"
+        if not HLAfreq.alleles_unique_in_study(df, datasetID=datasetID):
+            raise AssertionError("The same allele appears multiple times in a dataset")
     if complete:
-        assert HLAfreq.incomplete_studies(
-            df, datasetID=datasetID
-        ).empty, "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+        if not HLAfreq.incomplete_studies(df, datasetID=datasetID).empty:
+            raise AssertionError("AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)")
     if resolution:
-        assert HLAfreq.check_resolution(
-            df
-        ), "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
+        if not HLAfreq.check_resolution(df):
+            raise AssertionError("AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)")
     if format:
         df = HLAfreq.formatAF(df, ignoreG)
     if add_unmeasured:
@@ -55,9 +52,9 @@ def _make_c_array(
     # Therefore we check that sorted AFloc matches c_array
     # The check is that the sum of allele i is the same
     for a, b in zip(np.apply_along_axis(sum, 0, c_array), df.groupby("allele").c.sum()):
-        assert math.isclose(
-            a, b
-        ), "Error making c_array sum of single allele frequency differs between c_array and AFloc"
+        if not math.isclose(a, b):
+            raise AssertionError("Error making c_array sum of single allele"
+                                 "frequency differs between c_array and AFloc")
     return c_array, allele_names
 
 
@@ -73,7 +70,8 @@ def _fit_Dirichlet_Multinomial(c_array, prior=[], conc_mu=1, conc_sigma=1):
     effective_samples = np.apply_along_axis(sum, 1, c_array)
     if len(prior) == 0:
         prior = HLAfreq.default_prior(k)
-    assert len(prior) == k, "For k alleles, prior must be length k"
+    if not len(prior) == k:
+        raise AssertionError("For k alleles, prior must be length k")
     with pm.Model() as mod:
         frac = pm.Dirichlet("frac", a=prior)
         conc = pm.Lognormal("conc", mu=conc_mu, sigma=conc_sigma)
