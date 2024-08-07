@@ -96,10 +96,10 @@ caf = HLAfreq.combineAF(aftab)
 ## Detailed examples
 For more detailed walkthroughs see [HLAfreq/examples](https://github.com/Vaccitech/HLAfreq/tree/main/examples).
 
-- [Single country](https://github.com/Vaccitech/HLAfreq/blob/main/examples/single_country.ipynb) download and combine
-- [Multi-country](https://github.com/Vaccitech/HLAfreq/blob/main/examples/multi_country.ipynb) download and combine, weight by population coverage
-- [Using priors](https://github.com/Vaccitech/HLAfreq/blob/main/examples/working_with_priors.ipynb)
-- [Credible intervals](https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb)
+- [Single country](https://vaccitech.github.io/HLAfreq/single_country.ipynb) download and combine
+- [Multi-country](https://vaccitech.github.io/HLAfreq/multi_country.ipynb) download and combine, weight by population coverage
+- [Using priors](https://vaccitech.github.io/HLAfreq/working_with_priors.ipynb)
+- [Credible intervals](https://vaccitech.github.io/HLAfreq/credible_intervals.ipynb)
 
 ## Docs
 Full documentation at [HLAfreq/docs](https://vaccitech.github.io/HLAfreq/HLAfreq.html).
