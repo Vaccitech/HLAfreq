@@ -26,11 +26,12 @@ jobs:
       # ADJUST THIS: install all dependencies (including pdoc)
       - run: pip install -e .
       - run: pip install pdoc
+      - run: pip install jupyter
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
       # - run: python docs/make.py
       - run: pdoc -d google -o docs/ HLAfreq
-
+      - run: jupyter nbconvert --to html --output-dir docs/HLAfreq/examples examples/*.ipynb
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/

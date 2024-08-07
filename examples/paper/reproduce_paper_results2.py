@@ -64,7 +64,6 @@ for country in countries:
         cafa = HLAfreq.combineAF(afa)
         maska = cafa.allele.isin(iedb_ref)
         p = cafa[maska].allele_freq.sum()
-
         afb = pd.read_csv(f"data/example/population_coverage/{country}_B_raw.csv")
         afb = HLAfreq.only_complete(afb)
         afb = HLAfreq.decrease_resolution(afb, 2)
@@ -92,6 +91,7 @@ regions.sort()
 for region in regions:
     mask = df.largeRegion == region
     plt.barh(df[mask].country, df[mask].coverage, label=region, zorder=3)
+
 plt.axvline(0.97, linestyle="--", c="black", zorder=5)
 plt.tight_layout()
 plt.legend(loc="upper left")

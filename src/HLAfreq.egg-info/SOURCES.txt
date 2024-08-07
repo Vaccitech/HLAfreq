@@ -7,6 +7,7 @@ src/HLAfreq/HLAfreq.py
 src/HLAfreq/HLAfreq_data.py
 src/HLAfreq/HLAfreq_pymc.py
 src/HLAfreq/__init__.py
+src/HLAfreq/examples.py
 src/HLAfreq.egg-info/PKG-INFO
 src/HLAfreq.egg-info/SOURCES.txt
 src/HLAfreq.egg-info/dependency_links.txt
